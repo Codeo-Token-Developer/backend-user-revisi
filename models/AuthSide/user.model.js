@@ -5,7 +5,7 @@ const { hashPass } = require('../../helpers/hashing');
 const userSchema = new mongoose.Schema ({
     full_name: {
         type: String,
-        required: [true, 'First name cannot be empty'],
+        required: [true, 'Full name cannot be empty'],
         trim: true
     },
     username: {
