@@ -1,9 +1,11 @@
 const express = require('express');
 const Router = express.Router();
-const { sendCodeo } = require('../../controllers/transfer/codeTransferController');
+const { sendCodeo, sendAdminCodeo, referralStorage } = require('../../controllers/transfer/codeTransferController');
+const checkRef = require('../../middlewares/referralCheck');
+
 
 const Auth = require('../../middlewares/Auth').userAuthentication;
 
-Router.post('/', Auth, sendCodeo)
+Router.post('/', Auth,checkRef,sendCodeo, sendAdminCodeo, referralStorage)
 
 module.exports = Router;

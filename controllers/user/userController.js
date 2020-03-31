@@ -72,7 +72,7 @@ class UserController {
 
     static logout(req,res,next) {
         let userId = req.decoded.id;
-        User.updateOne({_id: userId}, {isLogin: false, approved_verified: false})
+        User.updateOne({_id: userId}, {isLogin: false, approval_verified: false})
             .then(function() {
                 res.status(200).json({message: `See You Later...`, status:200})
             })
@@ -131,23 +131,23 @@ class UserController {
 
     
     static changePassword(req, res, next) {
-    let { oldPassword, newPassword } = req.body;
-    let userId = req.decoded.id;
-    User.findOne({_id: userId})
-        .then(function(user) {
-            req.user = user;
-            let check = checkPass(oldPassword, user.password)
-            if (check) {
-                return Password.create({password: newPassword, user: userId})
-            }else {
-                next({message: `Old Password didn't match with current password`})
-            }
-        })
-        .then(function (pass) {
-            next();
-        })
-        .catch(next);
-  }
+        let { oldPassword, newPassword } = req.body;
+        let userId = req.decoded.id;
+        User.findOne({_id: userId})
+            .then(function(user) {
+                req.user = user;
+                let check = checkPass(oldPassword, user.password)
+                if (check) {
+                    return Password.create({password: newPassword, user: userId})
+                }else {
+                    next({message: `Old Password didn't match with current password`})
+                }
+            })
+            .then(function (pass) {
+                next();
+            })
+            .catch(next);
+    }
 
   static QrUpdate(req, res, next) {
     let userId = req.decoded.id;

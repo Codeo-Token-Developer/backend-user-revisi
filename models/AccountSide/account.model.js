@@ -6,14 +6,18 @@ const accountSchema = new mongoose.Schema ({
         max: 64
     },
     key: {
-        type: Map,
+        type: String,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
     balance: {
-        type: Number
+        type: Number,
+        default: 0.00
+    },
+    role: {
+        type: String
     }
 },{ versionKey: false, timestamps: {createdAt: 'created_at'} });
 

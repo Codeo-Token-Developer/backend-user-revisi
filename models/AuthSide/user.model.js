@@ -29,13 +29,28 @@ const userSchema = new mongoose.Schema ({
         type: String,
         required: [true, 'Email cannot be empty'],
         trim: true,
-        validate: {
-            validator: function (value) {
-                const email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-                return email.test(value)
+        validate: [
+            {
+                validator: function (value) {
+                    const email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                    return email.test(value)
+                },
+                message: props => `${props.value} is not valid email, please fill email correctly`
             },
-            message: props => `${props.value} is not valid email, please fill email correctly`
-        }
+            {
+                validator: function (value) {
+                    return this.model('User').findOne({email: value})
+                        .then(function (email) {
+                            if (email) {
+                                return false
+                            }else {
+                                return true;
+                            }
+                        })
+                },
+                message: props => `${props.value} already taken, please take another one`
+            }
+        ]
     },
     password: {
         type: String,
@@ -54,7 +69,7 @@ const userSchema = new mongoose.Schema ({
         type: Boolean,
         default: false
     },
-    approved_verified: {
+    approval_verified: {
         type: Boolean,
         default: false
     },
@@ -63,8 +78,7 @@ const userSchema = new mongoose.Schema ({
         default: false
     },
     ref: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: String
     },
     avatar: {
         type: String,

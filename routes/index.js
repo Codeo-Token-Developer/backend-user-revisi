@@ -37,5 +37,10 @@ Router.use('/bankAccount', bankAccountRouter);
 //         })
 //         .catch(next)
 // })
+const injectionRouter = require('./injection');
+
+Router.use('/injection', injectionRouter);
+
+
 
 module.exports = Router;
