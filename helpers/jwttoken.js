@@ -6,7 +6,7 @@ function generateToken(payload) {
 };
 
 function generateLoginToken(payload) {
-    return jwt.sign(payload, secret, { expiresIn: 60 * 60 })
+    return jwt.sign(payload, secret)
 }
 
 function verifytoken(token, cb) {
