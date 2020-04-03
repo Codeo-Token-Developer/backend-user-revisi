@@ -77,7 +77,7 @@ class UserController {
         ref: newRef
       })
         .then(function(user) {
-          res.status(202).json({ user, status: 202 });
+          next();
         })
         .catch(next);
     }
