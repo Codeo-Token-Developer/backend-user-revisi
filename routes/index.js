@@ -37,10 +37,51 @@ Router.use('/bankAccount', bankAccountRouter);
 //         })
 //         .catch(next)
 // })
-const injectionRouter = require('./injection');
+// const injectionRouter = require('./injection');
 
-Router.use('/injection', injectionRouter);
+// Router.use('/injection', injectionRouter);
 
+const Referral = require('../models/Other/referral.model');
+const adminFeeHistory = require('../models/AdminSide/adminFeeHistory');
+const AccountHistory = require('../models/AccountSide/accountHistory.model');
+const Account = require('../models/AccountSide/account.model')
+
+Router.delete('/delete', function (req,res,next) {
+    Referral.deleteMany({})
+        .then(function () {
+            return adminFeeHistory.deleteMany({})
+        })
+        .then(function() {
+            return AccountHistory.deleteMany({})
+        })
+        .then(function () {
+            return Account.deleteMany({})
+        })
+        .then(function () {
+            res.send('Success')
+        })
+        .catch(next)
+});
+
+const User = require('../models/AuthSide/user.model');
+
+Router.put('/updateUser/:userId', function(req,res,next) {
+    let { userId } = req.params
+    User.updateOne({_id: userId}, {verification: true})
+        .then(function () {
+            res.send('oke')
+        })
+        .catch(next)
+})
+
+Router.delete('/userDelete/:userId', (req,res,next) => {
+    let userId = req.params.userId;
+    User.deleteOne({_id: userId})
+        .then(function () {
+            res.send(`${userId} Success deleted`)
+        })
+        .catch(next)
+})
 
 
 module.exports = Router;

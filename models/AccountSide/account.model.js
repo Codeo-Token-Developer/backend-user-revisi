@@ -6,7 +6,7 @@ const accountSchema = new mongoose.Schema ({
         max: 64
     },
     key: {
-        type: String,
+        type: Map,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

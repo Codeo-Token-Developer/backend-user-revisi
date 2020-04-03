@@ -16,35 +16,38 @@ class AccountController {
     static async create(req,res,next) {
 
             let userId = req.decoded.id;
+            
             let newAccount = {
                 ETH: '',
                 key: ''
             }
             let userAccount;
-            await getNewAddress(function(err, data) {
+            await getNewAddress( async function(err, data) {
                 if (data) {
                     newAccount.ETH = data.address;
                     newAccount.key = data.privateKey;
+                    
                 }else {
                     next(err);
                 }
             })
             
             Account.findOne({user: userId})
-                .then(function (user) {
+                .then( async function (user) {
                     if (user) {
                         next({message: 'You already have account'})
                     }else {
-                        return Account.create({ETH: newAccount.ETH, key: newAccount.key, user: userId})
+                        let accountKey = await encryptAccount(newAccount.key);
+                        console.log(accountKey)
+                        return Account.create({ETH: newAccount.ETH, key: accountKey, user: userId})
                     }
                 })
                 .then(function (account) {
                     userAccount = account;
                     return User.updateOne({_id: userId}, {account: account.id})
                 })
-                .then( async function() {
-                    userAccount.key = await encryptAccount(userAccount.key);
-                    res.status(202).json({message: 'Your account has been created', userAccount, status: 202})
+                .then(function() {
+                    res.status(202).json({account: userAccount, status: 202})
                 })
                 
                 .catch(next);

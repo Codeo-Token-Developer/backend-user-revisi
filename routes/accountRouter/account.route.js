@@ -10,12 +10,5 @@ Router.post('/newAccount', userAuthentication, create);
 Router.get('/myAccount', userAuthentication, readMe);
 Router.get('/eth', userAuthentication, readMyEth);
 
-const Account = require('../../models/AccountSide/account.model');
-const { encryptAccount } = require('../../helpers/encryptKey')
-
-Router.get('/test', function (req,res, next) {
-
-        
-})
 
 module.exports = Router;
