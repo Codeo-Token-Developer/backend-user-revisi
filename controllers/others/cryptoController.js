@@ -5,9 +5,17 @@ class CryptoController {
     static readAll(req,res,next) {
         Crypto.find({})
             .then(function (cryptos) {
-                res.status(200).json({cryptos, status: 200})
+                res.status(200).json({cryptos, status: 200});
             })
             .catch(next);
+    };
+
+    static readMe(req,res,next) {
+        let userId = req.decoded.id;
+        Crypto.findOne({user: userId})
+            .then(function (crypto) {
+                res.status(200).json({crypto, status: 200});
+            })
     };
 
     static create(req,res,next) {
