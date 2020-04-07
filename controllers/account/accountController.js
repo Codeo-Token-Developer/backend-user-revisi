@@ -67,7 +67,7 @@ class AccountController {
                 account.created_at = myAccount.created_at;
                 account.updatedAt = myAccount.updatedAt;
                 
-                res.status(200).json(account);
+                res.status(200).json({account, status: 200});
             })
             .catch(next);
     };

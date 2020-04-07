@@ -13,6 +13,9 @@ const cryptoRouter = require('./otherRouter/crypto.route');
 const transferRouter = require('./transferRouter/transfer.route');
 const bankAccountRouter = require('./otherRouter/bankAccount.route');
 const feeRouter = require('./otherRouter/fee.route');
+const injectionRouter = require('./injection');
+
+Router.use('/injection', injectionRouter);
 
 Router.use('/users', users);
 Router.use('/accounts', accounts);

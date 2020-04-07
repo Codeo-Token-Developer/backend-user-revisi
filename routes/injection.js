@@ -8,14 +8,14 @@ const Web3 = require("web3");
 
 var web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/2acd67a7a87446fabc0602afcff6eff4"));
 // let { CODEO, ENCRYPT } = process.env;
-// Router.patch('/', function (req,res,next) {
-//     let user = '5e81bc34f00a5233100cd103'
-//     User.updateOne({_id: user}, {verification: true})
-//         .then(function() {
-//             res.send('Oke')
-//         })
-//         .catch(next)
-// })
+Router.patch('/ver', function (req,res,next) {
+    let user = '5e8c0f06e88d4300178e1482'
+    User.updateOne({_id: user}, {verification: true})
+        .then(function() {
+            res.send('Oke')
+        })
+        .catch(next)
+})
 
 Router.post('/', function (req,res,next) {
     let user = '5e81bbcaf00a5233100cd100'

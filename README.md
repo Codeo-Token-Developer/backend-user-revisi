@@ -316,6 +316,29 @@ Error Output example:
 }
 ```
 
+**GET 1 Account**
+
+Required:
+
+```
+path: '/accounts/myAccount',
+method: 'GET',
+headers: {
+	jwttoken : localStorage.getItem('codeoToken')
+},
+
+```
+
+Success Output example:
+
+```
+{
+  "account": <account>,
+  "status": 200
+}
+```
+
+
 ### **<u>BANK ACCOUNT</u>**
 
 #### **Create**

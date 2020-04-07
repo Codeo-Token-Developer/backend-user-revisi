@@ -86,7 +86,7 @@ class UserController {
   static login(req, res, next) {
     let { email, password } = req.body;
     let logUser, token;
-    User.findOne({ email })
+    User.findOne({ email }).populate('account')
       .then(function(user) {
         if (user.verification) {
           if (user && checkPass(password, user.password)) {
