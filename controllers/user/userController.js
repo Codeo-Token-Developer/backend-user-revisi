@@ -233,7 +233,24 @@ class UserController {
         res.status(201).json({ message: "Close 2FA", status: 201 });
       })
       .catch(next);
-  }
+  };
+
+  
+  static Update(req,res,next) {
+    let userId = req.decoded.id;
+    let { avatar, id_country, full_name } = req.body;
+    User.updateOne({_id: userId}, {avatar, id_country, full_name}, {omitUndefined: true})
+      .then(function () {
+        return User.findOne({_id: userId})
+      })
+      .then(function (user) {
+        res.status(201).json({message: "Update Success", user, status:201})
+      })
+      .catch(next);
+
+  };
+
+
 }
 
 module.exports = UserController;

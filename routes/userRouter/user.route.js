@@ -18,13 +18,15 @@ let {
   logout,
   QrLogout,
   forgotPassword,
-  changePassword
+  changePassword,
+  Update
 } = require("../../controllers/user/userController");
 
 Router.get("/", readAll);
 Router.get("/account", Auth, readMe);
 Router.post("/", create, sendEmail);
 Router.post("/login", login);
+Router.put('/', Auth, Update);
 
 //forgotPassword
 Router.post("/forgotPassword", forgotPassword, sendEmailForgotPassword);

@@ -38,6 +38,14 @@ Router.delete('/deleteCredit', function (req,res,next) {
             res.send('Oke')
         })
         .catch(next)
+});
+
+Router.get('/credit', function (req,res,next) {
+    CreditCard.find({})
+        .then(function (cards) {
+            res.status(200).json(cards)
+        })
+        .catch(next);
 })
 
 // Router.patch('/patch/:userId', function (req,res,next) {

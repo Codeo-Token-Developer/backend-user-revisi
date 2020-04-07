@@ -172,7 +172,7 @@ headers: {
 	jwttoken
 },
 data/body: {
-	name, email, avatar, id_country
+	full_name, avatar, id_country
 }
 ```
 
