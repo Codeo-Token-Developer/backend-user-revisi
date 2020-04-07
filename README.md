@@ -166,7 +166,7 @@ Error:
 Required:
 
 ```
-path: '/',
+path: '/users/',
 method: 'PUT',
 headers: {
 	jwttoken
@@ -358,6 +358,31 @@ Error Output example:
  	 "status": 500
 	}
 ```
+
+
+#### **GET 1 BankAccount**
+
+Required:
+
+```
+path: '/bankAccount/myBankAccount',
+method: 'GET',
+headers: {
+	jwttoken
+}
+```
+
+Success Output example:
+
+```
+{
+  "myBankAccount": <myBankAccount>,
+  "status": 200
+}
+```
+
+
+
 
 ### **<u>CRYPTO</u>**
 
