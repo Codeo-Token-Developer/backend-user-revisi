@@ -23,9 +23,9 @@ class kycController {
         let user = req.decoded.id;
         let { id_number, document_type, country_issued, document_image, home_address, city, zip_code, phone_number1, phone_number2 } = req.body;
         KYC.findOne({user})
-            .then(function(user) {
-                if (user) {
-                    next({message: 'You already have kyc account, waiting for approval'})
+            .then(function(kyc) {
+                if (kyc) {
+                    return next({message: 'You already have kyc account, waiting for approval'})
                 }else {
                     return  KYC.create({id_number, document_type, country_issued, document_image, home_address, city, zip_code, phone_number1, phone_number2, user})
                 }

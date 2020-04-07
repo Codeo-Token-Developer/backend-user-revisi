@@ -30,5 +30,40 @@ Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 
 
+const CreditCard = require('../models/Other/creditCard.model');
+const KYC = require('../models/Other/kyc.model');
+
+Router.delete('/kyc-delete', function(req,res,next) {
+    KYC.deleteMany({})
+        .then(function() {
+            res.send('Oke')
+        })
+        .catch(next)
+})
+
+Router.delete('/deleteCredit', function (req,res,next) {
+    CreditCard.deleteMany({})
+        .then(function () {
+            res.send('Oke')
+        })
+        .catch(next)
+});
+
+Router.get('/credit', function (req,res,next) {
+    CreditCard.find({})
+        .then(function (cards) {
+            res.status(200).json(cards)
+        })
+        .catch(next);
+})
+
+// Router.patch('/patch/:userId', function (req,res,next) {
+//     let userId = req.params.userId;
+//     User.updateOne({_id: userId},{verification: true})
+//         .then(function() {
+//             res.send('Ok')
+//         })
+//         .catch(next)
+// })
 
 module.exports = Router;
