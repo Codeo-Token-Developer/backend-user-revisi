@@ -4,7 +4,7 @@ const TransactionHistory = require('../../models/Other/transactionHistory.model'
 const accountHistory = require('../../models/AccountSide/accountHistory.model');
 const AdminFeeHistory = require('../../models/AdminSide/adminFeeHistory');
 const Referral = require('../../models/Other/referral.model');
-
+const User = require('../../models/AuthSide/user.model');
 
 class CodeoTransferController {
 
@@ -105,17 +105,35 @@ class CodeoTransferController {
     static referralStorage(req,res,next) {
         console.log('Masuk referall Storage');
         let refUser = req.refUser;
-       
+        
         if (refUser) {
-            Referral.create({user: refUser.user.id, ref_amount: refUser.refValue})
-                .then(function(reff) {
-                    console.log(reff)
-                    res.status(202).json(reff)
+
+            User.findOne({username: refUser.user})
+                .then(function (user) {
+                   return Referral.create({user: user.id, ref_amount: refUser.refValue})
+                    
+                })
+                .then(function(ref) {
+                    console.log(ref, 'This is Ref')
+                    res.status(202).json(ref);
                 })
                 .catch(next)
+
         }else {
             res.status(202).json({message: 'Done!!!'})
         }
+
+
+        // if (refUser) {
+        //     Referral.create({user: refUser.user.id, ref_amount: refUser.refValue})
+        //         .then(function(reff) {
+        //             console.log(reff)
+        //             res.status(202).json(reff)
+        //         })
+        //         .catch(next)
+        // }else {
+        //     res.status(202).json({message: 'Done!!!'})
+        // }
     };
 
 };

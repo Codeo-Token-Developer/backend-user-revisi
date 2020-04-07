@@ -12,7 +12,7 @@ const { checkPass, hashPass } = require("../../helpers/hashing");
 
 class UserController {
   static readAll(req, res, next) {
-    User.find({})
+    User.find({}).populate('account')
       .then(function(users) {
         res.status(200).json({ users, status: 200 });
       })

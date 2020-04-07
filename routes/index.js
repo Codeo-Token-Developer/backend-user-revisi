@@ -14,16 +14,22 @@ const transferRouter = require('./transferRouter/transfer.route');
 const bankAccountRouter = require('./otherRouter/bankAccount.route');
 const feeRouter = require('./otherRouter/fee.route');
 const injectionRouter = require('./injection');
+const sandboxRouter = require('./sandboxRouter');
 
 Router.use('/injection', injectionRouter);
+Router.use('/sandbox', sandboxRouter)
 
+//User Router
 Router.use('/users', users);
+
+//AccountRouter
 Router.use('/accounts', accounts);
 Router.use('/logHistory', logHistory);
 
 //Transfer
 Router.use('/transfer', transferRouter);
 
+//OtherRouter
 Router.use('/crypto', cryptoRouter);
 Router.use('/credit-card', creditCardRouter);
 Router.use('/kyc', kycRouter);
@@ -33,32 +39,32 @@ Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 
 
-const CreditCard = require('../models/Other/creditCard.model');
-const KYC = require('../models/Other/kyc.model');
+// const CreditCard = require('../models/Other/creditCard.model');
+// const KYC = require('../models/Other/kyc.model');
 
-Router.delete('/kyc-delete', function(req,res,next) {
-    KYC.deleteMany({})
-        .then(function() {
-            res.send('Oke')
-        })
-        .catch(next)
-})
+// Router.delete('/kyc-delete', function(req,res,next) {
+//     KYC.deleteMany({})
+//         .then(function() {
+//             res.send('Oke')
+//         })
+//         .catch(next)
+// })
 
-Router.delete('/deleteCredit', function (req,res,next) {
-    CreditCard.deleteMany({})
-        .then(function () {
-            res.send('Oke')
-        })
-        .catch(next)
-});
+// Router.delete('/deleteCredit', function (req,res,next) {
+//     CreditCard.deleteMany({})
+//         .then(function () {
+//             res.send('Oke')
+//         })
+//         .catch(next)
+// });
 
-Router.get('/credit', function (req,res,next) {
-    CreditCard.find({})
-        .then(function (cards) {
-            res.status(200).json(cards)
-        })
-        .catch(next);
-})
+// Router.get('/credit', function (req,res,next) {
+//     CreditCard.find({})
+//         .then(function (cards) {
+//             res.status(200).json(cards)
+//         })
+//         .catch(next);
+// })
 
 // Router.patch('/patch/:userId', function (req,res,next) {
 //     let userId = req.params.userId;

@@ -10,7 +10,8 @@ const cors = require('cors');
 
 //var
 const { PORT } = process.env;
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+
 //mongoDB Connection;
 require('./db.connect')();
 
