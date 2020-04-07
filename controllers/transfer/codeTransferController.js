@@ -15,7 +15,7 @@ class CodeoTransferController {
         Account.findOne({user})
             .then( async function (account) {
                 req.myAccount = account
-                let key = JSON.parse(account.key)
+                let key = JSON.parse(JSON.stringify(account.key))
                 TransferCodeo(toAddress, myValue, key)
                     .then(function (events) {
                         req.events = events;
@@ -59,7 +59,7 @@ class CodeoTransferController {
         let { adminValue } = req.body;
         console.log(adminValue, 'admin value')
         let myAccount = req.myAccount;
-        let key = JSON.parse(myAccount.key);
+        let key = JSON.parse(JSON.stringify(myAccount.key));
         let adminETH;
         Account.findOne({role: 'admin'})
             .then(function (account) {

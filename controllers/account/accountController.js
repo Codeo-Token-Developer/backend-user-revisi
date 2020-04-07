@@ -35,10 +35,9 @@ class AccountController {
             Account.findOne({user: userId})
                 .then( async function (user) {
                     if (user) {
-                        next({message: 'You already have account'})
+                        return next({message: 'You already have account'})
                     }else {
                         let accountKey = await encryptAccount(newAccount.key);
-                        console.log(accountKey)
                         return Account.create({ETH: newAccount.ETH, key: accountKey, user: userId})
                     }
                 })

@@ -23,9 +23,9 @@ class CreditCardController {
         let user = req.decoded.id;
         let { name, surname, card_number, exp_date, cvc } = req.body;
         CreditCard.findOne({user})
-            .then(function (user) {
-                if (user) {
-                    next({message: 'You already have credit card account, waiting for approval'})
+            .then(function (card) {
+                if (card) {
+                    return next({message: 'You already have credit card account, waiting for approval'})
                 }else {
                     return CreditCard.create({name, surname, card_number, exp_date, cvc, user})
                 }
@@ -33,6 +33,7 @@ class CreditCardController {
             .then(function (card) {
                 res.status(202).json({message: 'Waiting for admin approval', status: 202})
             })
+            .catch(next);
     };
 
     static update(req,res,next) {
