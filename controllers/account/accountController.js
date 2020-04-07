@@ -59,10 +59,10 @@ class AccountController {
         Account.findOne({user: userId})
             .then( async function(myAccount) {
                 let account = {};
-                let enckey = await encryptAccount(myAccount.key);
+                // let enckey = await encryptAccount(myAccount.key);
                 account.id = myAccount.id;
                 account.ETH = myAccount.ETH;
-                account.key = enckey;
+                account.key = JSON.parse(JSON.stringify(myAccount.key));
                 account.user = myAccount.user;
                 account.created_at = myAccount.created_at;
                 account.updatedAt = myAccount.updatedAt;
