@@ -39,7 +39,7 @@ class CreditCardController {
     static update(req,res,next) {
         let user = req.decoded.id;
         let {card_number, exp_date, cvc } = req.body;
-        CreditCard.updateOne({user}, {card_number, exp_date, cvc}, {
+        CreditCard.updateOne({user}, {card_name,card_number, exp_date, cvc}, {
             omitUndefined: true
         })
         .then(function() {
