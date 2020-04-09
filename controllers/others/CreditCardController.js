@@ -21,13 +21,13 @@ class CreditCardController {
 
     static create(req,res,next) {
         let user = req.decoded.id;
-        let { card_number, exp_date, cvc } = req.body;
+        let { card_name,card_number, exp_date, cvc } = req.body;
         CreditCard.findOne({user})
             .then(function (card) {
                 if (card) {
                     return next({message: 'You already have credit card account, waiting for approval'})
                 }else {
-                    return CreditCard.create({card_number, exp_date, cvc, user})
+                    return CreditCard.create({card_name,card_number, exp_date, cvc, user})
                 }
             })
             .then(function (card) {

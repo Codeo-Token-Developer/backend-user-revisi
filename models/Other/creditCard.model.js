@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const creditCardSchema = new mongoose.Schema({
+    card_name: {
+        type: String,
+        required: [true, 'Card name cannot be emtpy']
+    },
     card_number: {
         type: String,
         required: [true, 'Card number cannot be empty']
