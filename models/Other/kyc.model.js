@@ -43,6 +43,10 @@ const kycSchema = new mongoose.Schema({
    approved_status: {
        type: Boolean,
        default: false
+   },
+   review: {
+       type: Boolean,
+       default: false
    }
 })
 

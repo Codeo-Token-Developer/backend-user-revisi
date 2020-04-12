@@ -273,6 +273,56 @@ Success example output:
 }
 ```
 
+##### <u>**GET 1 ACCOUNT**</u>
+
+Required:
+
+```
+path: '/accounts/myAccount',
+method: 'GET',
+headers: {
+	jwttoken
+}
+```
+
+Success example output:
+
+```
+{
+  "account": {
+          "_id": "5e534c0a7720bf1a48c018c1",
+          "ETH": "0xD9aEBc08e7aee41ed73D9A1Ba93158E774089CFe",
+          "key": {
+            "version": 3,
+            "id": "5e9e4a91-8535-4b04-8fb9-4cdf89b6385f",
+            "address": "d9aebc08e7aee41ed73d9a1ba93158e774089cfe",
+            "crypto": {
+              "ciphertext": "09198daada4e6f9da71437153c337387eb93e27ab6a2ef199ed5f06e92917997",
+              "cipherparams": {
+                "iv": "56c87812506254178fd8e457cc6298b1"
+              },
+              "cipher": "aes-128-ctr",
+              "kdf": "scrypt",
+              "kdfparams": {
+                "dklen": 32,
+                "salt": "a1617efd2a6b39bf56c968887b066de98a9fb8616aff1343087b32ac49c251fd",
+                "n": 8192,
+                "r": 8,
+                "p": 1
+              },
+              "mac": "3e30534849ecfa2563c927e95122a339d75063e3062b0a3fbf2408f442c1f3a7"
+            }
+          },
+          "user": "5e533952988563168cbfb14b",
+          "date": "2020-02-24T04:07:38.744Z",
+          "__v": 0
+        },
+    "status": 200
+}
+```
+
+
+
 ## **<u>KYC</u>**
 
 **Create**
