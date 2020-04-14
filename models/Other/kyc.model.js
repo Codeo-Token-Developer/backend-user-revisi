@@ -47,7 +47,11 @@ const kycSchema = new mongoose.Schema({
    review: {
        type: Boolean,
        default: false
-   }
+   },
+   lock_status: {
+    type: Boolean,
+    default: true
+}
 })
 
 
