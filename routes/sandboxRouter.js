@@ -4,6 +4,7 @@ const Ref = require('../models/Other/referral.model');
 const User = require('../models/AuthSide/user.model');
 const express = require('express');
 const Router = express.Router();
+const KYC = require('../models/Other/kyc.model');
 
 Router.delete('/', function (req,res,next) {
     History.deleteMany({})
@@ -44,6 +45,14 @@ Router.get('/', function(req,res,next) {
             res.status(200).json(his)
         })
         .catch(next);
+})
+
+Router.delete('/kyc', function (req,res,next) {
+    KYC.deleteMany({})
+        .then(function () {
+            res.send('oke')
+        })
+        .catch(next)
 })
 
 module.exports = Router;

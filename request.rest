@@ -16,7 +16,7 @@ content-type: application/json
 
 
 ###
-DELETE http://localhost:3005/
+POST  http://localhost:3005/injection/account
 
 
 
@@ -24,7 +24,16 @@ DELETE http://localhost:3005/
 //------------------
 ###
 //create
-GET http://localhost:3005/users
+POST http://localhost:3005/users
+Content-Type: application/json
+
+{
+    "full_name": "Mr. Jerapah",
+    "username": "girafe",
+    "email": "herapah@mail.com",
+    "password": "123456",
+    "confirm_password": "123456"
+}
 
 ###
 //login
@@ -57,3 +66,6 @@ POST http://localhost:3005/injection/account
 
 ###
 POST http://localhost:3005/injection
+
+###
+DELETE http://localhost:3005/sandbox/kyc

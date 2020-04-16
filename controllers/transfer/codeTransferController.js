@@ -36,17 +36,22 @@ class CodeoTransferController {
                 next();
             })
             .catch(err => {
-                console.log(err.message);
+                
                 let hash = "none"
+                let desc;
+                if (err.message === 'Returned error: insufficient funds for gas * price + value') {
+                    desc = 'insufficient funds for gas * price + value'
+                }
                 return accountHistory.create({
                     transaction_id: hash,
                     transaction_status: false,
                     value: myValue,
                     to: toAddress,
-                    user: user
+                    user: user,
+                    description: desc
                 })
                 .then(function (history) {
-                    res.status(500).json({message: `Sending Failed`});
+                    next(err)
                 })
                 .catch(err => {
                     res.status(500).json({message: 'Sending Failed'});

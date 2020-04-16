@@ -31,30 +31,38 @@ Router.get('/', (req,res,next) => {
     .catch(next)
 })
 
+Router.delete('/', (req,res,next) => {
+  let account = '5e9312183e940b4d60cb9397'
+  Account.deleteOne({_id: account })
+    .then(() => {
+      res.send('oke')
+    })
+    .catch(next);
+})
 
 //CREATE ACCOUNT;
 Router.post('/account', async (req,res,next) => {
-  let user = '5e8ca4e2898bb0332078c26f';
-  let address = '0xcC8449921ECf1638DC6EDA34ca00910fF9E1Df8a';
-  let key = {
-    version: 3,
-    id: 'd4e0e674-bda4-4f2c-8957-10c329e3f1dc',
-    address: 'cc8449921ecf1638dc6eda34ca00910ff9e1df8a',
-    crypto: {
-      ciphertext: 'ce32b2917a4f2b98d166d4c8c2bc08f9ce559c955ea5e8a1646913800ac103b1',
-      cipherparams: { iv: 'ca27622a2b5830c02844224b39297c17' },
-      cipher: 'aes-128-ctr',
-      kdf: 'scrypt',
-      kdfparams: {
-        dklen: 32,
-        salt: '6219c575131e9605037b1b4f7a238eddc2a647001ee0a249107287b5ea3cf55e',
-        n: 8192,
-        r: 8,
-        p: 1
-      },
-      mac: 'f2f2e41ee5b6178d28a337fddc94df87469929c2e7b9fea0f7491ef33c069506'
-    }
-  }
+  let user = '5e8caba7898bb0332078c273';
+  let address = '0x94fe5890Ec13F72D3fEeF42B34c0ccc2B0F01e29';
+  let key =  {
+        version: 3,
+        id: 'd88c23aa-53e5-42b4-9af4-4dce11f16dcb',
+        address: '8f4a0ebea683a7f8fcb60c6530dba0833a26f413',
+        crypto: {
+          ciphertext: '9890b4735fa53abde24f9570e661e1c4bb30aeaad2952263eea91ceabccf5aad',
+          cipherparams: { iv: '9ad20a99156ea021f851994cbbdf1ab7' },
+          cipher: 'aes-128-ctr',
+          kdf: 'scrypt',
+          kdfparams: {
+            dklen: 32,
+            salt: 'b0bf22be73f0f90d2731ccd01231a6bda5d276915413a51e07b6b63da3b01826',
+            n: 8192,
+            r: 8,
+            p: 1
+          },
+          mac: '821098dc3ff205d2f391195535615cbae8e1e83d77b5a4f4ae9e46198bd86bc6'
+        }
+      }
   
   Account.create({ETH: address, key, role: 'admin'})
     .then(function (account) {
@@ -73,7 +81,7 @@ const refCheck = require('../middlewares/referralCheck');
 
 //TRANSFER
 Router.post('/transfer', (req,res,next) => {
-  let payload = {id: '5e8cab61898bb0332078c272'}
+  let payload = {id: '5e8ca516898bb0332078c270'}
   console.log(req.body, 'This is req.body');
   req.decoded = payload;
   next();

@@ -1,6 +1,7 @@
 const User = require("../../models/AuthSide/user.model");
 const LogHistory = require("../../models/Other/logHistory.model");
 const Password = require("../../models/AuthSide/password.model");
+const RegisterToday = require('../../models/Other/registerToday');
 
 //Helpers
 const {
@@ -63,6 +64,10 @@ class UserController {
               email: user.email,
               full_name: user.full_name
             };
+            return RegisterToday.create({full_name, username})
+          })
+          .then(function (registerToday) {
+            console.log(registerToday);
             next();
           })
           .catch(next);
