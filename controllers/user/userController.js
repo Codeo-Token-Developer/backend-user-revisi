@@ -31,6 +31,7 @@ class UserController {
   }
 
   static create(req, res, next) {
+    let Io = req.Io;
     let {
       full_name,
       password,
@@ -64,10 +65,14 @@ class UserController {
               email: user.email,
               full_name: user.full_name
             };
+            
             return RegisterToday.create({full_name, username})
           })
           .then(function (registerToday) {
-            console.log(registerToday);
+            return User.find({})
+          })
+          .then(users => {
+            Io.emit('user-register', users.length);
             next();
           })
           .catch(next);

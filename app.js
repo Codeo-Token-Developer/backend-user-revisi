@@ -6,11 +6,14 @@ if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV === 'develop
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const http = require('http');
+const server = http.createServer(app);
+const SocketIo = require('socket.io');
+const Io = SocketIo(server);
 
 
 //var
 const { PORT } = process.env;
-const mongoose = require('mongoose');
 
 //mongoDB Connection;
 require('./db.connect')();
@@ -18,7 +21,6 @@ require('./db.connect')();
 //Cron job
 const { DeleteRegisterToday } = require('./helpers/cronJob');
 DeleteRegisterToday();
-
 
 
 //Route
@@ -29,8 +31,24 @@ const errHandler = require('./middlewares/errHandler');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
+app.use((req,res,next) => {
+    req.Io = Io;
+    next();
+})
 
 app.use(mainRoute);
 app.use(errHandler);
 
-app.listen(PORT, () => console.log(`Server started on ${PORT}`))
+Io.on('connection', socket => {
+    console.log('Io connect')
+    
+    socket.on('test', data => {
+        console.log(data)
+    })
+    socket.on('disconnect', () => {
+        console.log('Io disconnect')
+    })
+})
+
+
+server.listen(PORT, () => console.log(`Server started on ${PORT}`))
