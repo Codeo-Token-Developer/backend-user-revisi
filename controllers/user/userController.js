@@ -115,7 +115,7 @@ class UserController {
         }
       })
       .then(function() {
-        let emitted = {name: logUser.full_name, country: logUser.id_country, date: logUser.updatedAt, id: logUser.id}
+        let emitted = {name: logUser.full_name, country: logUser.id_country, date: logUser.updatedAt, id: logUser.id, isLogin: logUser.isLogin}
         Io.emit('user-login', emitted)
         res.status(201).json({
           message: `Welcome ${logUser.full_name}, hope you enjoy our services`,
