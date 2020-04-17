@@ -127,6 +127,7 @@ class UserController {
   }
 
   static logout(req, res, next) {
+    let Io = req.Io;
     let userId = req.decoded.id;
     User.updateOne(
       { _id: userId },
@@ -134,6 +135,16 @@ class UserController {
     )
       .then(function() {
         res.status(200).json({ message: `See You Later...`, status: 200 });
+        return User.findOne({_id: userId})
+      })
+      .then(user => {
+        let logOutUser = {};
+        logOutUser.id = user.id;
+        logOutUser.name = user.full_name,
+        logOutUser.country = user.id_country,
+        logOutUser.date = user.updatedAt,
+        logOutUser.isLogin = user.isLogin,
+        Io.emit('user-logout', logOutUser);
       })
       .catch(next);
   }
