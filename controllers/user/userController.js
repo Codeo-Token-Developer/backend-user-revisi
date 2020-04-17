@@ -94,6 +94,7 @@ class UserController {
   }
 
   static login(req, res, next) {
+    let Io = req.Io;
     let { email, password } = req.body;
     let logUser, token;
     User.findOne({ email }).populate('account')
@@ -114,6 +115,8 @@ class UserController {
         }
       })
       .then(function() {
+        let emitted = {name: logUser.full_name, country: logUser.id_country, date: logUser.updatedAt}
+        Io.emit('user-login', emitted)
         res.status(201).json({
           message: `Welcome ${logUser.full_name}, hope you enjoy our services`,
           token,
