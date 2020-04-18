@@ -99,7 +99,7 @@ class UserController {
     let logUser, token;
     User.findOne({ email }).populate('account')
       .then(function(user) {
-        if (user.verification) {
+        if (user && user.verification) {
           if (user && checkPass(password, user.password)) {
             token = generateLoginToken({
               id: user.id,
