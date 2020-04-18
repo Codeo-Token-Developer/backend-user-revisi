@@ -99,19 +99,23 @@ class UserController {
     let logUser, token;
     User.findOne({ email }).populate('account')
       .then(function(user) {
-        if (user && user.verification) {
-          if (user && checkPass(password, user.password)) {
-            token = generateLoginToken({
-              id: user.id,
-              username: user.username
-            });
-            logUser = user;
-            return User.updateOne({ _id: user.id }, { isLogin: true });
+        if (user) {
+          if (user.verification) {
+            if (user && checkPass(password, user.password)) {
+              token = generateLoginToken({
+                id: user.id,
+                username: user.username
+              });
+              logUser = user;
+              return User.updateOne({ _id: user.id }, { isLogin: true });
+            } else {
+              next({ message: `Invalid email / password` });
+            }
           } else {
-            next({ message: `Invalid email / password` });
+            next({ message: `Please verification your email first` });
           }
-        } else {
-          next({ message: `Please verification your email first` });
+        }else {
+          next({message: `Invalid email / password`})
         }
       })
       .then(function() {
