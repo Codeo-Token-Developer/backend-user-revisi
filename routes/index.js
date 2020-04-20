@@ -39,40 +39,43 @@ Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 
 
-// const CreditCard = require('../models/Other/creditCard.model');
-// const KYC = require('../models/Other/kyc.model');
+const Account = require('../models/AccountSide/account.model');
+const History = require('../models/AccountSide/accountHistory.model');
+const Trans = require('../models/Other/transactionHistory.model');
 
-// Router.delete('/kyc-delete', function(req,res,next) {
-//     KYC.deleteMany({})
-//         .then(function() {
-//             res.send('Oke')
-//         })
-//         .catch(next)
-// })
+Router.get('/historys', (req,res,next) => {
+    History.find({})
+        .then(function (h) {
+            res.json(h)
+        })
+        .catch(next);
+})
 
-// Router.delete('/deleteCredit', function (req,res,next) {
-//     CreditCard.deleteMany({})
-//         .then(function () {
-//             res.send('Oke')
-//         })
-//         .catch(next)
-// });
+Router.get('/transaction', (req,res,next) => {
+    Trans.find({})
+        .then(function (trs) {
+            res.json(trs)
+        })
+        .catch(next)
+})
 
-// Router.get('/credit', function (req,res,next) {
-//     CreditCard.find({})
-//         .then(function (cards) {
-//             res.status(200).json(cards)
-//         })
-//         .catch(next);
-// })
+Router.delete('/', function (req,res,next) {
+    console.log(req.params.text)
+    Account.deleteMany({})
+        .then(function() {
+            res.send('Oke')
+        })
+        .catch(err => {
+            console.log(err)
+        })
+})
 
-// Router.patch('/patch/:userId', function (req,res,next) {
-//     let userId = req.params.userId;
-//     User.updateOne({_id: userId},{verification: true})
-//         .then(function() {
-//             res.send('Ok')
-//         })
-//         .catch(next)
-// })
+Router.get('/test', (req,res,next) => {
+    console.log(req.body);
+    res.json({hallo})
+})
+
+
+
 
 module.exports = Router;

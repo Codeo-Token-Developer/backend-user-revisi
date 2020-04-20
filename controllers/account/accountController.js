@@ -2,6 +2,8 @@ const { getNewAddress } = require('../ethereum/ethereumController');
 const Account = require('../../models/AccountSide/account.model');
 const { encryptAccount } = require('../../helpers/encryptKey');
 const User = require('../../models/AuthSide/user.model');
+const { generateAddress, getAddressDetail } = require('../API/addressApi');
+
 
 class AccountController {
 
@@ -26,7 +28,6 @@ class AccountController {
                 if (data) {
                     newAccount.ETH = data.address;
                     newAccount.key = data.privateKey;
-                    
                 }else {
                     next(err);
                 }

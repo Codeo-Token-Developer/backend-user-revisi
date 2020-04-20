@@ -1,6 +1,7 @@
 const User = require("../../models/AuthSide/user.model");
 const LogHistory = require("../../models/Other/logHistory.model");
 const Password = require("../../models/AuthSide/password.model");
+const RegisterToday = require('../../models/Other/registerToday');
 
 //Helpers
 const {
@@ -30,6 +31,7 @@ class UserController {
   }
 
   static create(req, res, next) {
+    let Io = req.Io;
     let {
       full_name,
       password,
@@ -63,6 +65,14 @@ class UserController {
               email: user.email,
               full_name: user.full_name
             };
+            
+            return RegisterToday.create({full_name, username})
+          })
+          .then(function (registerToday) {
+            return User.find({})
+          })
+          .then(users => {
+            Io.emit('user-register', users.length);
             next();
           })
           .catch(next);
@@ -84,23 +94,28 @@ class UserController {
   }
 
   static login(req, res, next) {
+    let Io = req.Io;
     let { email, password } = req.body;
     let logUser, token;
     User.findOne({ email }).populate('account')
       .then(function(user) {
-        if (user.verification) {
-          if (user && checkPass(password, user.password)) {
-            token = generateLoginToken({
-              id: user.id,
-              username: user.username
-            });
-            logUser = user;
-            return User.updateOne({ _id: user.id }, { isLogin: true });
+        if (user) {
+          if (user.verification) {
+            if (user && checkPass(password, user.password)) {
+              token = generateLoginToken({
+                id: user.id,
+                username: user.username
+              });
+              logUser = user;
+              return User.updateOne({ _id: user.id }, { isLogin: true });
+            } else {
+              next({ message: `Invalid email / password` });
+            }
           } else {
-            next({ message: `Invalid email / password` });
+            next({ message: `Please verification your email first` });
           }
-        } else {
-          next({ message: `Please verification your email first` });
+        }else {
+          next({message: `Invalid email / password`})
         }
       })
       .then(function() {
@@ -109,11 +124,17 @@ class UserController {
           token,
           user: logUser
         });
+        return User.findOne({_id: logUser.id})
+      })
+      .then(user => {
+        let emitted = {name: user.full_name, country: user.id_country, date: user.updatedAt, id: user.id, isLogin: user.isLogin}
+        Io.emit('user-login', emitted)
       })
       .catch(next);
   }
 
   static logout(req, res, next) {
+    let Io = req.Io;
     let userId = req.decoded.id;
     User.updateOne(
       { _id: userId },
@@ -121,6 +142,16 @@ class UserController {
     )
       .then(function() {
         res.status(200).json({ message: `See You Later...`, status: 200 });
+        return User.findOne({_id: userId})
+      })
+      .then(user => {
+        let logOutUser = {};
+        logOutUser.id = user.id;
+        logOutUser.name = user.full_name,
+        logOutUser.country = user.id_country,
+        logOutUser.date = user.updatedAt,
+        logOutUser.isLogin = user.isLogin,
+        Io.emit('user-logout', logOutUser);
       })
       .catch(next);
   }

@@ -6,6 +6,7 @@ const TransactionHistory = require("../models/TransactionHistory");
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 
 function TransferCodeo(req, res, next) {
+  console.log('Masuk transfer')
   let { address, myValue } = req.body;
   let value = myValue;
   let PrivateKEY = JSON.parse(JSON.stringify(req.myAccount.key));
@@ -15,6 +16,8 @@ function TransferCodeo(req, res, next) {
     PrivateKEY,
     process.env.ENCRYPT
   );
+
+  console.log(PRIVATE_KEY);
 
   let PriKey = PRIVATE_KEY.privateKey.slice(2);
 
@@ -578,7 +581,10 @@ function TransferCodeo(req, res, next) {
                 console.log("hallo" + " " + err, 'This is Error')
               })
           })
-      });
+      })
+      .catch(err => {
+        
+      })
 
   }
     nexting(req,res,next, Tx);

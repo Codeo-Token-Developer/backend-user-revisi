@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^6.5.3",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -19,9 +20,10 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.6",
+    "node-cron": "^2.0.3",
     "nodemon": "^2.0.2",
+    "socket.io": "^2.3.0",
     "web3": "^1.2.6",
-    "web3-eth-accounts": "^1.2.6",
-    "@sendgrid/mail": "^6.5.3"
+    "web3-eth-accounts": "^1.2.6"
   }
 }

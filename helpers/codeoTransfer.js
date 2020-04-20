@@ -11,12 +11,14 @@ async function TransferCodeo (toAddress, value, key) {
         
         let receipt;
 
-        let PRIVATE_KEY = web3js.eth.accounts.decrypt(
-            key,
-            ENCRYPT
-        );
+        console.log('Masuk Transfer')
+        
+        //let PRIVATE_KEY = web3js.eth.accounts.decrypt(
+          //  key,
+         //   ENCRYPT
+        //);
         let myAddress = key.address;
-        let PriKey = PRIVATE_KEY.privateKey.slice(2);
+        let PriKey = key.privateKey.slice(2);
         let privateKey = Buffer.from(PriKey, "hex");
           //contract abi is the array that you can get from the ethereum wallet or etherscan
         let contractABI = [
@@ -505,6 +507,7 @@ async function TransferCodeo (toAddress, value, key) {
         //creating contract object
         let mytt = new web3js.eth.Contract(contractABI, contractAddress);
         web3js.eth.getTransactionCount(myAddress).then(function (v) {
+            console.log(v)
             count = v;
             let howMuch = Number(value);
             let change = howMuch * 1000000;
@@ -524,8 +527,8 @@ async function TransferCodeo (toAddress, value, key) {
                 web3js.eth
                     .sendSignedTransaction("0x" + transaction.serialize().toString("hex"))
                     .on("transactionHash", console.log)
-                    .then(function(receipt) {
-                        receipt = receipt;
+                    .then(function(myReceipt) {
+                        receipt = myReceipt;
                         mytt.methods
                             .balanceOf(myAddress)
                             .call()
@@ -539,6 +542,12 @@ async function TransferCodeo (toAddress, value, key) {
                                 })
                             })
                     })
+                    .catch(err => {
+                        reject(err)
+                    })
+            })
+            .catch(err => {
+                reject(err);
             })
         })
 };
