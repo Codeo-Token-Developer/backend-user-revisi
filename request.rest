@@ -36,6 +36,10 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:3005/injection/iam
+Content-Type: application/json
+
+###
 //login
 POST http://localhost:3005/users
 

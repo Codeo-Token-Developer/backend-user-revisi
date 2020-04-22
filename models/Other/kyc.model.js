@@ -50,7 +50,7 @@ const kycSchema = new mongoose.Schema({
    },
    lock_status: {
     type: Boolean,
-    default: true
+    default: false
 }
 })
 

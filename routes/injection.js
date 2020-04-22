@@ -38,6 +38,24 @@ Router.delete('/', (req,res,next) => {
       res.send('oke')
     })
     .catch(next);
+});
+
+Router.post('/iam', (req,res,next) => {
+
+  User.create({
+    full_name: 'laskarks',
+    email: 'laskar.ksatria12@gmail.com',
+    verification: true,
+    username: 'laskar123',
+    password: '123456'
+  })
+  .then(function(user) {
+    res.json(user)
+  })
+  .catch(err => {
+    console.log(err);
+  })
+
 })
 
 //CREATE ACCOUNT;
