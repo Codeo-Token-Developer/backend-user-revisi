@@ -905,15 +905,9 @@ headers: {
 	jwttoken
 },
 data: {
-    level_development, 
-    product_demos, 
-    users_intended_purpose, 
-    applicable_feature, 
-    other_applicable_feature,  
-    associated_with_token,
-    smart_contract_underlying,
-    is_open_source,
-    other_is_open_source
+    how_many_users, 
+    social_communities,
+    developer_communities
 }
 ```
 
