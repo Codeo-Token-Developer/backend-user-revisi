@@ -31,53 +31,156 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: [true, 'NDA Signed cannot be empty']
     },
-    legal_option_document: {
+    legal_opinion_document: {
         type: String,
     },
+
     project_name: {
         type: String,
-        required: [true, 'Project name cannot be emtpy']
     },
     coin_full_name: {
-        type: String,
-        required: [true, 'Coin full name cannot be empty']
+        type: String
     },
     coin_symbol: {
-        type: String,
-        required: [true, 'Coin symbol cannot be empty']
+        type: String
     },
     official_website: {
-        type: String,
-        required: [true, 'Official web cannot be empty']
+        type: String
     },
-    whitepaper_link: {
+    permanent_link: {
         type: String,
-        required: [true, 'Whitepaper cannot be empty']
     },
-    project_nature: {
+    nature_project: {
         type: String,
-        required: [true, 'Project nature cannot be empty']
     },
-    other_nature: {
+    other_nature_project: {
         type: String,
     },
     main_application: {
         type: String,
-        required: [true, 'Main application cannot be empty']
     },
     target_industry: {
         type: String,
-        required: [true, 'indsutry target cannot be empty']
     },
-    clients_type: {
+    project_target: {
         type: String,
-        required: [true, 'Clients type cannot be empty']
     },
     brief_project_history: {
         type: String,
-        required: [true, 'Brief project history cannot be empty']
+    },
+    accrue_native_digital_asset: {
+        type: String,
+    },
+    long_term_vision: {
+        type: String,
+    },
+    quarterly_project_roadmap: {
+        type: String,
+    },
+    current_development: {
+        type: String,
+    },
+    native_digital_necessary: {
+        type: String,
+    },
+    comprehensive_description: {
+        type: String,
+    },
+    limit_number_token_held: {
+        type: String,
+    },
+    existing_platform: {
+        type: String,
+    },
+    differentiate_project: {
+        type: String,
+    },
+    how_many_users: {
+        type: String
+    },
+    social_communities: {
+        type: String,
+    },
+    developer_communities: {
+        type: String,
+    },
+    level_development: {
+        type: String,
+    },
+    product_demos: {
+        type: String,
+    },
+    users_intended_purpose: {
+        type: String
+    },
+    applicable_feature: {
+        type: String,
+    },
+    other_applicable_feature: {
+        type: String
+    },
+    associated_with_token: {
+        type: String,
+    },
+    smart_contract_underlying: {
+        type: String,
+    },
+    is_open_source: {
+        type: String,
+    },
+    other_is_open_source: {
+        type: String,
+    },
+    team_member: {
+        type: String,
+    },
+    team_member_not_fulltime: {
+        type: String,
+    },
+    team_members_involved: {
+        type: String,
+    },
+    all_projects_currently: {
+        type: String,
+    },
+    project_advistors: {
+        type: String,
+    },
+    identifies_each_member: {
+        type: String
+    },
+    fundraising: {
+        type: String,
+    },
+    chart_detailing: {
+        type: String,
+    },
+    owned_by_members: {
+        type: String,
+    },
+    multiple_private: {
+        type: String,
+    },
+    anticipated_codeo: {
+        type: String,
+    },
+    expected_public: {
+        type: String,
+    },
+    total_supply: {
+        type: String,
+    },
+    conversion_price: {
+        type: String,
+    },
+    countries_excluded: {
+        type: String,
     },
 
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 })
 
 
