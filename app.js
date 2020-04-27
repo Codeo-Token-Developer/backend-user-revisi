@@ -22,7 +22,6 @@ require('./db.connect')();
 const { DeleteRegisterToday } = require('./helpers/cronJob');
 DeleteRegisterToday();
 
-
 //Route
 const mainRoute = require('./routes/index');
 const errHandler = require('./middlewares/errHandler');
