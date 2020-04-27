@@ -37,6 +37,7 @@ Router.use('/history', historyRouter);
 Router.use('/api', fromEmail);
 Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
+Router.use('/topup', require('./topup/topupRouter'));
 
 //LaunchPad
 Router.use('/project', require('./launchpadRouter/projectRouter'));

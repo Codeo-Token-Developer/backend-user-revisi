@@ -813,6 +813,32 @@ Success ouput example:
 
 ```
 
+#### **<u>Topup</u>**
+
+Required:
+
+```
+path: "/topup",
+method: 'POST'
+headers: {
+	jwttoken
+},
+data: {
+  balance
+}
+
+```
+
+Success ouput example:
+
+```
+{
+  "topup": <topup>
+}
+
+
+```
+
 
 ### <u>**LAUNCHPAD*</u>*
 

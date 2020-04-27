@@ -204,7 +204,7 @@ const projectSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }
-})
+}, {versionKey: false, timestamps: {createdAt: 'createdAt'}})
 
 
 const project = mongoose.model('Project', projectSchema);
