@@ -38,6 +38,9 @@ Router.use('/api', fromEmail);
 Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 
+//LaunchPad
+Router.use('/project', require('./launchpadRouter/projectRouter'));
+
 
 const Account = require('../models/AccountSide/account.model');
 const History = require('../models/AccountSide/accountHistory.model');

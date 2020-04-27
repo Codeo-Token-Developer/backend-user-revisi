@@ -785,3 +785,30 @@ Success ouput example:
 }
 
 ```
+
+#### **<u>ADD LOGIN HISTORY</u>**
+
+Required:
+
+```
+path: "/logHistory",
+method: 'POST'
+headers: {
+	jwttoken
+},
+data: {
+  ipad: <data that get from api>
+}
+
+```
+
+Success ouput example:
+
+```
+{
+  "logs": <data from server>,
+  "status": 202
+}
+
+
+```

@@ -2,9 +2,19 @@ const Project = require('../../models/launchpad/project');
 
 class LaunchpadController {
 
-    static step1(req,req,next) {
+    static step1(req,res,next) {
         let user = req.decoded.id;
-        let { fullname, email, position, other_position, pitch, regulated, other_regulated, nda_signed, legal_opinion_document } = req.body;
+        let { 
+            fullname, 
+            email, 
+            position, 
+            other_position, 
+            pitch, 
+            regulated, 
+            other_regulated, 
+            nda_signed, 
+            legal_opinion_document 
+        } = req.body;
         Project.create({fullname, email, position, other_position, pitch, regulated, other_regulated, nda_signed, legal_opinion_document, user})
             .then(project => {
                 res.status(202).json(project)
@@ -14,7 +24,8 @@ class LaunchpadController {
 
     static step2(req,res,next) {
         let user = req.decoded.id;
-        let { project_name, 
+        let { 
+            project_name, 
             coin_full_name, 
             coin_symbol, 
             official_website, 
@@ -76,7 +87,8 @@ class LaunchpadController {
 
     static step4(req,res,next) {
         let user = req.decoded.id;
-        let { level_development, 
+        let { 
+            level_development, 
             product_demos, 
             users_intended_purpose, 
             applicable_feature, 
@@ -161,16 +173,22 @@ class LaunchpadController {
 
     static step7(req,res,next) {
         let user = req.decoded.id;
-
+        let { ERC_20, link_relevant_blockchain,  } = req.body;
+        Project.updateOne({user}, {ERC_20, link_relevant_blockchain})
+            .then(() => {
+                res.status(201).json({message: 'Project has been updated'})
+            })
+            .catch(next)
     };
 
     static step8(req,res,next) {
         let user = req.decoded.id;
-
-    };
-
-    static step9(req,res,next) {
-        let user = req.decoded.id;
+        let { publicy, fullname_title, anti_phising_code, anything_add, } = req.body;
+        Project.updateOne({user}, {publicy, fullname_title, anti_phising_code, anything_add})
+            .then(() => {
+                res.status(201).json({message: 'Project has been updated'})
+            })
+            .catch(next);
     };
 
 

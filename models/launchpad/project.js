@@ -176,7 +176,24 @@ const projectSchema = new mongoose.Schema({
     countries_excluded: {
         type: String,
     },
-
+    ERC_20: {
+        type: String,
+    },
+    link_relevant_blockchain: {
+        type: String,
+    },
+    publicly: {
+        type: String
+    },
+    fullname_title: {
+        type: String,
+    },
+    anti_phising_code: {
+        type: String,
+    },
+    anything_add: {
+        type: String,
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
