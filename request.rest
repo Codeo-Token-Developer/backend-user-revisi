@@ -1,0 +1,78 @@
+<<<<<<< HEAD
+=======
+
+# POST http://localhost:3005/newAccount
+# content-type: application/json
+
+# {
+#     "name": "sample",
+#     "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+# }
+GET http://localhost:3005/test
+content-type: application/json
+
+{
+    "name": "hallo",
+    "username": "Laskar"
+}
+
+
+###
+POST  http://localhost:3005/injection/account
+
+
+
+//USER
+//------------------
+###
+//create
+POST http://localhost:3005/users
+Content-Type: application/json
+
+{
+    "full_name": "Mr. Jerapah2",
+    "username": "gsasaddsadiraf2sadds2e",
+    "email": "heraasdasadapsadsadah22@mail.com",
+    "password": "123456",
+    "confirm_password": "123456"
+}
+
+###
+POST http://localhost:3005/injection/iam
+Content-Type: application/json
+
+###
+//login
+POST http://localhost:3005/users
+
+###
+//Delete
+DELETE http://localhost:3005/
+
+###
+//Injection
+POST  http://localhost:3005/injection
+
+
+###
+//Transfer
+POST http://localhost:3005/injection/transfer
+content-type: application/json
+
+{
+    "myValue": 0.0001,
+    "adminValue": 0.0001,
+    "toAddress": "0x680E4CaD6105d7E773BEE7fc01B9cBA282f74Ea8"
+}
+
+
+###
+//Injection
+POST http://localhost:3005/injection/account
+
+###
+POST http://localhost:3005/injection
+
+###
+DELETE http://localhost:3005/sandbox/kyc
+>>>>>>> c4aec1d0fc63238cfbe36698b22f4250249afbc9

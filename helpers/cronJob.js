@@ -4,7 +4,13 @@ const RegisterToday = require('../models/Other/registerToday');
 function DeleteRegisterToday () {
 
     cron.schedule('0 0 * * *',  async () => {
-        return await RegisterToday.deleteMany({})  
+        RegisterToday.deleteMany({})
+            .then(() => {
+                return
+            })
+            .catch(err => {
+                console.log(err);
+            })
     })
 
 };

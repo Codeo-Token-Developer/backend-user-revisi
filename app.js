@@ -19,7 +19,7 @@ const { PORT } = process.env;
 require('./db.connect')();
 
 //Cron job
-const { DeleteRegisterToday } = require('./helpers/cronJob');
+const { DeleteRegisterToday  } = require('./helpers/cronJob');
 DeleteRegisterToday();
 
 //Route
