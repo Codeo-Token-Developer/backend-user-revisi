@@ -173,7 +173,10 @@ class LaunchpadController {
 
     static step7(req,res,next) {
         let user = req.decoded.id;
-        let { ERC_20, link_relevant_blockchain,  } = req.body;
+        let { 
+            ERC_20, 
+            link_relevant_blockchain,  
+        } = req.body;
         Project.updateOne({user}, {ERC_20, link_relevant_blockchain})
             .then(() => {
                 res.status(201).json({message: 'Project has been updated'})
@@ -183,7 +186,12 @@ class LaunchpadController {
 
     static step8(req,res,next) {
         let user = req.decoded.id;
-        let { publicy, fullname_title, anti_phising_code, anything_add, } = req.body;
+        let { 
+            publicy,
+            fullname_title, 
+            anti_phising_code, 
+            anything_add, 
+        } = req.body;
         Project.updateOne({user}, {publicy, fullname_title, anti_phising_code, anything_add})
             .then(() => {
                 res.status(201).json({message: 'Project has been updated'})
