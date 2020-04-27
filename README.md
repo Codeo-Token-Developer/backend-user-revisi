@@ -941,6 +941,8 @@ data: {
     smart_contract_underlying,
     is_open_source,
     other_is_open_source
+    open_source_documentation,
+    github  
 }
 ```
 

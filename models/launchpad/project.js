@@ -131,6 +131,12 @@ const projectSchema = new mongoose.Schema({
     other_is_open_source: {
         type: String,
     },
+    open_source_documentation: {
+        type: String,
+    },
+    github: {
+        type: String
+    },
     team_member: {
         type: String,
     },

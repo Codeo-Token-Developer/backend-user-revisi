@@ -77,7 +77,11 @@ class LaunchpadController {
 
     static step3(req,res,next) {
         let user = req.decoded.id;
-        let { how_many_users, social_communities, developer_communities } = req.body;
+        let { 
+            how_many_users, 
+            social_communities,
+            developer_communities 
+            } = req.body;
         Project.updateOne({user}, {how_many_users, social_communities, developer_communities})
             .then(() => {
                 res.status(201).json({message: 'Project has been updated'})
@@ -96,7 +100,9 @@ class LaunchpadController {
             associated_with_token,
             smart_contract_underlying,
             is_open_source,
-            other_is_open_source
+            other_is_open_source,
+            open_source_documentation,
+            github            
         } = req.body; 
 
         Project.updateOne({user}, { level_development, 
@@ -107,7 +113,9 @@ class LaunchpadController {
             associated_with_token,
             smart_contract_underlying,
             is_open_source,
-            other_is_open_source
+            other_is_open_source,
+            open_source_documentation,
+            github 
         })
             .then(() => {
                 res.status(201).json({message: 'Project has been updated'})
