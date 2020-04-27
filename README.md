@@ -857,7 +857,7 @@ Required:
 
 ```
 path: '/project/step2',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -872,7 +872,7 @@ data: {
             main_application,
             target_industry,
             project_target,
-            brief_project_history,
+            brief_project_history,f
             accrue_native_digital_asset,
             long_term_vision,
             quarterly_project_roadmap,
@@ -900,7 +900,7 @@ Required:
 
 ```
 path: '/project/step3',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -933,7 +933,7 @@ Required:
 
 ```
 path: '/project/step4',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -966,7 +966,7 @@ Required:
 
 ```
 path:'/project/step5',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -996,7 +996,7 @@ Required:
 
 ```
 path: '/project/step6',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -1027,7 +1027,7 @@ Required:
 
 ```
 path: '/project/step7',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -1051,7 +1051,7 @@ Required:
 
 ```
 path: '/project/step8',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
