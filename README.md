@@ -1071,3 +1071,24 @@ Success:
 }
 ```
 
+
+**Project List**
+
+Required: 
+
+```
+path: '/project/myProjects',
+method: 'GET',
+headers: {
+	jwttoken
+},
+
+```
+
+Success:
+
+```
+{
+	projects: <projects>
+}
+```

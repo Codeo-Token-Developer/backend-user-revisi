@@ -199,6 +199,16 @@ class LaunchpadController {
             .catch(next);
     };
 
+    
+    static readMyProject(req,res,next) {
+        let user = req.decoded.id;
+        Project.find({user})
+            .then(projects => {
+                res.status(200).json({projects, status: 200});
+            }) 
+            .catch(next)
+    };
+
 
 };
 

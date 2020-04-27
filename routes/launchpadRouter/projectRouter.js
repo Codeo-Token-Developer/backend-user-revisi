@@ -11,5 +11,6 @@ Router.post('/step5', userAuthentication, ProjectController.step5);
 Router.post('/step6', userAuthentication, ProjectController.step6);
 Router.post('/step7', userAuthentication, ProjectController.step7);
 Router.post('/step8', userAuthentication, ProjectController.step8);
+Router.get('/myProjects', userAuthentication, ProjectController.readMyProject);
 
 module.exports = Router;
