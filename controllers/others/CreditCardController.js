@@ -1,4 +1,7 @@
 const CreditCard = require('../../models/Other/creditCard.model');
+const notif = require('../../models/Other/notification');
+const notifAd = require('../../models/Other/notifAdmin');
+
 
 class CreditCardController {
 
@@ -21,6 +24,7 @@ class CreditCardController {
 
     static create(req,res,next) {
         let user = req.decoded.id;
+        let Io = req.Io;
         let { card_name,card_number, exp_date, cvc } = req.body;
         CreditCard.findOne({user})
             .then(function (card) {
@@ -28,6 +32,18 @@ class CreditCardController {
                     return next({message: 'You already have credit card account, waiting for approval'})
                 }else {
                     return CreditCard.create({card_name,card_number, exp_date, cvc, user})
+                    .then(notif.create({text:'Waiting for admin approval', user})
+                        .then(notifs => {
+                        Io.emit('user-notif', notifs);
+                        next();
+                        })
+                    ) 
+                        .then(notifAd.create({text:`${user} send a credit card request`, user})
+                            .then(Adnotifs => {
+                            Io.emit('admin-notif', Adnotifs);
+                            next();
+                            })
+                        )
                 }
             })
             .then(function (card) {
