@@ -138,7 +138,7 @@ class UserController {
     let userId = req.decoded.id;
     User.updateOne(
       { _id: userId },
-      { isLogin: false, approval_verified: false }
+      { isLogin: false }
     )
       .then(function() {
         res.status(200).json({ message: `See You Later...`, status: 200 });

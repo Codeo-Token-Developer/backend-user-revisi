@@ -38,48 +38,17 @@ Router.use('/history', historyRouter);
 Router.use('/api', fromEmail);
 Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
+<<<<<<< HEAD
 Router.use('/notif', notif);
 
+=======
+Router.use('/topup', require('./topup/topupRouter'));
+>>>>>>> 1b9cf1670c0039b48e0163de56e9b78e8e7a3cae
 
 //LaunchPad
 Router.use('/project', require('./launchpadRouter/projectRouter'));
 
 
-const Account = require('../models/AccountSide/account.model');
-const History = require('../models/AccountSide/accountHistory.model');
-const Trans = require('../models/Other/transactionHistory.model');
-
-Router.get('/historys', (req,res,next) => {
-    History.find({})
-        .then(function (h) {
-            res.json(h)
-        })
-        .catch(next);
-})
-
-Router.get('/transaction', (req,res,next) => {
-    Trans.find({})
-        .then(function (trs) {
-            res.json(trs)
-        })
-        .catch(next)
-})
-
-Router.delete('/', function (req,res,next) {
-    console.log(req.params.text)
-    Account.deleteMany({})
-        .then(function() {
-            res.send('Oke')
-        })
-        .catch(err => {
-            console.log(err)
-        })
-})
-
-Router.get('/test', (req,res,next) => {
-    console.log(req.body);
-    res.json({hallo})
-})
 
 
 

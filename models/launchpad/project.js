@@ -131,6 +131,12 @@ const projectSchema = new mongoose.Schema({
     other_is_open_source: {
         type: String,
     },
+    open_source_documentation: {
+        type: String,
+    },
+    github: {
+        type: String
+    },
     team_member: {
         type: String,
     },
@@ -198,7 +204,7 @@ const projectSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }
-})
+}, {versionKey: false, timestamps: {createdAt: 'createdAt'}})
 
 
 const project = mongoose.model('Project', projectSchema);

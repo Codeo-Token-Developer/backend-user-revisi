@@ -813,6 +813,32 @@ Success ouput example:
 
 ```
 
+#### **<u>Topup</u>**
+
+Required:
+
+```
+path: "/topup",
+method: 'POST'
+headers: {
+	jwttoken
+},
+data: {
+  balance
+}
+
+```
+
+Success ouput example:
+
+```
+{
+  "topup": <topup>
+}
+
+
+```
+
 
 ### <u>**LAUNCHPAD*</u>*
 
@@ -857,7 +883,7 @@ Required:
 
 ```
 path: '/project/step2',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -872,7 +898,7 @@ data: {
             main_application,
             target_industry,
             project_target,
-            brief_project_history,
+            brief_project_history,f
             accrue_native_digital_asset,
             long_term_vision,
             quarterly_project_roadmap,
@@ -900,20 +926,14 @@ Required:
 
 ```
 path: '/project/step3',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
 data: {
-    level_development, 
-    product_demos, 
-    users_intended_purpose, 
-    applicable_feature, 
-    other_applicable_feature,  
-    associated_with_token,
-    smart_contract_underlying,
-    is_open_source,
-    other_is_open_source
+    how_many_users, 
+    social_communities,
+    developer_communities
 }
 ```
 
@@ -933,7 +953,7 @@ Required:
 
 ```
 path: '/project/step4',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -947,6 +967,8 @@ data: {
     smart_contract_underlying,
     is_open_source,
     other_is_open_source
+    open_source_documentation,
+    github  
 }
 ```
 
@@ -966,7 +988,7 @@ Required:
 
 ```
 path:'/project/step5',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -996,7 +1018,7 @@ Required:
 
 ```
 path: '/project/step6',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -1027,7 +1049,7 @@ Required:
 
 ```
 path: '/project/step7',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
@@ -1051,7 +1073,7 @@ Required:
 
 ```
 path: '/project/step8',
-method: 'POST',
+method: 'PATCH',
 headers: {
 	jwttoken
 },
