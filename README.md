@@ -839,6 +839,29 @@ Success ouput example:
 
 ```
 
+#### **<u>Notification</u>**
+
+Required:
+
+```
+path: "/notif/one",
+method: 'GET'
+headers: {
+	jwttoken
+}
+
+```
+
+Success ouput example:
+
+```
+{
+  "notifi": [data]
+}
+
+
+```
+
 
 ### <u>**LAUNCHPAD*</u>*
 
