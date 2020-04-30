@@ -19,7 +19,7 @@ function consoleTest() {
     cron.schedule('* * * * *', () => {
         console.log('TEst from cron')
     })
-}
+};
 
 
 module.exports = { DeleteRegisterToday, consoleTest }

@@ -67,7 +67,7 @@ const projectSchema = new mongoose.Schema({
     },
     target_industry: {
         type: String,
-        required: [true, 'indsutry target cannot be empty']
+        required: [true, 'industry target cannot be empty']
     },
     clients_type: {
         type: String,
