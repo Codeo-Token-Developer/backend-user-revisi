@@ -1,4 +1,6 @@
 const BankAccount = require('../../models/Other/bankAccount.model');
+const notif = require('../../models/Other/notification');
+const notifAd = require('../../models/Other/notifAdmin');
 
 class BankAccountController {
 
@@ -21,6 +23,7 @@ class BankAccountController {
 
     static create(req,res,next) {
         let userId = req.decoded.id;
+        let Io = req.Io;
         let { bank_name, country, swift_code, account_holder_name, account_number } = req.body;
         BankAccount.findOne({user: userId})
             .then(function(bank) {
@@ -28,6 +31,19 @@ class BankAccountController {
                     next({message: 'You already submit bank account, waiting for approval'})
                 }else {
                     return BankAccount.create({bank_name, country, swift_code, account_holder_name, account_number, user: userId})
+                    .then(notif.create({text:'success to add bank account', user})
+                        .then(notifs => {
+                        Io.emit('user-notif', notifs);
+                        next();
+                        })
+                    )
+                        .then(notifAd.create({text:`${user} add bank account`, user})
+                            .then(Adnotifs => {
+                            Io.emit('admin-notif', Adnotifs);
+                            next();
+                            })
+                        )
+
                 }
             })
             .then(function (bank) {

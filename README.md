@@ -785,3 +785,355 @@ Success ouput example:
 }
 
 ```
+
+#### **<u>ADD LOGIN HISTORY</u>**
+
+Required:
+
+```
+path: "/logHistory",
+method: 'POST'
+headers: {
+	jwttoken
+},
+data: {
+  ipad: <data that get from api>
+}
+
+```
+
+Success ouput example:
+
+```
+{
+  "logs": <data from server>,
+  "status": 202
+}
+
+
+```
+
+#### **<u>Topup</u>**
+
+Required:
+
+```
+path: "/topup",
+method: 'POST'
+headers: {
+	jwttoken
+},
+data: {
+  balance
+}
+
+```
+
+Success ouput example:
+
+```
+{
+  "topup": <topup>
+}
+
+
+```
+
+#### **<u>Notification</u>**
+
+Required:
+
+```
+path: "/notif/one",
+method: 'GET'
+headers: {
+	jwttoken
+}
+
+```
+
+Success ouput example:
+
+```
+{
+  "notifi": [data]
+}
+
+
+```
+
+
+### <u>**LAUNCHPAD*</u>*
+
+### **Project**
+
+**Step1**
+
+Required: 
+
+```
+path: '/project/step1',
+method: 'POST',
+headers: {
+	jwttoken
+},
+data: {
+			fullname, 
+            email, 
+            position, 
+            other_position, 
+            pitch, 
+            regulated, 
+            other_regulated, 
+            nda_signed, 
+            legal_opinion_document 
+}
+```
+
+Success: 
+
+```
+{
+	<project>
+}
+```
+
+
+
+**Step2**
+
+Required:
+
+```
+path: '/project/step2',
+method: 'PATCH',
+headers: {
+	jwttoken
+},
+data: {
+			project_name, 
+            coin_full_name, 
+            coin_symbol, 
+            official_website, 
+            permanent_link,
+            nature_project,
+            other_nature_project,
+            main_application,
+            target_industry,
+            project_target,
+            brief_project_history,f
+            accrue_native_digital_asset,
+            long_term_vision,
+            quarterly_project_roadmap,
+            current_development,
+            native_digital_necessary,
+            comprehensive_description,
+            limit_number_token_held,
+            existing_platform,differentiate_project
+}
+```
+
+Success: 
+
+```
+{
+	"message": <message>
+}
+```
+
+
+
+**Step3**
+
+Required:
+
+```
+path: '/project/step3',
+method: 'PATCH',
+headers: {
+	jwttoken
+},
+data: {
+    how_many_users, 
+    social_communities,
+    developer_communities
+}
+```
+
+Success: 
+
+```
+{
+	"message": <message>
+}
+```
+
+
+
+**Step4**
+
+Required:
+
+```
+path: '/project/step4',
+method: 'PATCH',
+headers: {
+	jwttoken
+},
+data: {
+    level_development, 
+    product_demos, 
+    users_intended_purpose, 
+    applicable_feature, 
+    other_applicable_feature,  
+    associated_with_token,
+    smart_contract_underlying,
+    is_open_source,
+    other_is_open_source
+    open_source_documentation,
+    github  
+}
+```
+
+Success:
+
+```
+{
+	"message": <message>
+}
+```
+
+
+
+**Step5**
+
+Required:
+
+```
+path:'/project/step5',
+method: 'PATCH',
+headers: {
+	jwttoken
+},
+data: {
+    team_member,
+    team_member_not_fulltime,
+    team_members_involved,
+    all_projects_currently,
+    project_advistors,
+    identifies_each_member
+}
+```
+
+Success:
+
+```
+{
+	"message": <message>
+}
+```
+
+
+
+**Step6**
+
+Required:
+
+```
+path: '/project/step6',
+method: 'PATCH',
+headers: {
+	jwttoken
+},
+data: {
+    fundraising, 
+    chart_detailing, 
+    owned_by_members,
+    multiple_private, 
+    anticipated_codeo, 
+    expected_public,
+    total_supply,
+    conversion_price,
+    countries_excluded
+}
+```
+
+Success:
+
+```
+{
+	"message": <message>
+}
+```
+
+**Step7**
+
+Required: 
+
+```
+path: '/project/step7',
+method: 'PATCH',
+headers: {
+	jwttoken
+},
+data: {
+	ERC_20, 
+    link_relevant_blockchain, 
+}
+```
+
+Success:
+
+```
+{
+	"message": <message>
+}
+```
+
+**Step8**
+
+Required: 
+
+```
+path: '/project/step8',
+method: 'PATCH',
+headers: {
+	jwttoken
+},
+data: {
+	publicy,
+    fullname_title, 
+    anti_phising_code, 
+    anything_add, 
+}
+```
+
+Success:
+
+```
+{
+	"message": <message>
+}
+```
+
+
+**Project List**
+
+Required: 
+
+```
+path: '/project/myProjects',
+method: 'GET',
+headers: {
+	jwttoken
+},
+
+```
+
+Success:
+
+```
+{
+	projects: <projects>
+}
+```

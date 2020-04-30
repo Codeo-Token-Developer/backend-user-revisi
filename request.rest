@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 
 # POST http://localhost:3005/newAccount
 # content-type: application/json
@@ -73,3 +75,4 @@ POST http://localhost:3005/injection
 
 ###
 DELETE http://localhost:3005/sandbox/kyc
+>>>>>>> c4aec1d0fc63238cfbe36698b22f4250249afbc9

@@ -15,6 +15,7 @@ const bankAccountRouter = require('./otherRouter/bankAccount.route');
 const feeRouter = require('./otherRouter/fee.route');
 const injectionRouter = require('./injection');
 const sandboxRouter = require('./sandboxRouter');
+const notif = require('./otherRouter/notification');
 
 Router.use('/injection', injectionRouter);
 Router.use('/sandbox', sandboxRouter)
@@ -37,43 +38,13 @@ Router.use('/history', historyRouter);
 Router.use('/api', fromEmail);
 Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
+Router.use('/notif', notif);
 
 
-const Account = require('../models/AccountSide/account.model');
-const History = require('../models/AccountSide/accountHistory.model');
-const Trans = require('../models/Other/transactionHistory.model');
+//LaunchPadnpm
+Router.use('/project', require('./launchpadRouter/projectRouter'));
 
-Router.get('/historys', (req,res,next) => {
-    History.find({})
-        .then(function (h) {
-            res.json(h)
-        })
-        .catch(next);
-})
 
-Router.get('/transaction', (req,res,next) => {
-    Trans.find({})
-        .then(function (trs) {
-            res.json(trs)
-        })
-        .catch(next)
-})
-
-Router.delete('/', function (req,res,next) {
-    console.log(req.params.text)
-    Account.deleteMany({})
-        .then(function() {
-            res.send('Oke')
-        })
-        .catch(err => {
-            console.log(err)
-        })
-})
-
-Router.get('/test', (req,res,next) => {
-    console.log(req.body);
-    res.json({hallo})
-})
 
 
 
