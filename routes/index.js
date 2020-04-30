@@ -41,7 +41,7 @@ Router.use('/bankAccount', bankAccountRouter);
 Router.use('/notif', notif);
 
 
-//LaunchPad
+//LaunchPadnpm
 Router.use('/project', require('./launchpadRouter/projectRouter'));
 
 
