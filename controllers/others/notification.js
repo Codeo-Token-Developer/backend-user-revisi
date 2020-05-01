@@ -12,7 +12,7 @@ class notifController {
 
     static readMe(req,res,next) {
         let user = req.decoded.id;
-        notif.find({user})
+        notif.find({user:[user,'5eac9987d75a09608cff4881']})
             .then(function (notifi) {
                 res.status(200).json({notifi, status: 200})
             })
