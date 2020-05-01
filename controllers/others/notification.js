@@ -18,6 +18,17 @@ class notifController {
             })
             .catch(next);
     };
+
+    static updateRead(req,res,next) {
+        console.log(req.params.notifId);
+        let notifId = req.params.notifId;
+        UserNotif.updateOne({_id: notifId}, {read: true})
+            .then(() => {
+                res.status(201).json({message: 'News has been read'})
+            })
+            .catch(err => res.status(500).json({message: "Upps, Something going wrong"}))
+    };
+
 }
 
 module.exports = notifController;
