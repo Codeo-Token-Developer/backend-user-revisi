@@ -867,7 +867,7 @@ Success ouput example:
 Required:
 
 ```
-path: "/myNews/:notifId",
+path: "notif/myNews/:notifId",
 method: 'PATCH'
 
 ```
