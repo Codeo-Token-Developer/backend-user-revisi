@@ -15,7 +15,7 @@ class LaunchpadController {
             nda_signed, 
             legal_opinion_document 
         } = req.body;
-        Project.create({fullname, email, position, other_position, pitch, regulated, other_regulated, nda_signed, legal_opinion_document, user})
+            Project.create({fullname, email, position, other_position, pitch, regulated, other_regulated, nda_signed, legal_opinion_document, user})
             .then(project => {
                 res.status(202).json(project)
             })
@@ -66,7 +66,8 @@ class LaunchpadController {
             comprehensive_description,
             limit_number_token_held,
             existing_platform,
-            differentiate_project
+            differentiate_project,
+            next_step: 3
         })
             .then(() => {
                 res.status(200).json({messsage: 'Project has been updated'})
@@ -82,7 +83,7 @@ class LaunchpadController {
             social_communities,
             developer_communities 
             } = req.body;
-        Project.updateOne({user}, {how_many_users, social_communities, developer_communities})
+        Project.updateOne({user}, {how_many_users, social_communities, developer_communities,next_step: 4})
             .then(() => {
                 res.status(201).json({message: 'Project has been updated'})
             })
@@ -115,7 +116,8 @@ class LaunchpadController {
             is_open_source,
             other_is_open_source,
             open_source_documentation,
-            github 
+            github,
+            next_step: 5 
         })
             .then(() => {
                 res.status(201).json({message: 'Project has been updated'})
@@ -139,7 +141,8 @@ class LaunchpadController {
             team_members_involved,
             all_projects_currently,
             project_advistors,
-            identifies_each_member
+            identifies_each_member,
+            next_step: 6
          })
          .then(() => {
              res.status(201).json({message: 'Project has been updated'})
@@ -171,7 +174,8 @@ class LaunchpadController {
                  expected_public,
                  total_supply,
                  conversion_price,
-                 countries_excluded
+                 countries_excluded,
+                 next_step: 7
                 })
                 .then(() => {
                     res.status(201).json({message: 'Project has been updated'})
@@ -185,7 +189,7 @@ class LaunchpadController {
             ERC_20, 
             link_relevant_blockchain,  
         } = req.body;
-        Project.updateOne({user}, {ERC_20, link_relevant_blockchain})
+        Project.updateOne({user}, {ERC_20, link_relevant_blockchain, next_step: 8})
             .then(() => {
                 res.status(201).json({message: 'Project has been updated'})
             })
@@ -200,7 +204,7 @@ class LaunchpadController {
             anti_phising_code, 
             anything_add, 
         } = req.body;
-        Project.updateOne({user}, {publicy, fullname_title, anti_phising_code, anything_add})
+        Project.updateOne({user}, {publicy, fullname_title, anti_phising_code, anything_add, next_step: 0})
             .then(() => {
                 res.status(201).json({message: 'Project has been updated'})
             })
