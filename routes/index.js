@@ -40,13 +40,7 @@ Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 Router.use('/notif', notif);
 
-
-//LaunchPadnpm
+//LaunchPad
 Router.use('/project', require('./launchpadRouter/projectRouter'));
-
-
-
-
-
 
 module.exports = Router;
