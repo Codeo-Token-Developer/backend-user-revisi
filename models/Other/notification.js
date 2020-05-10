@@ -5,7 +5,11 @@ var Schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    text: String
+    text: String,
+    read: {
+        type: Boolean,
+        default: false
+    }
 },{timestamps: {createdAt: 'createdAt'}});
 
 module.exports= mongoose.model('usernotif', Schema);

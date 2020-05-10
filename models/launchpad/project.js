@@ -203,6 +203,10 @@ const projectSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    next_step: {
+        type: Number,
+        default: 2
     }
 }, {versionKey: false, timestamps: {createdAt: 'createdAt'}})
 

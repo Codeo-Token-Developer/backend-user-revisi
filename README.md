@@ -862,6 +862,28 @@ Success ouput example:
 
 ```
 
+#### **<u>Notification read update</u>**
+
+Required:
+
+```
+path: "notif/myNews/:notifId",
+method: 'PATCH'
+
+```
+
+Success ouput example:
+
+```
+{
+  "notifi": read : true
+}
+
+
+```
+
+
+
 
 ### <u>**LAUNCHPAD*</u>*
 
