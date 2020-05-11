@@ -4,8 +4,9 @@ class LaunchpadController {
 
     static step1(req,res,next) {
         let user = req.decoded.id;
+        console.log(req.body);
         let { 
-            fullname, 
+            full_name, 
             email, 
             position, 
             other_position, 
@@ -15,8 +16,9 @@ class LaunchpadController {
             nda_signed, 
             legal_opinion_document 
         } = req.body;
-            Project.create({fullname, email, position, other_position, pitch, regulated, other_regulated, nda_signed, legal_opinion_document, user})
+            Project.create({full_name, email, position, other_position, pitch, regulated, other_regulated, nda_signed, legal_opinion_document, user})
             .then(project => {
+                console.log(project)
                 res.status(202).json(project)
             })
             .catch(next);
@@ -204,7 +206,7 @@ class LaunchpadController {
             anti_phising_code, 
             anything_add, 
         } = req.body;
-        Project.updateOne({user}, {publicy, fullname_title, anti_phising_code, anything_add, next_step: 0})
+        Project.updateOne({user}, {publicy, fullname_title, anti_phising_code, anything_add, next_step: 0, status: 'completed'})
             .then(() => {
                 res.status(201).json({message: 'Project has been updated'})
             })
@@ -218,6 +220,15 @@ class LaunchpadController {
             .then(projects => {
                 res.status(200).json({projects, status: 200});
             }) 
+            .catch(next)
+    };
+
+    static readMyNotCompleted(req,res,next) {
+        let user = req.decoded.id;
+        Project.findOne({user, status: 'not_completed'})
+            .then(project => {
+                res.status(200).json({project, status: 200});
+            })
             .catch(next)
     };
 

@@ -40,6 +40,9 @@ Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 Router.use('/notif', notif);
 
+//cms 
+Router.use("/cms", require('./cmsRouter/cmsRouter.js'))
+
 
 //LaunchPadnpm
 Router.use('/project', require('./launchpadRouter/projectRouter'));

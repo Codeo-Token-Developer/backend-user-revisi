@@ -366,6 +366,33 @@ Error Output example:
 }
 ```
 
+
+
+## **<u>CMS</u>**
+
+**READ**
+
+Required:
+
+```
+path: '/cms',
+method: 'GET',
+headers: {
+	jwttoken : localStorage.getItem('codeoToken')
+}
+
+```
+
+Success Output example:
+
+```
+{
+  "cms": <cms>,
+  "status": 200
+}
+```
+
+
 **GET 1 Account**
 
 Required:
