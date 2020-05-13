@@ -39,6 +39,7 @@ Router.use('/api', fromEmail);
 Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 Router.use('/notif', notif);
+Router.use(require('./Trade'));
 
 //LaunchPad
 Router.use('/project', require('./launchpadRouter/projectRouter'));

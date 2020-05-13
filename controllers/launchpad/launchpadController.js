@@ -204,14 +204,13 @@ class LaunchpadController {
             anti_phising_code, 
             anything_add, 
         } = req.body;
-        Project.updateOne({user}, {publicy, fullname_title, anti_phising_code, anything_add, next_step: 0})
+        Project.updateOne({user}, {publicy, fullname_title, anti_phising_code, anything_add, next_step: 0, status: "completed"})
             .then(() => {
                 res.status(201).json({message: 'Project has been updated'})
             })
             .catch(next);
     };
 
-    
     static readMyProject(req,res,next) {
         let user = req.decoded.id;
         Project.find({user})
@@ -219,6 +218,16 @@ class LaunchpadController {
                 res.status(200).json({projects, status: 200});
             }) 
             .catch(next)
+    };
+
+    static getMyProjectNotCompleted(req,res,next) {
+        let user = req.decoded.id;
+        console.log(req.decoded)
+        Project.findOne({user, status: "not_completed"})
+            .then(project => {
+                res.status(200).json({project, status: 200});
+            })
+            .catch(next);
     };
 
 

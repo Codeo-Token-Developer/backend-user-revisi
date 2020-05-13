@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const projectSchema = new mongoose.Schema({
     full_name: {
         type:String,
@@ -207,6 +206,14 @@ const projectSchema = new mongoose.Schema({
     next_step: {
         type: Number,
         default: 2
+    },
+    status: {
+        type: String,
+        default: 'not_completed'
+    },
+    approved_status: {
+        type: Boolean,
+        default: false
     }
 }, {versionKey: false, timestamps: {createdAt: 'createdAt'}})
 
