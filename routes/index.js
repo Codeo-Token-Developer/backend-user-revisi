@@ -1,7 +1,7 @@
 const express = require('express');
 const Router = express.Router();
 
-//Sub Route;
+//Sub Route
 const users = require('./userRouter/user.route');
 const accounts = require('./accountRouter/account.route');
 const logHistory = require('./otherRouter/logHistory.route');
@@ -18,7 +18,7 @@ const sandboxRouter = require('./sandboxRouter');
 const notif = require('./otherRouter/notification');
 
 Router.use('/injection', injectionRouter);
-Router.use('/sandbox', sandboxRouter)
+Router.use('/sandbox', sandboxRouter);
 
 //User Router
 Router.use('/users', users);
@@ -40,19 +40,13 @@ Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 Router.use('/notif', notif);
 
-<<<<<<< HEAD
-=======
 //cms 
-Router.use("/cms", require('./cmsRouter/cmsRouter.js'))
->>>>>>> 372cff9c40c3e8d91fe55a33c89239dfbedb031e
-
+Router.use("/cms", require('./cmsRouter/cmsRouter.js'));
 
 //LaunchPadnpm
 Router.use('/project', require('./launchpadRouter/projectRouter'));
 
-
-
-
-
+//Exchange
+Router.use(require('./exchange/tradeRouter'));
 
 module.exports = Router;
