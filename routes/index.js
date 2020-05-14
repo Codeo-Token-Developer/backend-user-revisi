@@ -38,12 +38,8 @@ Router.use('/history', historyRouter);
 Router.use('/api', fromEmail);
 Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
-<<<<<<< HEAD
 Router.use('/notif', notif);
 
-=======
-Router.use('/topup', require('./topup/topupRouter'));
->>>>>>> 1b9cf1670c0039b48e0163de56e9b78e8e7a3cae
 
 //LaunchPad
 Router.use('/project', require('./launchpadRouter/projectRouter'));
