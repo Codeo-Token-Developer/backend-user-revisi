@@ -366,6 +366,33 @@ Error Output example:
 }
 ```
 
+
+
+## **<u>CMS</u>**
+
+**READ**
+
+Required:
+
+```
+path: '/cms',
+method: 'GET',
+headers: {
+	jwttoken : localStorage.getItem('codeoToken')
+}
+
+```
+
+Success Output example:
+
+```
+{
+  "cms": <cms>,
+  "status": 200
+}
+```
+
+
 **GET 1 Account**
 
 Required:
@@ -861,6 +888,28 @@ Success ouput example:
 
 
 ```
+
+#### **<u>Notification read update</u>**
+
+Required:
+
+```
+path: "notif/myNews/:notifId",
+method: 'PATCH'
+
+```
+
+Success ouput example:
+
+```
+{
+  "notifi": read : true
+}
+
+
+```
+
+
 
 
 ### <u>**LAUNCHPAD*</u>*

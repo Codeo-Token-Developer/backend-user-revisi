@@ -11,7 +11,6 @@ const server = http.createServer(app);
 const SocketIo = require('socket.io');
 const Io = SocketIo(server);
 
-
 //var
 const { PORT } = process.env;
 
@@ -33,17 +32,13 @@ app.use(cors());
 app.use((req,res,next) => {
     req.Io = Io;
     next();
-})
+});
 
 app.use(mainRoute);
 app.use(errHandler);
 
 Io.on('connection', socket => {
     console.log('Io connect')
-    
-    socket.on('test', data => {
-        console.log(data)
-    })
     socket.on('disconnect', () => {
         console.log('Io disconnect')
     })
