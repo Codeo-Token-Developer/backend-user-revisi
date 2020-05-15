@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 
 const topupSchema = new mongoose.Schema({
-    balance: {
-        type: Number,
-        require: [true, 'Balance cannot be empty']
+    amount: {
+        type: String,
+        required:[true, 'Amount cannot be empty']
+    },
+    payment_method: {
+        type: String,
+        required: [true, 'Payment method cannot be emtpy']
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    },
-    approved_status: {
-        type: Boolean,
-        default: false
     }
-})
+},{versionKey: false, timestamps: {createdAt: 'createdAt'}})
 
 const topupSchema = mongoose.model('TopUp', topupSchema)
 
