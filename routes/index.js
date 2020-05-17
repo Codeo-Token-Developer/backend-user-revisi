@@ -40,6 +40,9 @@ Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 Router.use('/notif', notif);
 
+//Topup
+Router.use(require('./topup/topupRouter'));
+
 //cms 
 Router.use("/cms", require('./cmsRouter/cmsRouter.js'));
 
@@ -48,5 +51,7 @@ Router.use('/project', require('./launchpadRouter/projectRouter'));
 
 //Exchange
 Router.use(require('./exchange/tradeRouter'));
+
+
 
 module.exports = Router;

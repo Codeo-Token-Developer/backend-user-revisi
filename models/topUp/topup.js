@@ -15,6 +15,6 @@ const topupSchema = new mongoose.Schema({
     }
 },{versionKey: false, timestamps: {createdAt: 'createdAt'}})
 
-const topupSchema = mongoose.model('TopUp', topupSchema)
+const topup = mongoose.model('TopUp', topupSchema)
 
-module.exports = topupSchema;
+module.exports = topup;
