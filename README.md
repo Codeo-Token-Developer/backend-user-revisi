@@ -851,7 +851,7 @@ headers: {
 	jwttoken
 },
 data: {
-  balance
+  amount, payment_method
 }
 
 ```
@@ -860,7 +860,7 @@ Success ouput example:
 
 ```
 {
-  "topup": <topup>
+  "message": <message>
 }
 
 

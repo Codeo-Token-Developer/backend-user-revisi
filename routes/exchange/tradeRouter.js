@@ -3,9 +3,10 @@ const Router = express.Router();
 const TradeController = require('../../controllers/exchange/tradeController')
 const { userAuthentication, TradeAuthorization } = require('../../middlewares/Auth');
 
-Router.get('/trade', TradeController.readAll);
-Router.get('/trade/myTrade', userAuthentication,TradeController.readMe);
+Router.get('/trade',TradeController.readAll);
+Router.get('/trade/me', userAuthentication, TradeController);
 Router.post('/trade', userAuthentication, TradeController.create);
-Router.patch('/trade/:tradeId', userAuthentication, TradeAuthorization,TradeController.updateTrade);
+Router.post('/trade/limit', userAuthentication, TradeController.limitCreate);
+Router.patch('/trade', userAuthentication, TradeController.updateLimitOrder);
 
 module.exports = Router;

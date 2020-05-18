@@ -213,7 +213,6 @@ class LaunchpadController {
             .catch(next);
     };
 
-    
     static readMyProject(req,res,next) {
         let user = req.decoded.id;
         Project.find({user})
@@ -231,6 +230,8 @@ class LaunchpadController {
             })
             .catch(next)
     };
+
+    
 
 
 };
