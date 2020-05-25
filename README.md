@@ -366,6 +366,33 @@ Error Output example:
 }
 ```
 
+
+
+## **<u>CMS</u>**
+
+**READ**
+
+Required:
+
+```
+path: '/cms',
+method: 'GET',
+headers: {
+	jwttoken : localStorage.getItem('codeoToken')
+}
+
+```
+
+Success Output example:
+
+```
+{
+  "cms": <cms>,
+  "status": 200
+}
+```
+
+
 **GET 1 Account**
 
 Required:
@@ -824,7 +851,7 @@ headers: {
 	jwttoken
 },
 data: {
-  balance
+  amount, payment_method
 }
 
 ```
@@ -833,7 +860,7 @@ Success ouput example:
 
 ```
 {
-  "topup": <topup>
+  "message": <message>
 }
 
 

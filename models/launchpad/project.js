@@ -209,10 +209,17 @@ const projectSchema = new mongoose.Schema({
     },
     status: {
         type: String,
+<<<<<<< HEAD
         default: 'not_completed'
     },
     approved_status: {
         type: Boolean,
+=======
+        default: 'not_completed',
+    },
+    approved_status: {
+        type: String,
+>>>>>>> d6cc3f4f82d801679e2229585d2586a296ed9443
         default: false
     }
 }, {versionKey: false, timestamps: {createdAt: 'createdAt'}})

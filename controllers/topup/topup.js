@@ -1,33 +1,50 @@
-const Topup = require('../../models');
+const Topup = require('../../models/topUp/topup');
+const Account = require('../../models/AccountSide/account.model');
+const PaymentHistory = require('../../models/History/paymentHistory');
 const notif = require('../../models/Other/notification');
 const notifAd = require('../../models/Other/notifAdmin');
 
 class TopUpController {
 
-    static create(req,res,next) {
-        let user = req.decoded.id;
-        let Io = req.Io;
-        let { balance } = req.body;
-        Topup.create({
-            balance,
-            user,
-        })
-        .then(notif.create({text:'TopUp request has been send, check your ballance in view minutes ', user})
-            .then(notifs => {
-            Io.emit('user-notif', notifs);
-            next();
+    static readAll(req,res,next) {
+        Topup.find({})
+            .then(tops => {
+                res.status(200).json({tops, status: 200})
             })
-        )
-            .then(notifAd.create({text:`${user} make a TopUp request`, user})
-                .then(Adnotifs => {
-                Io.emit('admin-notif', Adnotifs);
-                next();
-                })
-            )
-        .then(topup => {
-            res.status(202).json(topup)
-        })
-        .catch(next)
+            .catch(next)        
+    };
+
+    static readMe(req,res,next) {
+        let user = req.decoded.id;
+        Topup.find({user})
+            .then(tops => {
+                res.status(200).json({tops, status: 200})
+            })
+            .catch(next)
+    };
+
+    static create(req,res,next) {
+        let Io = req.Io;
+        let user = req.decoded.id;
+        let { amount, payment_method } = req.body;
+        let user_topup;
+        let myBalance;
+        Topup.create({amount, payment_method, user})
+            .then(tops => {
+                user_topup = tops;
+                return Account.findOne({user})
+            })
+            .then(account => {  
+                myBalance = account.balance + Number(amount);
+                return Account.updateOne({user}, {balance: myBalance})
+            })
+            .then(() => {
+                return PaymentHistory.create({payment: payment_method, payment_type: 'deposit', amount: amount, details: 'Deposit to my account', status: true})
+            })
+            .then(payment_history => {
+                res.status(202).json({message: 'Your deposit has been store to your balance'})
+            })
+            .catch(next)
     };
 
 };

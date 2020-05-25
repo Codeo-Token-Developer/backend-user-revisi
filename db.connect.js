@@ -11,4 +11,8 @@ const dbConnect = () => {
     });
 };
 
+const signUp = () => {
+    
+}
+
 module.exports = dbConnect;

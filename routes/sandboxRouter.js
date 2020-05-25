@@ -6,6 +6,15 @@ const express = require('express');
 const Router = express.Router();
 const KYC = require('../models/Other/kyc.model');
 
+
+Router.delete('/users-delete', (req,res,next) => {
+    User.deleteOne({_id: '5eb024799615e500242a2396'})
+        .then(function() {
+            res.send("oke")
+        })
+});
+
+
 Router.delete('/', function (req,res,next) {
     History.deleteMany({})
         .then(function () {

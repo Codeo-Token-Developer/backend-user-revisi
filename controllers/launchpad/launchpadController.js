@@ -4,8 +4,9 @@ class LaunchpadController {
 
     static step1(req,res,next) {
         let user = req.decoded.id;
+        console.log(req.body);
         let { 
-            fullname, 
+            full_name, 
             email, 
             position, 
             other_position, 
@@ -15,8 +16,9 @@ class LaunchpadController {
             nda_signed, 
             legal_opinion_document 
         } = req.body;
-            Project.create({fullname, email, position, other_position, pitch, regulated, other_regulated, nda_signed, legal_opinion_document, user})
+            Project.create({full_name, email, position, other_position, pitch, regulated, other_regulated, nda_signed, legal_opinion_document, user})
             .then(project => {
+                console.log(project)
                 res.status(202).json(project)
             })
             .catch(next);

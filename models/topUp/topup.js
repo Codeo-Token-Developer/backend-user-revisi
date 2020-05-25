@@ -20,13 +20,9 @@ const topupSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    },
-    approved_status: {
-        type: Boolean,
-        default: false
     }
-})
+},{versionKey: false, timestamps: {createdAt: 'createdAt'}})
 
-const topupSchema = mongoose.model('TopUp', topupSchema)
+const topup = mongoose.model('TopUp', topupSchema)
 
-module.exports = topupSchema;
+module.exports = topup;

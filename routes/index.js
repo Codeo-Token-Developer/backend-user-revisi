@@ -1,7 +1,7 @@
 const express = require('express');
 const Router = express.Router();
 
-//Sub Route;
+//Sub Route
 const users = require('./userRouter/user.route');
 const accounts = require('./accountRouter/account.route');
 const logHistory = require('./otherRouter/logHistory.route');
@@ -18,7 +18,7 @@ const sandboxRouter = require('./sandboxRouter');
 const notif = require('./otherRouter/notification');
 
 Router.use('/injection', injectionRouter);
-Router.use('/sandbox', sandboxRouter)
+Router.use('/sandbox', sandboxRouter);
 
 //User Router
 Router.use('/users', users);
@@ -39,18 +39,19 @@ Router.use('/api', fromEmail);
 Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 Router.use('/notif', notif);
-Router.use(require('./exchange/Trade'));
 
-const Trade = require('../models/exchange/Trade');
-Router.delete('/trade', (req,res,next) => {
-    Trade.deleteMany({})
-        .then(() => {
-            res.status(201).json({message: 'delete'})
-        })
-        .catch(next)
-})
+//Topup
+Router.use(require('./topup/topupRouter'));
 
-//LaunchPad
+//cms 
+Router.use("/cms", require('./cmsRouter/cmsRouter.js'));
+
+//LaunchPadnpm
 Router.use('/project', require('./launchpadRouter/projectRouter'));
+
+//Exchange
+Router.use(require('./exchange/tradeRouter'));
+
+
 
 module.exports = Router;
