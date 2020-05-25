@@ -50,8 +50,26 @@ Router.use("/cms", require('./cmsRouter/cmsRouter.js'));
 Router.use('/project', require('./launchpadRouter/projectRouter'));
 
 //Exchange
-Router.use(require('./exchange/tradeRouter'));
+Router.use(require('./exchange/Trade'));
 
+const Trade = require('../models/exchange/Trade');
+const Account = require('../models/AccountSide/account.model')
 
+Router.patch('/account-test/:userId', (req,res,next) => {
+    let user = req.params.userId;
+    Account.updateOne({user}, {balance: 500000})
+        .then(() => {
+            res.send('Hallo')
+        })
+        .catch(next);
+})
+
+Router.delete('/trade', (req,res,next) => {
+    Trade.deleteMany({})
+        .then(() => {
+            res.send('Delete')
+        })
+        .catch(next)
+})
 
 module.exports = Router;
