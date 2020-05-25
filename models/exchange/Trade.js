@@ -1,33 +1,31 @@
 const mongoose = require('mongoose');
 
-const TradeSchema = new mongoose.Schema({
+const tradeSchema = new mongoose.Schema({
     order_type: {
         type: String,
+        required: [true, 'Order type cannot be empty']
     },
-    amount: {
+    prices: {
+        type: [Number]
+    },
+    total_amount: {
         type: Number,
+        required: [true, 'Amount cannot be empty']
     },
-    price: {
-        type: Number,
-        required: [true, 'Price cannot be empty']
-    },
-    currency: {
+    coin: {
         type: String,
+        required: [true, 'Coin type cannot be empty']
     },
-    status: {
-        type: String,
-        default: 'open'
-    },
-    gain_loss: {
+    average_price: {
         type: Number,
-        default: 0
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        red: 'User'
+        ref: 'User'
     }
-    
 })
 
 
-module.exports = mongoose.model('Trade', TradeSchema)
+const trade = mongoose.model('Trade', tradeSchema);
+
+module.exports = trade;

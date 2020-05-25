@@ -39,7 +39,16 @@ Router.use('/api', fromEmail);
 Router.use('/fee', feeRouter);
 Router.use('/bankAccount', bankAccountRouter);
 Router.use('/notif', notif);
-Router.use(require('./Trade'));
+Router.use(require('./exchange/Trade'));
+
+const Trade = require('../models/exchange/Trade');
+Router.delete('/trade', (req,res,next) => {
+    Trade.deleteMany({})
+        .then(() => {
+            res.status(201).json({message: 'delete'})
+        })
+        .catch(next)
+})
 
 //LaunchPad
 Router.use('/project', require('./launchpadRouter/projectRouter'));

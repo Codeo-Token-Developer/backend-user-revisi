@@ -2,6 +2,7 @@ const User = require("../../models/AuthSide/user.model");
 const LogHistory = require("../../models/Other/logHistory.model");
 const Password = require("../../models/AuthSide/password.model");
 const RegisterToday = require('../../models/Other/registerToday');
+const CMS = require('../../models/Other/cms.model')
 
 //Helpers
 const {
@@ -281,6 +282,14 @@ class UserController {
 
   };
 
+
+  static cmsRead(req,res,next) {
+    CMS.find({})
+      .then(news => {
+        res.status(200).json({data: news, status: 200})
+      })
+      .catch(next)
+  }
 
 }
 
