@@ -58,7 +58,8 @@ class UserController {
           email,
           username,
           referral_address: referral_address,
-          ref: newRef
+          ref: newRef,
+          verification: true
         })
           .then(function(user) {
             req.payload = {
