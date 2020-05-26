@@ -22,6 +22,9 @@ const tradeHistory = new mongoose.Schema({
     status: {
         type: String,
     },
+    action: {
+        type: String
+    }
 });
 
 const trade = mongoose.model('TradeHistory', tradeHistory);
