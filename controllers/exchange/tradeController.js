@@ -26,6 +26,24 @@ class TradeController {
         let user = req.decoded.id;
         let { amount, price, order_type, currency } = req.body;
         let totalPrice = amount * price;
+        let objectText;
+
+        if (currency === "BTC") {
+            objectText = "BTC_coin"
+        }else if (currency === 'TRX') {
+            objectText = "TRX_coin"
+        }else if (currency === 'ETH') {
+            objectText = "ETH_coin"
+        }else if (currency === 'BNB') {
+            objectText = "BNB_coin"
+        }else if (currency === 'CODEO') {
+            objectText = "CODEO_coin"
+        }else if (currency === 'LTC') {
+            objectText = "LTC_coin"
+        }else {
+            next({message: "Coin not available"})
+        }
+
         Account.findOne({user})
             .then(userAccount => {
                 if (userAccount.balance > totalPrice) {
@@ -80,6 +98,8 @@ class TradeController {
             objectText = "BNB_coin"
         }else if (currency === 'CODEO') {
             objectText = "CODEO_coin"
+        }else if (currency === 'LTC') {
+            objectText = "LTC_coin"
         }else {
             next({message: "Coin not available"})
         }

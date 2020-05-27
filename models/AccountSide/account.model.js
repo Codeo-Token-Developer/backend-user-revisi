@@ -32,6 +32,9 @@ const accountSchema = new mongoose.Schema ({
     },
     CODEO_coin: {
         type: Number,
+    },
+    LTC_coin: {
+        type: Number
     }
     
 },{ versionKey: false, timestamps: {createdAt: 'created_at'} });
