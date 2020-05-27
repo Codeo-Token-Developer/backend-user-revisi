@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const limitTrade = new mongoose.Schema({
 
-    amount: {
+    amounts: {
         type: Number,
         required: [true, 'Amount cannot be empty']
     },

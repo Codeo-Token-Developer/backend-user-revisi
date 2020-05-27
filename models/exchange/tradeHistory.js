@@ -4,9 +4,6 @@ const tradeHistory = new mongoose.Schema({
     pair: {
         type: String,
     },
-    date: {
-        type: Date,
-    },
     order_type: {
         type: String,
     },
@@ -21,11 +18,8 @@ const tradeHistory = new mongoose.Schema({
     },
     status: {
         type: String,
-    },
-    action: {
-        type: String
     }
-});
+}, {versionKey: false, timestamps: {createdAt: 'createdAt'}});
 
 const trade = mongoose.model('TradeHistory', tradeHistory);
 

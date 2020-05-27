@@ -1,6 +1,5 @@
 const { verifytoken } = require('../helpers/jwttoken');
 const User = require('../models/AuthSide/user.model');
-const Trade = require('../models/exchange/Trade');
 
 function userAuthentication(req,res,next) {
     let token = req.headers.jwttoken;

@@ -52,24 +52,31 @@ Router.use('/project', require('./launchpadRouter/projectRouter'));
 //Exchange
 Router.use(require('./exchange/Trade'));
 
-const Trade = require('../models/exchange/Trade');
-const Account = require('../models/AccountSide/account.model')
 
-Router.patch('/account-test/:userId', (req,res,next) => {
-    let user = req.params.userId;
-    Account.updateOne({user}, {balance: 500000})
-        .then(() => {
-            res.send('Hallo')
-        })
-        .catch(next);
-})
+//Trade
+Router.use(require('./exchange/tradeRouter'));
 
-Router.delete('/trade', (req,res,next) => {
-    Trade.deleteMany({})
+
+
+
+const Trade = require('../models/exchange/limitTrade');
+const Account = require('../models/AccountSide/account.model');
+
+Router.patch("/account-update/:userId", (req,res,next) => {
+    Account.updateOne({user: req.params.userId}, {BTC_coin: 10}, {omitUndefined: true})
         .then(() => {
-            res.send('Delete')
+            res.status(201).json({message: "Has been executed"})
         })
         .catch(next)
 })
+
+Router.delete('/limit', (req, res,next) => {
+    Trade.deleteMany({})
+        .then(() => {
+            res.send("has been deleted")
+        })
+        .catch(next)
+})
+
 
 module.exports = Router;
