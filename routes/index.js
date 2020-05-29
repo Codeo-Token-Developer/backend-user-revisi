@@ -20,6 +20,8 @@ const btc = require("./Blockchain/bitcoin");
 const ltc = require("./Blockchain/litecoin");
 const eth = require("./Blockchain/ether");
 const cdo = require("./Blockchain/codeo");
+const bnb = require("./Blockchain/bnb");
+const trx = require("./Blockchain/tron");
 
 Router.use("/injection", injectionRouter);
 Router.use("/sandbox", sandboxRouter);
@@ -56,6 +58,12 @@ Router.use("/eth", eth);
 
 //cdo
 Router.use("/cdo", cdo);
+
+//bnb
+Router.use("/bnb", bnb);
+
+//trx
+Router.use("/trx", trx);
 
 //Topup
 Router.use(require("./topup/topupRouter"));

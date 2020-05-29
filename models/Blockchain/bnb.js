@@ -16,4 +16,4 @@ var Schema = new mongoose.Schema(
   { timestamps: { createdAt: "createdAt" } }
 );
 
-module.exports = mongoose.model("codeod", Schema);
+module.exports = mongoose.model("bnbd", Schema);
