@@ -59,9 +59,8 @@ Router.use("/cms", require("./cmsRouter/cmsRouter.js"));
 Router.use("/project", require("./launchpadRouter/projectRouter"));
 
 //Exchange
-Router.use(require("./exchange/Trade"));
+Router.use(require("./exchange/tradeRouter"));
 
-const Trade = require("../models/exchange/Trade");
 const Account = require("../models/AccountSide/account.model");
 
 Router.patch("/account-test/:userId", (req, res, next) => {
@@ -77,35 +76,6 @@ Router.delete("/trade", (req, res, next) => {
   Trade.deleteMany({})
     .then(() => {
       res.send("Delete");
-    })
-    .catch(next);
-});
-
-module.exports = Router;
-Router.use(require("./exchange/Trade"));
-
-//Trade
-Router.use(require("./exchange/tradeRouter"));
-
-const Trade = require("../models/exchange/limitTrade");
-const Account = require("../models/AccountSide/account.model");
-
-Router.patch("/account-update/:userId", (req, res, next) => {
-  Account.updateOne(
-    { user: req.params.userId },
-    { BTC_coin: 10 },
-    { omitUndefined: true }
-  )
-    .then(() => {
-      res.status(201).json({ message: "Has been executed" });
-    })
-    .catch(next);
-});
-
-Router.delete("/limit", (req, res, next) => {
-  Trade.deleteMany({})
-    .then(() => {
-      res.send("has been deleted");
     })
     .catch(next);
 });
