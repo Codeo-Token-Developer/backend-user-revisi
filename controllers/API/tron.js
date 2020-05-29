@@ -14,7 +14,7 @@ class tron {
     eth.findOne({ user: userId }).then(function (user) {
       if (user) {
         axios({
-          url: `${apiUrl}bc/eth/mainnet/token/${addressEth}/0xf230b790e05390fc8295f4d3f60332c93bed42e2/balance`,
+          url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0xf230b790e05390fc8295f4d3f60332c93bed42e2/balance`,
           method: "GET",
           headers,
         })
@@ -37,7 +37,7 @@ class tron {
           .catch(next);
       } else {
         axios({
-          url: `${apiUrl}bc/eth/mainnet/token/${addressEth}/0xf230b790e05390fc8295f4d3f60332c93bed42e2/balance`,
+          url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0xf230b790e05390fc8295f4d3f60332c93bed42e2/balance`,
           method: "GET",
           headers,
         })

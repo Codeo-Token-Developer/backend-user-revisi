@@ -15,7 +15,7 @@ class codeo {
     eth.findOne({ user: userId }).then(function (user) {
       if (user) {
         axios({
-          url: `${apiUrl}bc/eth/mainnet/token/${addressEth}/0x46b4a7d906F1A943b7744Df23625E63726d79035/balance`,
+          url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0x46b4a7d906F1A943b7744Df23625E63726d79035/balance`,
           method: "GET",
           headers,
         })
@@ -38,7 +38,7 @@ class codeo {
           .catch(next);
       } else {
         axios({
-          url: `${apiUrl}bc/eth/mainnet/token/${addressEth}/0x46b4a7d906F1A943b7744Df23625E63726d79035/balance`,
+          url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0x46b4a7d906F1A943b7744Df23625E63726d79035/balance`,
           method: "GET",
           headers,
         })

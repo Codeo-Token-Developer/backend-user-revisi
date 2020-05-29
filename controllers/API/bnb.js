@@ -14,7 +14,7 @@ class bnb {
     eth.findOne({ user: userId }).then(function (user) {
       if (user) {
         axios({
-          url: `${apiUrl}bc/eth/mainnet/token/${addressEth}/0xB8c77482e45F1F44dE1745F52C74426C631bDD52/balance`,
+          url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0xB8c77482e45F1F44dE1745F52C74426C631bDD52/balance`,
           method: "GET",
           headers,
         })
@@ -37,7 +37,7 @@ class bnb {
           .catch(next);
       } else {
         axios({
-          url: `${apiUrl}bc/eth/mainnet/token/${addressEth}/0xB8c77482e45F1F44dE1745F52C74426C631bDD52/balance`,
+          url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0xB8c77482e45F1F44dE1745F52C74426C631bDD52/balance`,
           method: "GET",
           headers,
         })
