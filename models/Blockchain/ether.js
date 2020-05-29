@@ -10,7 +10,7 @@ var Schema = new mongoose.Schema(
       type: Number,
     },
     txs_count: {
-      type: Number,
+      type: String,
     },
   },
   { timestamps: { createdAt: "createdAt" } }

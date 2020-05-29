@@ -5,6 +5,8 @@ const eth = require("../../models/Blockchain/ether");
 const ethhistory = require("../../models/Blockchain/ethhistory");
 const axios = require("axios").default;
 const headers = { "Content-Type": "application/json", "x-api-key": API_KEY };
+const Web3 = require("web3");
+var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 
 class ether {
   static info(req, res, next) {
