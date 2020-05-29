@@ -61,23 +61,4 @@ Router.use("/project", require("./launchpadRouter/projectRouter"));
 //Exchange
 Router.use(require("./exchange/tradeRouter"));
 
-const Account = require("../models/AccountSide/account.model");
-
-Router.patch("/account-test/:userId", (req, res, next) => {
-  let user = req.params.userId;
-  Account.updateOne({ user }, { balance: 500000 })
-    .then(() => {
-      res.send("Hallo");
-    })
-    .catch(next);
-});
-
-Router.delete("/trade", (req, res, next) => {
-  Trade.deleteMany({})
-    .then(() => {
-      res.send("Delete");
-    })
-    .catch(next);
-});
-
 module.exports = Router;
