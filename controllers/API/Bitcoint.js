@@ -3,7 +3,7 @@ const apiUrl = process.env.BASE_URL;
 const SECRET = process.env.SECRET;
 const btc = require("../../models/Blockchain/bitcoin");
 const btchistory = require("../../models/Blockchain/btchistory");
-const axios = require("axios").default;
+const axios = require("axios");
 const headers = { "Content-Type": "application/json", "x-api-key": API_KEY };
 const CryptoJS = require("crypto-js");
 

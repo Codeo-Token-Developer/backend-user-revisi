@@ -18,6 +18,8 @@ const sandboxRouter = require("./sandboxRouter");
 const notif = require("./otherRouter/notification");
 const btc = require("./Blockchain/bitcoin");
 const ltc = require("./Blockchain/litecoin");
+const eth = require("./Blockchain/ether");
+const cdo = require("./Blockchain/codeo");
 
 Router.use("/injection", injectionRouter);
 Router.use("/sandbox", sandboxRouter);
@@ -48,6 +50,12 @@ Router.use("/btc", btc);
 
 //lite
 Router.use("/ltc", ltc);
+
+//eth
+Router.use("/eth", eth);
+
+//cdo
+Router.use("/cdo", cdo);
 
 //Topup
 Router.use(require("./topup/topupRouter"));

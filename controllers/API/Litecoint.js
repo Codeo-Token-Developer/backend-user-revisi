@@ -7,7 +7,7 @@ const axios = require("axios").default;
 const headers = { "Content-Type": "application/json", "x-api-key": API_KEY };
 const CryptoJS = require("crypto-js");
 
-class AddressBTC {
+class Addressltc {
   static readMe(req, res, next) {
     let user = req.decoded.id;
     ltc
@@ -58,14 +58,14 @@ class AddressBTC {
 
   static info(req, res, next) {
     let user = req.decoded.id;
-    let addressbit = req.params.Address;
+    let addressltc = req.params.Address;
     axios({
-      url: `${apiUrl}bc/btc/mainnet/address/${addressbit}`,
+      url: `${apiUrl}bc/ltc/mainnet/address/${addressltc}`,
       method: "GET",
       headers,
     })
       .then(({ data }) => {
-        return btc.findOneAndUpdate(
+        return ltc.findOneAndUpdate(
           { user },
           {
             balance: data.payload.balance,
@@ -98,14 +98,14 @@ class AddressBTC {
 
   static history(req, res, next) {
     let user = req.decoded.id;
-    let addressbit = req.params.Address;
+    let addressltc = req.params.Address;
     axios({
-      url: `${apiUrl}bc/btc/mainnet/address/${addressbit}/basic/transactions?index=0&limit=50`,
+      url: `${apiUrl}bc/ltc/mainnet/address/${addressltc}/basic/transactions?index=0&limit=50`,
       method: "GET",
       headers,
     })
       .then(({ data }) => {
-        return btchistory.findOneAndUpdate(
+        return ltchistory.findOneAndUpdate(
           { user },
           {
             History: data.payload,
@@ -127,4 +127,4 @@ class AddressBTC {
   // }
 }
 
-module.exports = AddressBTC;
+module.exports = Addressltc;
