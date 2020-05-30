@@ -4,7 +4,6 @@ class LaunchpadController {
 
     static step1(req,res,next) {
         let user = req.decoded.id;
-        console.log(req.body);
         let { 
             full_name, 
             email, 
