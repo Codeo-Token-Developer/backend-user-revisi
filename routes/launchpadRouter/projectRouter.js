@@ -15,6 +15,6 @@ Router.patch('/step6', userAuthentication, ProjectController.step6);
 Router.patch('/step7', userAuthentication, ProjectController.step7);
 Router.patch('/step8', userAuthentication, ProjectController.step8);
 Router.get('/myProjects', userAuthentication, ProjectController.readMyProject);
-Router.get('/notCompleted', userAuthentication, ProjectController.readMyNotCompleted);
+Router.get('/myProjectNotCompleted', userAuthentication, ProjectController.getMyProjectNotCompleted);
 
 module.exports = Router;

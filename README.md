@@ -321,8 +321,6 @@ Success example output:
 }
 ```
 
-
-
 ## **<u>KYC</u>**
 
 **Create**
@@ -366,8 +364,6 @@ Error Output example:
 }
 ```
 
-
-
 ## **<u>CMS</u>**
 
 **READ**
@@ -392,7 +388,6 @@ Success Output example:
 }
 ```
 
-
 **GET 1 Account**
 
 Required:
@@ -414,7 +409,6 @@ Success Output example:
   "status": 200
 }
 ```
-
 
 ### **<u>BANK ACCOUNT</u>**
 
@@ -459,7 +453,6 @@ Error Output example:
 	}
 ```
 
-
 #### **GET 1 BankAccount**
 
 Required:
@@ -480,9 +473,6 @@ Success Output example:
   "status": 200
 }
 ```
-
-
-
 
 ### **<u>CRYPTO</u>**
 
@@ -851,7 +841,7 @@ headers: {
 	jwttoken
 },
 data: {
-  balance
+  amount, payment_method
 }
 
 ```
@@ -860,7 +850,7 @@ Success ouput example:
 
 ```
 {
-  "topup": <topup>
+  "message": <message>
 }
 
 
@@ -909,16 +899,13 @@ Success ouput example:
 
 ```
 
-
-
-
-### <u>**LAUNCHPAD*</u>*
+### <u>\*_LAUNCHPAD_</u>\*
 
 ### **Project**
 
 **Step1**
 
-Required: 
+Required:
 
 ```
 path: '/project/step1',
@@ -927,27 +914,25 @@ headers: {
 	jwttoken
 },
 data: {
-			fullname, 
-            email, 
-            position, 
-            other_position, 
-            pitch, 
-            regulated, 
-            other_regulated, 
-            nda_signed, 
-            legal_opinion_document 
+			fullname,
+            email,
+            position,
+            other_position,
+            pitch,
+            regulated,
+            other_regulated,
+            nda_signed,
+            legal_opinion_document
 }
 ```
 
-Success: 
+Success:
 
 ```
 {
 	<project>
 }
 ```
-
-
 
 **Step2**
 
@@ -960,10 +945,10 @@ headers: {
 	jwttoken
 },
 data: {
-			project_name, 
-            coin_full_name, 
-            coin_symbol, 
-            official_website, 
+			project_name,
+            coin_full_name,
+            coin_symbol,
+            official_website,
             permanent_link,
             nature_project,
             other_nature_project,
@@ -982,15 +967,13 @@ data: {
 }
 ```
 
-Success: 
+Success:
 
 ```
 {
 	"message": <message>
 }
 ```
-
-
 
 **Step3**
 
@@ -1003,21 +986,19 @@ headers: {
 	jwttoken
 },
 data: {
-    how_many_users, 
+    how_many_users,
     social_communities,
     developer_communities
 }
 ```
 
-Success: 
+Success:
 
 ```
 {
 	"message": <message>
 }
 ```
-
-
 
 **Step4**
 
@@ -1030,17 +1011,17 @@ headers: {
 	jwttoken
 },
 data: {
-    level_development, 
-    product_demos, 
-    users_intended_purpose, 
-    applicable_feature, 
-    other_applicable_feature,  
+    level_development,
+    product_demos,
+    users_intended_purpose,
+    applicable_feature,
+    other_applicable_feature,
     associated_with_token,
     smart_contract_underlying,
     is_open_source,
     other_is_open_source
     open_source_documentation,
-    github  
+    github
 }
 ```
 
@@ -1051,8 +1032,6 @@ Success:
 	"message": <message>
 }
 ```
-
-
 
 **Step5**
 
@@ -1082,8 +1061,6 @@ Success:
 }
 ```
 
-
-
 **Step6**
 
 Required:
@@ -1095,11 +1072,11 @@ headers: {
 	jwttoken
 },
 data: {
-    fundraising, 
-    chart_detailing, 
+    fundraising,
+    chart_detailing,
     owned_by_members,
-    multiple_private, 
-    anticipated_codeo, 
+    multiple_private,
+    anticipated_codeo,
     expected_public,
     total_supply,
     conversion_price,
@@ -1117,7 +1094,7 @@ Success:
 
 **Step7**
 
-Required: 
+Required:
 
 ```
 path: '/project/step7',
@@ -1126,8 +1103,8 @@ headers: {
 	jwttoken
 },
 data: {
-	ERC_20, 
-    link_relevant_blockchain, 
+	ERC_20,
+    link_relevant_blockchain,
 }
 ```
 
@@ -1141,7 +1118,7 @@ Success:
 
 **Step8**
 
-Required: 
+Required:
 
 ```
 path: '/project/step8',
@@ -1151,9 +1128,9 @@ headers: {
 },
 data: {
 	publicy,
-    fullname_title, 
-    anti_phising_code, 
-    anything_add, 
+    fullname_title,
+    anti_phising_code,
+    anything_add,
 }
 ```
 
@@ -1165,10 +1142,9 @@ Success:
 }
 ```
 
-
 **Project List**
 
-Required: 
+Required:
 
 ```
 path: '/project/myProjects',
@@ -1184,5 +1160,305 @@ Success:
 ```
 {
 	projects: <projects>
+}
+```
+
+### <u>\*_BITCOIN_</u>\*
+
+**add Bitcoin address**
+
+Required:
+
+```
+path: '/btc/addAddress',
+method: 'POST',
+headers: {
+	jwttoken
+},
+```
+
+Success:
+
+```
+{
+	"message": "Success"
+}
+```
+
+**get address**
+
+Required:
+
+```
+path: '/btc/Address',
+method: 'GET',
+headers: {
+	jwttoken
+},
+```
+
+Success:
+
+```
+{
+	"payload": [
+        {
+            "_id": "5ecf41f8f3d8ed5708d3ea5e",
+            "user": "5e8ca4e2898bb0332078c26f",
+            "address": "1HxcPe2mj1La2jkXYfv6AGp9oCEZFwTW4Q",
+            "privateKey": "U2FsdGVkX1/uYmkVe1r6UnaSIR8uy92akjBgxPBjlAGhPfgG3mGOK3E237CJLAGJrGXPYnlxtNjXjz7o5aIi1mLYvS6JYRharwf/Rrs052J/yq2sBSZrXS9lb/Q2uXV9",
+            "publicKey": "U2FsdGVkX19jG/fbdC8ws11iDHwB791fSW1MOquZotCnQBL8qDxphY1u8NmREYa0DvpkyileHMqw4LnzKwvRUr04mMk5SiFFVMlAeKS+M16Tk8+M+R/B+lqoLsBGoIRd",
+            "balance": null,
+            "totalSpent": "",
+            "totalReceived": "",
+            "txi": 0,
+            "txo": 0,
+            "txsCount": 0,
+            "createdAt": "2020-05-28T04:45:44.115Z",
+            "updatedAt": "2020-05-28T04:45:44.115Z",
+            "__v": 0
+        }
+    ],
+    "status": 200
+}
+```
+
+**get balance**
+
+Required:
+
+```
+path: '/btc/infoAccount/{:Address}',
+method: 'GET',
+headers: {
+	jwttoken
+},
+```
+
+Success:
+
+```
+{
+    "message": "success",
+    "info": {
+        "balance": 0,
+        "totalSpent": "0",
+        "totalReceived": "0",
+        "txi": 0,
+        "txo": 0,
+        "txsCount": 0
+    },
+    "status": 202
+}
+```
+
+**get Transactions history**
+
+Required:
+
+```
+path: '/btc/historyAccount/{:Address}',
+method: 'GET',
+headers: {
+	jwttoken
+},
+```
+
+Success:
+
+```
+{
+    "message": "success",
+    "payload": {
+        "History": [
+                     {
+                      "txid": "ace6f04e13d4c9482dec860eeccab59e5bf50bfd8bf966ab179131c0b218d5e8",
+                      "amount": 0.00015802,
+                      "fee": 0.00015198,
+                      "unit": "btc",
+                      "datetime": "2020-03-04 11:25:57 UTC",
+                      "timestamp": 1583321157,
+                      "confirmations": 502,
+                      "sent": {
+                        "mnetBQ8h3srGd3oNT4uczwcQpXjR6AE73E": 0.00021,
+                        "n1s4jV66dGSX6TDezLRWZgcEuH5Sy2Pujg": 0.0001
+                      },
+                      "received": {
+                        "mnetBQ8h3srGd3oNT4uczwcQpXjR6AE73E": 0.00015802
+                      }
+                    },
+                    {
+                      "txid": "ffa143f44b114be4db0091500ab189c5d50f29758970a54e7a1dc08c2b47ea50",
+                      "amount": 0.11484588,
+                      "fee": 0.00000168,
+                      "unit": "btc",
+                      "datetime": "2020-03-03 09:20:12 UTC",
+                      "timestamp": 1583227212,
+                      "confirmations": 728,
+                      "sent": {
+                        "2NCJCzQFPANPkRmYDidKcUao9c9fLp5HeXV": 0.11484756
+                      },
+                      "received": {
+                        "n1s4jV66dGSX6TDezLRWZgcEuH5Sy2Pujg": 0.0001,
+                        "2NDEprTde2Uci9zqNVNWc1eXkCe8NENi3gY": 0.11474588
+                      }
+                  }
+        ],
+        "_id": "5ecf41f8f3d8ed5708d3ea5f",
+        "user": "5e8ca4e2898bb0332078c26f",
+        "createdAt": "2020-05-28T04:45:44.116Z",
+        "updatedAt": "2020-05-28T08:45:19.527Z",
+        "__v": 0
+    },
+    "status": 202
+}
+```
+
+### <u>\*_LITECOIN_</u>\*
+
+**add litecoin address**
+
+Required:
+
+```
+path: '/ltc/addAddress',
+method: 'POST',
+headers: {
+	jwttoken
+},
+```
+
+Success:
+
+```
+{
+	"message": "Success"
+}
+```
+
+**get address**
+
+Required:
+
+```
+path: '/ltc/Address',
+method: 'GET',
+headers: {
+	jwttoken
+},
+```
+
+Success:
+
+```
+{
+	"payload": [
+        {
+            "_id": "5ecf41f8f3d8ed5708d3ea5e",
+            "user": "5e8ca4e2898bb0332078c26f",
+            "address": "1HxcPe2mj1La2jkXYfv6AGp9oCEZFwTW4Q",
+            "privateKey": "U2FsdGVkX1/uYmkVe1r6UnaSIR8uy92akjBgxPBjlAGhPfgG3mGOK3E237CJLAGJrGXPYnlxtNjXjz7o5aIi1mLYvS6JYRharwf/Rrs052J/yq2sBSZrXS9lb/Q2uXV9",
+            "publicKey": "U2FsdGVkX19jG/fbdC8ws11iDHwB791fSW1MOquZotCnQBL8qDxphY1u8NmREYa0DvpkyileHMqw4LnzKwvRUr04mMk5SiFFVMlAeKS+M16Tk8+M+R/B+lqoLsBGoIRd",
+            "balance": null,
+            "totalSpent": "",
+            "totalReceived": "",
+            "txi": 0,
+            "txo": 0,
+            "txsCount": 0,
+            "createdAt": "2020-05-28T04:45:44.115Z",
+            "updatedAt": "2020-05-28T04:45:44.115Z",
+            "__v": 0
+        }
+    ],
+    "status": 200
+}
+```
+
+**get balance**
+
+Required:
+
+```
+path: '/ltc/infoAccount/{:Address}',
+method: 'GET',
+headers: {
+	jwttoken
+},
+```
+
+Success:
+
+```
+{
+    "message": "success",
+    "info": {
+        "balance": 0,
+        "totalSpent": "0",
+        "totalReceived": "0",
+        "txi": 0,
+        "txo": 0,
+        "txsCount": 0
+    },
+    "status": 202
+}
+```
+
+**get Transactions history**
+
+Required:
+
+```
+path: '/ltc/historyAccount/{:Address}',
+method: 'GET',
+headers: {
+	jwttoken
+},
+```
+
+Success:
+
+```
+{
+    "message": "success",
+    "payload": {
+        "History": [
+                     {
+                      "txid": "79e983ff661b84801f2d4e9283e8fa4df678714a7a4ec435b4c7e7720a0c1374",
+                      "amount": 25,
+                      "fee": 0,
+                      "unit": "ltc",
+                      "datetime": "2020-03-06 08:44:28 UTC",
+                      "timestamp": 1583484268,
+                      "confirmations": 1,
+                      "sent": {
+                        "coinbase": 25
+                      },
+                      "received": {
+                        "mvymY6wswVHDh9iW3bSg7zRgJgcvwPdV9F": 25
+                      }
+                    },
+                    {
+                      "txid": "4a37bdccac863f4afc0ea46cdfb524c3763443ebe9aa8fcc04817d579e356b5c",
+                      "amount": 25.00007051,
+                      "fee": 0,
+                      "unit": "ltc",
+                      "datetime": "2020-03-06 02:59:45 UTC",
+                      "timestamp": 1583463585,
+                      "confirmations": 90,
+                      "sent": {
+                        "coinbase": 25.00007051
+                      },
+                      "received": {
+                        "mvymY6wswVHDh9iW3bSg7zRgJgcvwPdV9F": 25.00007051
+                      }
+                    }
+        ],
+        "_id": "5ecf41f8f3d8ed5708d3ea5f",
+        "user": "5e8ca4e2898bb0332078c26f",
+        "createdAt": "2020-05-28T04:45:44.116Z",
+        "updatedAt": "2020-05-28T08:45:19.527Z",
+        "__v": 0
+    },
+    "status": 202
 }
 ```

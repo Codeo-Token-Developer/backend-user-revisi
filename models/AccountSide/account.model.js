@@ -14,11 +14,29 @@ const accountSchema = new mongoose.Schema ({
     },
     balance: {
         type: Number,
-        default: 0.00
     },
     role: {
         type: String
+    },
+    BTC_coin: {
+        type: Number,
+    },
+    ETH_coin: {
+        type: Number,
+    },
+    TRX_coin: {
+        type: Number,
+    },
+    BNB_coin: {
+        type: Number,
+    },
+    CODEO_coin: {
+        type: Number,
+    },
+    LTC_coin: {
+        type: Number
     }
+    
 },{ versionKey: false, timestamps: {createdAt: 'created_at'} });
 
 

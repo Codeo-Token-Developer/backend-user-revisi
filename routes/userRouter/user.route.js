@@ -19,7 +19,8 @@ let {
   QrLogout,
   forgotPassword,
   changePassword,
-  Update
+  Update,
+  cmsRead
 } = require("../../controllers/user/userController");
 
 Router.get("/", readAll);
@@ -36,5 +37,8 @@ Router.post("/changePassword", Auth, changePassword, sendEmailChangePassword);
 Router.patch("/logout", Auth, logout);
 Router.patch("/2faout", Auth, QrLogout);
 Router.patch("/2fa", Auth, QrUpdate);
+
+//CMS
+Router.get('/newsAll', Auth, cmsRead);
 
 module.exports = Router;

@@ -1,13 +1,21 @@
 const mongoose = require('mongoose');
 
 const topupSchema = new mongoose.Schema({
-    amount: {
-        type: String,
-        required:[true, 'Amount cannot be empty']
+    data_bank: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'BankAccount'
     },
-    payment_method: {
+    credit_card: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CreditCard'
+    },
+
+    rek_number: {
         type: String,
-        required: [true, 'Payment method cannot be emtpy']
+    },
+    balance: {
+        type: Number,
+        require: [true, 'Balance cannot be empty']
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
