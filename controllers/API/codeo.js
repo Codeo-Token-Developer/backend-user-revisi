@@ -7,6 +7,11 @@ const axios = require("axios").default;
 const headers = { "Content-Type": "application/json", "x-api-key": API_KEY };
 const Web3 = require("web3");
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
+const abi = require("./ABI/ABIcodeo");
+const contract = new web3js.eth.Contract(
+  abi,
+  "0x46b4a7d906F1A943b7744Df23625E63726d79035"
+);
 
 class codeo {
   static info(req, res, next) {
@@ -14,49 +19,57 @@ class codeo {
     let addressEth = req.params.Address;
     eth.findOne({ user: userId }).then(function (user) {
       if (user) {
-        axios({
-          url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0x46b4a7d906F1A943b7744Df23625E63726d79035/balance`,
-          method: "GET",
-          headers,
-        })
-          .then(({ data }) => {
-            return eth.findOneAndUpdate(
+        // axios({
+        //   url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0x46b4a7d906F1A943b7744Df23625E63726d79035/balance`,
+        //   method: "GET",
+        //   headers,
+        // })
+        //   .then(({ data }) => {
+        contract.methods.balanceOf(addressEth).call((err, result) => {
+          console.log(result);
+          let sisa = result / 1e18;
+          return eth
+            .findOneAndUpdate(
               { user: userId },
               {
-                balance: data.payload.token,
+                balance: sisa,
               },
               { new: true }
-            );
-          })
-          .then(function (payload) {
-            res.status(202).json({
-              message: "success",
-              payload,
-              status: 202,
-            });
-          })
-          .catch(next);
+            )
+            .then(function (payload) {
+              res.status(202).json({
+                message: "success",
+                payload,
+                status: 202,
+              });
+            })
+            .catch(next);
+        });
       } else {
-        axios({
-          url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0x46b4a7d906F1A943b7744Df23625E63726d79035/balance`,
-          method: "GET",
-          headers,
-        })
-          .then(({ data }) => {
-            return eth.create({
+        // axios({
+        //   url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0x46b4a7d906F1A943b7744Df23625E63726d79035/balance`,
+        //   method: "GET",
+        //   headers,
+        // })
+        //   .then(({ data }) => {
+        contract.methods.balanceOf(addressEth).call((err, result) => {
+          console.log(result);
+          let sisa = result / 1e18;
+          return eth
+            .create({
               user: userId,
-              balance: data.payload.balance,
-              symbol: data.payload.symbol,
-            });
-          })
-          .then(function (payload) {
-            res.status(202).json({
-              message: "success",
-              payload,
-              status: 202,
-            });
-          })
-          .catch(next);
+              balance: sisa,
+              symbol: "CODEO",
+            })
+            .then(function (payload) {
+              res.status(202).json({
+                message: "success",
+                payload,
+                status: 202,
+              });
+            })
+            .catch(next);
+        });
       }
     });
   }

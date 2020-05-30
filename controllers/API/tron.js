@@ -6,6 +6,11 @@ const axios = require("axios").default;
 const headers = { "Content-Type": "application/json", "x-api-key": API_KEY };
 const Web3 = require("web3");
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
+const abi = require("./ABI/ABItrx");
+const contract = new web3js.eth.Contract(
+  abi,
+  "0xf230b790e05390fc8295f4d3f60332c93bed42e2"
+);
 
 class tron {
   static info(req, res, next) {
@@ -13,49 +18,45 @@ class tron {
     let addressEth = req.params.Address;
     eth.findOne({ user: userId }).then(function (user) {
       if (user) {
-        axios({
-          url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0xf230b790e05390fc8295f4d3f60332c93bed42e2/balance`,
-          method: "GET",
-          headers,
-        })
-          .then(({ data }) => {
-            return eth.findOneAndUpdate(
+        contract.methods.balanceOf(addressEth).call((err, result) => {
+          console.log(result);
+          let sisa = result / 1e6;
+          return eth
+            .findOneAndUpdate(
               { user: userId },
               {
-                balance: data.payload.token,
+                balance: sisa,
               },
               { new: true }
-            );
-          })
-          .then(function (payload) {
-            res.status(202).json({
-              message: "success",
-              payload,
-              status: 202,
-            });
-          })
-          .catch(next);
+            )
+            .then(function (payload) {
+              res.status(202).json({
+                message: "success",
+                payload,
+                status: 202,
+              });
+            })
+            .catch(next);
+        });
       } else {
-        axios({
-          url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0xf230b790e05390fc8295f4d3f60332c93bed42e2/balance`,
-          method: "GET",
-          headers,
-        })
-          .then(({ data }) => {
-            return eth.create({
+        contract.methods.balanceOf(addressEth).call((err, result) => {
+          console.log(result);
+          let sisa = result / 1e18;
+          return eth
+            .create({
               user: userId,
-              balance: data.payload.balance,
-              symbol: data.payload.symbol,
-            });
-          })
-          .then(function (payload) {
-            res.status(202).json({
-              message: "success",
-              payload,
-              status: 202,
-            });
-          })
-          .catch(next);
+              balance: sisa,
+              symbol: "TRX",
+            })
+            .then(function (payload) {
+              res.status(202).json({
+                message: "success",
+                payload,
+                status: 202,
+              });
+            })
+            .catch(next);
+        });
       }
     });
   }
