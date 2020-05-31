@@ -187,7 +187,7 @@ const projectSchema = new mongoose.Schema({
     link_relevant_blockchain: {
         type: String,
     },
-    publicly: {
+    publicy: {
         type: String
     },
     fullname_title: {
