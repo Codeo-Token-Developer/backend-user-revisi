@@ -19,12 +19,6 @@ class codeo {
     let addressEth = req.params.Address;
     eth.findOne({ user: userId }).then(function (user) {
       if (user) {
-        // axios({
-        //   url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0x46b4a7d906F1A943b7744Df23625E63726d79035/balance`,
-        //   method: "GET",
-        //   headers,
-        // })
-        //   .then(({ data }) => {
         contract.methods.balanceOf(addressEth).call((err, result) => {
           console.log(result);
           let sisa = result / 1e18;
@@ -46,12 +40,6 @@ class codeo {
             .catch(next);
         });
       } else {
-        // axios({
-        //   url: `${apiUrl}bc/eth/mainnet/tokens/${addressEth}/0x46b4a7d906F1A943b7744Df23625E63726d79035/balance`,
-        //   method: "GET",
-        //   headers,
-        // })
-        //   .then(({ data }) => {
         contract.methods.balanceOf(addressEth).call((err, result) => {
           console.log(result);
           let sisa = result / 1e18;
@@ -85,10 +73,16 @@ class codeo {
           headers,
         })
           .then(({ data }) => {
+            let newData = [];
+            for (let i = 0; i < data.payload.length; i++) {
+              if (data.payload[i].symbol === "CODEO") {
+                newData.push(data.payload[i]);
+              }
+            }
             return tranhistory.findOneAndUpdate(
               { user: userId },
               {
-                History: data.payload,
+                History: newData,
               },
               { new: true }
             );
@@ -108,7 +102,13 @@ class codeo {
           headers,
         })
           .then(({ data }) => {
-            return tranhistory.create({ user: userId, History: data.payload });
+            let newData = [];
+            for (let i = 0; i < data.payload.length; i++) {
+              if (data.payload[i].symbol === "CODEO") {
+                newData.push(data.payload[i]);
+              }
+            }
+            return tranhistory.create({ user: userId, History: newData });
           })
           .then(function (payload) {
             res.status(202).json({

@@ -2,6 +2,7 @@ const API_KEY = process.env.API_KEY;
 const apiUrl = process.env.BASE_URL;
 const SECRET = process.env.SECRET;
 const eth = require("../../models/Blockchain/bnb");
+const tranhistory = require("../../models/Blockchain/bnbHistory");
 const axios = require("axios").default;
 const headers = { "Content-Type": "application/json", "x-api-key": API_KEY };
 const Web3 = require("web3");
@@ -57,6 +58,66 @@ class bnb {
             })
             .catch(next);
         });
+      }
+    });
+  }
+
+  static history(req, res, next) {
+    var userId = req.decoded.id;
+    let addressEth = req.params.Address;
+    tranhistory.findOne({ user: userId }).then(function (user) {
+      if (user) {
+        axios({
+          url: `${apiUrl}bc/eth/mainnet/tokens/address/${addressEth}/transfers`,
+          method: "GET",
+          headers,
+        })
+          .then(({ data }) => {
+            let newData = [];
+            for (let i = 0; i < data.payload.length; i++) {
+              if (data.payload[i].symbol === "BNB") {
+                newData.push(data.payload[i]);
+              }
+            }
+            return tranhistory.findOneAndUpdate(
+              { user: userId },
+              {
+                History: newData,
+              },
+              { new: true }
+            );
+          })
+          .then(function (payload) {
+            res.status(202).json({
+              message: "success",
+              payload,
+              status: 202,
+            });
+          })
+          .catch(next);
+      } else {
+        axios({
+          url: `${apiUrl}bc/eth/mainnet/tokens/address/${addressEth}/transfers`,
+          method: "GET",
+          headers,
+        })
+          .then(({ data }) => {
+            let newData = [];
+            for (let i = 0; i < data.payload.length; i++) {
+              if (data.payload[i].symbol === "BNB") {
+                newData.push(data.payload[i]);
+              }
+            }
+            return tranhistory.create({ user: userId, History: newData });
+          })
+          .then(function (payload) {
+            res.status(202).json({
+              message: "success",
+              payload,
+              status: 202,
+            });
+          })
+          .catch(next);
       }
     });
   }

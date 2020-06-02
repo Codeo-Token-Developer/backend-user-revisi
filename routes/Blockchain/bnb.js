@@ -1,10 +1,11 @@
 const express = require("express");
 const Router = express.Router();
 const { userAuthentication } = require("../../middlewares/Auth");
-const { info, transfer } = require("../../controllers/API/bnb");
+const { info, transfer, history } = require("../../controllers/API/bnb");
 
 Router.get("/infoAccount/:Address", userAuthentication, info);
 Router.post("/transfer/:Address", userAuthentication, transfer);
+Router.get("/historyAccount/:Address", userAuthentication, history);
 
 // Router.get('/myLogHistory')
 
