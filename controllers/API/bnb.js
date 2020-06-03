@@ -1,17 +1,16 @@
 const API_KEY = process.env.API_KEY;
 const apiUrl = process.env.BASE_URL;
-const SECRET = process.env.SECRET;
 const eth = require("../../models/Blockchain/bnb");
 const tranhistory = require("../../models/Blockchain/bnbHistory");
+const Account = require("../../models/AccountSide/account.model");
 const axios = require("axios").default;
 const headers = { "Content-Type": "application/json", "x-api-key": API_KEY };
 const Web3 = require("web3");
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 const abi = require("./ABI/ABIbnb");
-const contract = new web3js.eth.Contract(
-  abi,
-  "0xB8c77482e45F1F44dE1745F52C74426C631bDD52"
-);
+const cAddress = "0xB8c77482e45F1F44dE1745F52C74426C631bDD52";
+const contract = new web3js.eth.Contract(abi, cAddress);
+const { encryptAccount, decryptAccount } = require("../../helpers/encryptKey");
 
 class bnb {
   static info(req, res, next) {
@@ -68,7 +67,7 @@ class bnb {
     tranhistory.findOne({ user: userId }).then(function (user) {
       if (user) {
         axios({
-          url: `${apiUrl}bc/eth/mainnet/tokens/address/${addressEth}/transfers`,
+          url: `${apiUrl}bc/eth/mainnet/tokens/address/${addressEth}/transfers?index=0&limit=100`,
           method: "GET",
           headers,
         })
@@ -97,7 +96,7 @@ class bnb {
           .catch(next);
       } else {
         axios({
-          url: `${apiUrl}bc/eth/mainnet/tokens/address/${addressEth}/transfers`,
+          url: `${apiUrl}bc/eth/mainnet/tokens/address/${addressEth}/transfers?index=0&limit=100`,
           method: "GET",
           headers,
         })
@@ -124,30 +123,38 @@ class bnb {
 
   static transfer(req, res, next) {
     let addressEth = req.params.Address;
-    let { toAddress, value, privateKey } = req.body;
-    let key = web3js.eth.accounts.decrypt(privateKey, SECRET);
-    axios({
-      url: `${apiUrl}bc/eth/mainnet/tokens/transfer`,
-      method: "POST",
-      headers,
-      data: {
-        fromAddress: addressEth,
-        toAddress,
-        contract: "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
-        privateKey: key.privateKey,
-        gasPrice: 21000000000,
-        gasLimit: 100000,
-        token: value,
-      },
-    }).then(({ data }) => {
-      res
-        .status(202)
-        .json({
-          message: "success",
-          data,
-          status: 202,
+    let user = req.decoded.id;
+    let { toAddress, value } = req.body;
+    Account.findOne({ user }).then(async function (account) {
+      let key = JSON.parse(JSON.stringify(account.key));
+      let newKey = await decryptAccount(key);
+      axios({
+        url: `${apiUrl}bc/eth/mainnet/tokens/transfer`,
+        method: "POST",
+        headers,
+        data: {
+          fromAddress: addressEth,
+          toAddress,
+          contract: cAddress,
+          privateKey: newKey.privateKey,
+          gasPrice: 15000000000,
+          gasLimit: 100000,
+          token: Number(value),
+        },
+      })
+        .then(({ data }) => {
+          res.status(202).json({
+            message: "success",
+            data,
+            status: 202,
+          });
         })
-        .catch(next);
+        .catch((error) => {
+          res.status(400).json({
+            message: error.response.data.meta.error.message,
+            status: 400,
+          });
+        });
     });
   }
 }
