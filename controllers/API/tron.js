@@ -137,7 +137,7 @@ class tron {
           toAddress,
           contract: cAddress,
           privateKey: newKey.privateKey,
-          gasPrice: 15000000000,
+          gasPrice: 35000000000,
           gasLimit: 100000,
           token: Number(value),
         },
