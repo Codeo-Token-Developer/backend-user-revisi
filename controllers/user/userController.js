@@ -58,8 +58,7 @@ class UserController {
           email,
           username,
           referral_address: referral_address,
-          ref: newRef,
-          verification: true
+          ref: newRef
         })
           .then(function(user) {
             req.payload = {
@@ -68,12 +67,6 @@ class UserController {
               full_name: user.full_name
             };
             
-            return RegisterToday.create({full_name, username})
-          })
-          .then(function (registerToday) {
-            return User.find({})
-          })
-          .then(users => {
             Io.emit('user-register', users.length);
             next();
           })
@@ -86,8 +79,7 @@ class UserController {
         email,
         username,
         referral_address: referral_address,
-        ref: newRef,
-        verification: true
+        ref: newRef
       })
         .then(function(user) {
           next();
@@ -96,6 +88,7 @@ class UserController {
     }
   }
 
+  
   static login(req, res, next) {
     let Io = req.Io;
     let { email, password } = req.body;
