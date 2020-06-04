@@ -67,7 +67,8 @@ class UserController {
               full_name: user.full_name
             };
             
-            next();
+            // next();
+            res.status(200).json({message: "Account already store"})
           })
           .catch(next);
       }
