@@ -21,7 +21,6 @@ class codeo {
     eth.findOne({ user: userId }).then(function (user) {
       if (user) {
         contract.methods.balanceOf(addressEth).call((err, result) => {
-          console.log(result);
           let sisa = result / 1e18;
           return eth
             .findOneAndUpdate(
@@ -42,7 +41,6 @@ class codeo {
         });
       } else {
         contract.methods.balanceOf(addressEth).call((err, result) => {
-          console.log(result);
           let sisa = result / 1e18;
           return eth
             .create({
@@ -139,7 +137,7 @@ class codeo {
           toAddress,
           contract: "0x46b4a7d906F1A943b7744Df23625E63726d79035",
           privateKey: newKey.privateKey,
-          gasPrice: 15000000000,
+          gasPrice: 30000000000,
           gasLimit: 100000,
           token: Number(value),
         },

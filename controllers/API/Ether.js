@@ -127,13 +127,13 @@ class ether {
       let newKey = await decryptAccount(key);
       console.log(newKey.privateKey);
       axios({
-        url: `${apiUrl}bc/eth/rinkeby/txs/new-pvtkey`,
+        url: `${apiUrl}bc/eth/mainnet/txs/new-pvtkey`,
         method: "POST",
         headers,
         data: {
           fromAddress: addressEth,
           toAddress: toAddress,
-          gasPrice: 21000000000,
+          gasPrice: 35000000000,
           gasLimit: 60000,
           value: Number(value),
           privateKey: newKey.privateKey,
@@ -156,18 +156,5 @@ class ether {
   }
 }
 
-// (response) => {
-//   res.status(202).json({
-//     message: "success",
-//     response,
-//     status: 202,
-//   });
-// },
-// (error) => {
-//   res.status(400).json({
-//     message: error.response.data.meta.error.message,
-//     status: 400,
-//   });
-// }
 
 module.exports = ether;

@@ -22,6 +22,7 @@ const eth = require("./Blockchain/ether");
 const cdo = require("./Blockchain/codeo");
 const bnb = require("./Blockchain/bnb");
 const trx = require("./Blockchain/tron");
+const CirculatingSupply = require("./otherRouter/infocodeo");
 
 Router.use("/injection", injectionRouter);
 Router.use("/sandbox", sandboxRouter);
@@ -64,6 +65,9 @@ Router.use("/bnb", bnb);
 
 //trx
 Router.use("/trx", trx);
+
+//CirculatingSupply
+Router.use("/circulatingSupply", CirculatingSupply)
 
 //Topup
 Router.use(require("./topup/topupRouter"));
