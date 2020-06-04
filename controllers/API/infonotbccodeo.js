@@ -1,4 +1,4 @@
-const codeo = require("../../models/infocodeo");
+const codeo = require("../../models/notbccodeo");
 const Web3 = require("web3");
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 const abi = require("./ABI/ABIcodeo");
@@ -9,13 +9,13 @@ const nonSupplyAddress = "0x449324d64cf250e63bf2854c5484f92a09cb4442"
 class codeoinfo {
     static info(req, res, next) {
         contract.methods.balanceOf(nonSupplyAddress).call((err, result) => {
-            let fix = Number(result) / 1e18
-            let hasil = 1000000000000 - fix
+            let hasil = (1000000000000 * 1e18) - result
+            let newcount = (hasil * 1e18)
             return codeo
                 .findOneAndUpdate(
-                    { _id: '5ed8c2bfca77672cac4b1fba' },
+                    { _id: '5ed8c4b4b05bac1f08bb81f3' },
                     {
-                        CirculatingSupply: hasil,
+                        CirculatingSupplyDecimal: newcount,
                     },
                     { new: true }
                 )
@@ -31,11 +31,12 @@ class codeoinfo {
 
     static buat(req, res, next) {
         contract.methods.balanceOf(nonSupplyAddress).call((err, result) => {
-            let fix = Number(result) / 1e18
-            let hasil = 1000000000000 - fix
+            let count = result / 1e18
+            let hasil = 1000000000000 - count
+            let newcount = hasil * 1e18
             return codeo
                 .create({
-                    CirculatingSupply: hasil,
+                    CirculatingSupplyDecimal: newcount,
                     symbol: 'CODEO',
                 })
                 .then(function (payload) {
