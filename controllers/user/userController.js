@@ -67,7 +67,6 @@ class UserController {
               full_name: user.full_name
             };
             
-            Io.emit('user-register', users.length);
             next();
           })
           .catch(next);
@@ -88,7 +87,7 @@ class UserController {
     }
   }
 
-  
+
   static login(req, res, next) {
     let Io = req.Io;
     let { email, password } = req.body;
