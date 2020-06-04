@@ -68,14 +68,8 @@ class UserController {
               full_name: user.full_name
             };
             
-            return RegisterToday.create({full_name, username})
-          })
-          .then(function (registerToday) {
-            return User.find({})
-          })
-          .then(users => {
-            Io.emit('user-register', users.length);
-            next();
+            // next();
+            res.status(200).json({message: "Account already store"})
           })
           .catch(next);
       }
@@ -95,6 +89,7 @@ class UserController {
         .catch(next);
     }
   }
+
 
   static login(req, res, next) {
     let Io = req.Io;
