@@ -24,6 +24,7 @@ const bnb = require("./Blockchain/bnb");
 const trx = require("./Blockchain/tron");
 const CirculatingSupply = require("./otherRouter/infocodeo");
 const CirculatingSupplyNOt = require("./otherRouter/nonbccodeo");
+const totalsupply = require("./otherRouter/codeototal");
 
 Router.use("/injection", injectionRouter);
 Router.use("/sandbox", sandboxRouter);
@@ -72,6 +73,9 @@ Router.use("/circulatingSupply", CirculatingSupply)
 
 //CirculatingSupplyNOt
 Router.use("/circulating-supply", CirculatingSupplyNOt)
+
+//totalsupply
+Router.use("/total-supply", totalsupply)
 
 //Topup
 Router.use(require("./topup/topupRouter"));
