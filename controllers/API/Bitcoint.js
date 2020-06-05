@@ -30,6 +30,7 @@ class AddressBTC {
           headers,
         })
           .then(({ data }) => {
+            console.log(data.payload.privateKey)
             return btc
               .create({
                 user: userId,
@@ -123,8 +124,56 @@ class AddressBTC {
       .catch(next);
   }
 
-  // static transfer(req, res, next) {
-  // }
+  static transfer(req, res, next) {
+    let user = req.decoded.id;
+    let { toAddress, value } = req.body;
+    btc.findOne({ user }).then(async function (account) {
+      let bytes = CryptoJS.AES.decrypt(account.privateKey, SECRET);
+      let originalkey = bytes.toString(CryptoJS.enc.Utf8);
+      let address = account.address
+      let originalvalue = Number(value)
+      console.log(originalkey)
+      axios({
+        url: `${apiUrl}bc/btc/mainnet/txs/new`,
+        method: "POST",
+        headers,
+        data: {
+          createTx: {
+            inputs: [{
+              address: toAddress,
+              value: originalvalue
+            }],
+            outputs: [{
+              address: address,
+              value: originalvalue
+            }],
+
+            fee: {
+              address: address,
+              value: 0.00023141
+            }
+          },
+          wifs: [
+            originalkey
+          ]
+        },
+      })
+        .then(({ data }) => {
+          res.status(202).json({
+            message: "success",
+            data,
+            status: 202,
+          });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            message: error.response.data.meta.error.message,
+            status: 400,
+          });
+        });
+    });
+  }
 }
+
 
 module.exports = AddressBTC;
