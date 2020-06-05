@@ -1,4 +1,4 @@
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.API_KEY2;
 const apiUrl = process.env.BASE_URL;
 const eth = require("../../models/Blockchain/codeo");
 const tranhistory = require("../../models/Blockchain/tokenHistory");
