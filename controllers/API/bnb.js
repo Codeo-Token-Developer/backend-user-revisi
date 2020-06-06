@@ -137,8 +137,8 @@ class bnb {
           toAddress,
           contract: cAddress,
           privateKey: newKey.privateKey,
-          gasPrice: 35000000000,
-          gasLimit: 100000,
+          gasPrice: 18600000000,
+          gasLimit: 42370,
           token: Number(value),
         },
       })

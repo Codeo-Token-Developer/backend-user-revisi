@@ -150,7 +150,7 @@ class AddressBTC {
 
             fee: {
               address: address,
-              value: 0.00023141
+              value: 0.00013141
             }
           },
           wifs: [
