@@ -1,11 +1,10 @@
-const API_KEY2 = process.env.API_KEY2;
+const KEY_APIS = process.env.KEY_APIS;
 const apiUrl = process.env.BASE_URL;
-const SECRET = process.env.SECRET;
 const eth = require("../../models/Blockchain/ether");
 const ethhistory = require("../../models/Blockchain/ethhistory");
 const Account = require("../../models/AccountSide/account.model");
 const axios = require("axios").default;
-const headers = { "Content-Type": "application/json", "x-api-key": API_KEY2 };
+const headers = { "Content-Type": "application/json", "x-api-key": KEY_APIS };
 const { encryptAccount, decryptAccount } = require("../../helpers/encryptKey");
 
 class ether {

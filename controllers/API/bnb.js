@@ -1,10 +1,10 @@
-const API_KEY2 = process.env.API_KEY2;
+const KEY_APIS = process.env.KEY_APIS;
 const apiUrl = process.env.BASE_URL;
 const eth = require("../../models/Blockchain/bnb");
 const tranhistory = require("../../models/Blockchain/bnbHistory");
 const Account = require("../../models/AccountSide/account.model");
 const axios = require("axios").default;
-const headers = { "Content-Type": "application/json", "x-api-key": API_KEY2 };
+const headers = { "Content-Type": "application/json", "x-api-key": KEY_APIS };
 const Web3 = require("web3");
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 const abi = require("./ABI/ABIbnb");
