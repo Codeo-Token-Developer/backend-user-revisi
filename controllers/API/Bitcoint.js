@@ -130,7 +130,7 @@ class AddressBTC {
     btc.findOne({ user }).then(async function (account) {
       let bytes = CryptoJS.AES.decrypt(account.privateKey, SECRET);
       let originalkey = bytes.toString(CryptoJS.enc.Utf8);
-      let address = account.address
+      let addressowner = account.address
       let originalvalue = Number(value)
       console.log(originalkey)
       axios({
@@ -144,12 +144,11 @@ class AddressBTC {
               value: originalvalue
             }],
             outputs: [{
-              address: address,
+              address: addressowner,
               value: originalvalue
             }],
-
             fee: {
-              address: address,
+              address: addressowner,
               value: 0.00013141
             }
           },
