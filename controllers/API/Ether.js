@@ -4,6 +4,8 @@ const eth = require("../../models/Blockchain/ether");
 const ethhistory = require("../../models/Blockchain/ethhistory");
 const Account = require("../../models/AccountSide/account.model");
 const axios = require("axios").default;
+const Web3 = require("web3");
+var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 const headers = { "Content-Type": "application/json", "x-api-key": KEY_APIS };
 const { encryptAccount, decryptAccount } = require("../../helpers/encryptKey");
 
@@ -13,29 +15,23 @@ class ether {
     let addressEth = req.params.Address;
     eth.findOne({ user: userId }).then(function (user) {
       if (user) {
-        axios({
-          url: `${apiUrl}bc/eth/mainnet/address/${addressEth}/balance`,
-          method: "GET",
-          headers,
+        web3js.eth.getBalance(addressEth, (err, wei) => {
+          return eth.findOneAndUpdate(
+            { user: userId },
+            {
+              balance: web3js.utils.fromWei(wei, 'ether'),
+            },
+            { new: true }
+          )
+            .then(function (payload) {
+              res.status(202).json({
+                message: "success",
+                payload,
+                status: 202,
+              });
+            })
+            .catch(next);
         })
-          .then(({ data }) => {
-            return eth.findOneAndUpdate(
-              { user: userId },
-              {
-                balance: data.payload.balance,
-                txs_count: data.payload.txs_count,
-              },
-              { new: true }
-            );
-          })
-          .then(function (payload) {
-            res.status(202).json({
-              message: "success",
-              payload,
-              status: 202,
-            });
-          })
-          .catch(next);
       } else {
         axios({
           url: `${apiUrl}bc/eth/mainnet/address/${addressEth}/balance`,
@@ -45,8 +41,7 @@ class ether {
           .then(({ data }) => {
             return eth.create({
               user: userId,
-              balance: data.payload.balance,
-              txs_count: data.payload.txs_count,
+              balance: data.payload.balance
             });
           })
           .then(function (payload) {
