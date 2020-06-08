@@ -1,4 +1,4 @@
-const KEY_APIS = process.env.KEY_APIS;
+const KEY_APIS = process.env.API_KEY;
 const apiUrl = process.env.BASE_URL;
 const eth = require("../../models/Blockchain/ether");
 const ethhistory = require("../../models/Blockchain/ethhistory");
