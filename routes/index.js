@@ -77,4 +77,18 @@ Router.use("/project", require("./launchpadRouter/projectRouter"));
 //Exchange
 Router.use(require("./exchange/tradeRouter"));
 
+
+const User = require('../models/AuthSide/user.model');
+
+Router.patch('/update-ver', (req,res,next) => {
+    User.find({verification: false})
+        .then(users => {
+            res.status(200).json(users)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+})
+
+
 module.exports = Router;

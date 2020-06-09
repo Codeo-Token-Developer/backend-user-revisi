@@ -152,7 +152,7 @@ class UserController {
         Io.emit('user-logout', logOutUser);
       })
       .catch(next);
-  }
+  };
 
   static logHistory(req, res, next) {
     let userId = req.decoded.id;
@@ -185,7 +185,7 @@ class UserController {
         res.status(202).json({ logs, status: 202 });
       })
       .catch(next);
-  }
+  };
 
   static readAllLogHistory(req, res, next) {
     LogHistory.find({})
@@ -193,7 +193,7 @@ class UserController {
         res.status(200).json({ logs, status: 200 });
       })
       .catch(next);
-  }
+  };
 
   static updateVerification(req, res, next) {
     let decoded;
