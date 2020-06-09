@@ -90,16 +90,14 @@ Router.use("/project", require("./launchpadRouter/projectRouter"));
 Router.use(require("./exchange/tradeRouter"));
 
 
-const User = require('../models/AuthSide/user.model');
+const LimitTrade = require('../models/exchange/limitTrade');
 
-Router.patch('/update-ver', (req,res,next) => {
-    User.find({verification: false})
-        .then(users => {
-            res.status(200).json(users)
+Router.delete("/limit-trade", (req,res,next) => {
+    LimitTrade.deleteMany({})
+        .then(() => {
+            res.send("oke")
         })
-        .catch(err => {
-            console.log(err)
-        })
+        .catch(console.log)
 })
 
 

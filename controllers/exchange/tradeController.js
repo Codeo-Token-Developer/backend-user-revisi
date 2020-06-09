@@ -26,9 +26,76 @@ class TradeController {
     static createBuyOrder(req,res,next) {
         let Io = req.Io;
         let user = req.decoded.id;
-        let { amount, price,  } = req.body;
+        let { amount, price, order_type, currency } = req.body;
+        let userBalance;
+
+        Account.findOne({user})
+            .then(account => {
+                if (account) {
+                    userBalance = account.balance;
+                    return LimitTrade.findOne({currency, order_type, user})
+                    .then(userTrade => {
+                        console.log(userTrade);
+                        if (userTrade) {
+                            let totalAmount = userTrade.amounts + Number(amount);
+                            let allPrices = userTrade.prices;
+                            allPrices.push(Number(price));
+                            let totalPrices = 0;
+                            allPrices.forEach(item => {
+                                totalPrices += item
+                            })
+                            let newAverage_price = totalPrices / allPrices.length
+                            if (newAverage_price > userBalance) {
+                                next({message: `Your balance is not enought`})
+                            }else {
+                                let total_btc_price = newAverage_price * totalAmount;
+                                return LimitTrade.updateOne({_id: userTrade.id}, {total: total_btc_price.toFixed(2),average_price: newAverage_price.toFixed(2), prices: allPrices, amount: totalAmount}, {omitUndefined: true, new: true})
+                                .then(() => {
+                                    return LimitTrade.find({order_type, currency}).sort({updatedAt: 'desc'})
+                                    .then(trades => {
+                                        Io.emit(`${order_type}-limit`, trades)
+                                        res.status(202).json({limitTrade: trades, status: 202});
+                                    })
+                                })
+                            }
+                        }else {
+                            req.userBalance = userBalance;
+                            next();
+                            return
+                        }
+                    })
+                }else {
+                    next({message: "Please make account first"})
+                }
+            })
+            .catch(next)
     };
 
+    static createBuyOrderStep2(req,res,next) {
+        let Io = req.Io;
+        let user = req.decoded.id;
+        let { amount, price, order_type, currency } = req.body;
+        let userBalance = req.userBalance;
+        let totalPrice = Number(amount) * Number(price);
+        if (totalPrice > userBalance) {
+            next({message: 'Your balance is not enought'})
+        }else {
+            console.log("masuk step 2")
+            LimitTrade.create({total: totalPrice.toFixed(2) ,amounts: Number(amount), prices: [Number(price)], order_type, currency, average_price: Number(price), user})
+                .then(trade => {
+                 return LimitTrade.find({order_type, currency}).sort({updatedAt: 'desc'}).exec(function(err, docs) {
+                     if (err) {
+                         next(err)
+                     }else {
+                        Io.emit(`${order_type}-limit`, docs)
+                        res.status(200).json({limitTrade: docs, status: 200})
+                     }
+                 });
+                })
+                .catch(next)
+        };
+        
+    };
 };
 
 
