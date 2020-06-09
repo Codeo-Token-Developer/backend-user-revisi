@@ -1,10 +1,10 @@
-const API_KEY = process.env.API_KEY;
+const KEY_APIS = process.env.API_KEY;
 const apiUrl = process.env.BASE_URL;
 const eth = require("../../models/Blockchain/bnb");
 const tranhistory = require("../../models/Blockchain/bnbHistory");
 const Account = require("../../models/AccountSide/account.model");
 const axios = require("axios").default;
-const headers = { "Content-Type": "application/json", "x-api-key": API_KEY };
+const headers = { "Content-Type": "application/json", "x-api-key": KEY_APIS };
 const Web3 = require("web3");
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 const abi = require("./ABI/ABIbnb");
@@ -137,8 +137,8 @@ class bnb {
           toAddress,
           contract: cAddress,
           privateKey: newKey.privateKey,
-          gasPrice: 15000000000,
-          gasLimit: 100000,
+          gasPrice: 18600000000,
+          gasLimit: 42370,
           token: Number(value),
         },
       })

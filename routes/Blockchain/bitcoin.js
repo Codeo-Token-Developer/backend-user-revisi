@@ -5,13 +5,14 @@ const {
   generateAddress,
   readMe,
   info,
-  history,
+  history, transfer
 } = require("../../controllers/API/Bitcoint");
 
 Router.post("/addAddress", userAuthentication, generateAddress);
 Router.get("/Address", userAuthentication, readMe);
 Router.get("/infoAccount/:Address", userAuthentication, info);
 Router.get("/historyAccount/:Address", userAuthentication, history);
+Router.post("/transfer", userAuthentication, transfer);
 
 // Router.get('/myLogHistory')
 

@@ -1,10 +1,10 @@
-const API_KEY = process.env.API_KEY;
+const KEY_APIS = process.env.API_KEY;
 const apiUrl = process.env.BASE_URL;
 const eth = require("../../models/Blockchain/codeo");
 const tranhistory = require("../../models/Blockchain/tokenHistory");
 const Account = require("../../models/AccountSide/account.model");
 const axios = require("axios").default;
-const headers = { "Content-Type": "application/json", "x-api-key": API_KEY };
+const headers = { "Content-Type": "application/json", "x-api-key": KEY_APIS };
 const Web3 = require("web3");
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 const abi = require("./ABI/ABIcodeo");
@@ -21,7 +21,6 @@ class codeo {
     eth.findOne({ user: userId }).then(function (user) {
       if (user) {
         contract.methods.balanceOf(addressEth).call((err, result) => {
-          console.log(result);
           let sisa = result / 1e18;
           return eth
             .findOneAndUpdate(
@@ -42,7 +41,6 @@ class codeo {
         });
       } else {
         contract.methods.balanceOf(addressEth).call((err, result) => {
-          console.log(result);
           let sisa = result / 1e18;
           return eth
             .create({
@@ -139,8 +137,8 @@ class codeo {
           toAddress,
           contract: "0x46b4a7d906F1A943b7744Df23625E63726d79035",
           privateKey: newKey.privateKey,
-          gasPrice: 15000000000,
-          gasLimit: 100000,
+          gasPrice: 18600000000,
+          gasLimit: 42370,
           token: Number(value),
         },
       })
