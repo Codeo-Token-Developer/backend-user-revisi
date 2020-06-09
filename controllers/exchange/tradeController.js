@@ -96,6 +96,23 @@ class TradeController {
         };
         
     };
+
+    static createSellOrder(req,res,next) {
+        let Io = req.Io;
+        let user = req.decoded.id;
+        let { amount, price, order_type, currency } = req.body;
+        Account.findOne({user})
+            .then(account => {
+                if (account) {
+                    
+                }
+            })
+            .catch(next)
+    };
+
+    static createSellOrderStep2(req,res,next) {
+
+    };
 };
 
 

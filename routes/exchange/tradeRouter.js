@@ -7,7 +7,6 @@ const { userAuthentication } = require('../../middlewares/Auth');
 Router.get('/trade/limit/:coin', readAllLimit);
 Router.get('/trade/myLimit/:coin', userAuthentication, readMyLimit);
 Router.post('/trade/limit/buy', userAuthentication, createBuyOrder, createBuyOrderStep2);
-// Router.post("/trade/limit/buy", userAuthentication, createLimitOrderBuy);
-// Router.post("/trade/limit/sell", userAuthentication, createLimitOrderSell);
+
 
 module.exports = Router;
