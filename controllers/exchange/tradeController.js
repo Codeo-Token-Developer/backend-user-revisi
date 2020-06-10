@@ -6,7 +6,7 @@ class TradeController {
 
     static readAllLimit(req,res,next) {
         let coin = req.params.coin;
-        LimitTrade.find({currency: coin}).sort({updatedAt: 'asc'})
+        LimitTrade.find({currency: coin}).sort({updatedAt: 'desc'})
             .then(trades => {
                 res.status(200).json({limitTrades: trades, status: 200})
             })
@@ -27,15 +27,14 @@ class TradeController {
         let Io = req.Io;
         let user = req.decoded.id;
         let { amount, price, order_type, currency } = req.body;
+        console.log(price)
         let userBalance;
-
         Account.findOne({user})
             .then(account => {
                 if (account) {
                     userBalance = account.balance;
                     return LimitTrade.findOne({currency, order_type, user})
                     .then(userTrade => {
-                        console.log(userTrade);
                         if (userTrade) {
                             let totalAmount = userTrade.amounts + Number(amount);
                             let allPrices = userTrade.prices;
@@ -46,15 +45,15 @@ class TradeController {
                             })
                             let newAverage_price = totalPrices / allPrices.length
                             if (newAverage_price > userBalance) {
-                                next({message: `Your balance is not enought`})
+                                next({message: `Your balance is not enough`})
                             }else {
-                                let total_btc_price = newAverage_price * totalAmount;
-                                return LimitTrade.updateOne({_id: userTrade.id}, {total: total_btc_price.toFixed(2),average_price: newAverage_price.toFixed(2), prices: allPrices, amount: totalAmount}, {omitUndefined: true, new: true})
+                                let total_coin_price = newAverage_price * totalAmount;
+                                return LimitTrade.updateOne({_id: userTrade.id}, {total: total_coin_price.toFixed(2),average_price: newAverage_price.toFixed(2), prices: allPrices, amounts: totalAmount}, {omitUndefined: true})
                                 .then(() => {
                                     return LimitTrade.find({order_type, currency}).sort({updatedAt: 'desc'})
                                     .then(trades => {
-                                        Io.emit(`${order_type}-limit`, trades)
-                                        res.status(202).json({limitTrade: trades, status: 202});
+                                        Io.emit(`${order_type}-limit`, {trades, currency})
+                                        res.status(202).json({message: "Your order has been executed", status: 202});
                                     })
                                 })
                             }
@@ -78,41 +77,119 @@ class TradeController {
         let userBalance = req.userBalance;
         let totalPrice = Number(amount) * Number(price);
         if (totalPrice > userBalance) {
-            next({message: 'Your balance is not enought'})
+            next({message: 'Your balance is not enough'})
         }else {
-            console.log("masuk step 2")
             LimitTrade.create({total: totalPrice.toFixed(2) ,amounts: Number(amount), prices: [Number(price)], order_type, currency, average_price: Number(price), user})
                 .then(trade => {
                  return LimitTrade.find({order_type, currency}).sort({updatedAt: 'desc'}).exec(function(err, docs) {
                      if (err) {
                          next(err)
                      }else {
-                        Io.emit(`${order_type}-limit`, docs)
-                        res.status(200).json({limitTrade: docs, status: 200})
+                        Io.emit(`${order_type}-limit`, Io.emit(`${order_type}-limit`, {trades: docs, currency}))
+                        res.status(202).json({message: "Your order has been executed", status: 202});
                      }
                  });
                 })
                 .catch(next)
         };
-        
     };
 
     static createSellOrder(req,res,next) {
         let Io = req.Io;
         let user = req.decoded.id;
         let { amount, price, order_type, currency } = req.body;
+        let objectText;
+        if (currency === 'btc') {
+            objectText = 'BTC_coin'
+        }else if (currency === 'eth') {
+            objectText = 'ETH_coin'
+        }else if (currency === 'trx') {
+            objectText = 'TRX_coin'
+        }else if (currency === 'bnb') {
+            objectText = 'BNB_coin'
+        }else if (currency === 'codeo') {
+            objectText = 'CODEO_coin'
+        }else if (currency === 'ltc') {
+            objectText = "LTC_coin"
+        };
+        let coinBalance;
         Account.findOne({user})
             .then(account => {
                 if (account) {
-                    
+                    coinBalance = account[objectText]
+                    console.log(coinBalance);
+                    if (coinBalance) {
+                        LimitTrade.findOne({currency, order_type, user})
+                            .then(userTrade => {
+                                console.log(userTrade)
+                                if (userTrade) {
+                                    let totalAmounts = Number(amount) + userTrade.amounts
+                                    let allPrices = userTrade.prices;
+                                    allPrices.push(Number(price));
+                                    let totalPrices = 0;
+                                    allPrices.forEach(item => {
+                                        totalPrices += item
+                                    })
+                                    let avg = totalPrices / allPrices.length;
+                                    let total_coin_price = avg * totalAmounts;
+                                    if (totalAmounts < coinBalance) {
+                                         return LimitTrade.updateOne({_id: userTrade.id}, {total: total_coin_price.toFixed(2), average_price: avg.toFixed(2), prices: allPrices, amounts: totalAmounts }, {omitUndefined: true})
+                                            .then(() => {
+                                                 return LimitTrade.find({order_type, currency}).sort({updatedAt: 'desc'})
+                                                    .then(trades => {
+                                                        Io.emit(`${order_type}-limit`, {trades, currency})
+                                                        res.status(202).json({message: `Your order has been executed`, status: 202})
+                                                    })
+                                            })
+                                    }else {
+                                        next({message: `Your coin balance not enough`})
+                                    }
+                                }else {
+                                    req.coinBalance = coinBalance;
+                                    next();
+                                }
+                            })
+                    }else {
+                        next({message: `You don't have this coin or your coin not enough`})
+                    }
+                }else {
+                    next({message: 'Please make account first'})
                 }
             })
             .catch(next)
     };
 
     static createSellOrderStep2(req,res,next) {
-
+        let { amount, price, order_type, currency } = req.body;
+        let user = req.decoded.id;
+        let Io = req.Io;
+        let totalPrice = Number(amount) * Number(price)
+        let coinBalance = req.coinBalance;
+        if (amount < coinBalance) {
+            return LimitTrade.create({total: totalPrice, amounts: Number(amount), prices: [Number(price)], order_type, currency, average_price: Number(price), user})
+                .then(trade => {
+                    return LimitTrade.find({order_type, currency}).sort({updatedAt: 'desc'})
+                        .then(trades => {
+                            Io.emit(`${order_type}-limit`, {trades, currency})
+                            res.status(200).json({message: `Your coin is not enough`})
+                        })
+                })
+                .catch(next);
+        }else {
+            next({message: `Your coin is not enough`})
+        }
     };
+
+    static deleteLimitOrder(req,res,next) {
+        let tradeId = req.params.tradeId;
+        LimitTrade.deleteOne({_id: tradeId})
+            .then(() => {
+                res.status(200).json({message: `Your limit order already deleted`})
+            })
+            .catch(next)
+    };
+
+    
 };
 
 
