@@ -41,6 +41,11 @@ app.use(errHandler);
 
 Io.on("connection", (socket) => {
   console.log("Io connect");
+
+  socket.on('created', data => {
+    console.log(data)
+  })
+
   socket.on("disconnect", () => {
     console.log("Io disconnect");
   });

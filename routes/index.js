@@ -89,4 +89,16 @@ Router.use("/project", require("./launchpadRouter/projectRouter"));
 //Exchange
 Router.use(require("./exchange/tradeRouter"));
 
+
+const LimitTrade = require('../models/exchange/limitTrade');
+
+Router.delete("/limit-trade", (req,res,next) => {
+    LimitTrade.deleteMany({})
+        .then(() => {
+            res.send("oke")
+        })
+        .catch(console.log)
+})
+
+
 module.exports = Router;

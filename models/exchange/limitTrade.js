@@ -22,6 +22,9 @@ const limitTrade = new mongoose.Schema({
     },
     currency: {
         type: String,
+    },
+    total: {
+        type: Number
     }
 
 }, {versionKey: false, timestamps: {createdAt: 'createdAt'}})
