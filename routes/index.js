@@ -91,6 +91,15 @@ Router.use(require("./exchange/tradeRouter"));
 
 
 const LimitTrade = require('../models/exchange/limitTrade');
+const TradeHistory = require('../models/exchange/tradeHistory');
+
+Router.delete('/market-trade', (req,res,next) => {
+    TradeHistory.deleteMany({})
+        .then(() => {
+            res.send('oke')
+        })
+        .catch(next)   
+})
 
 Router.delete("/limit-trade", (req,res,next) => {
     LimitTrade.deleteMany({})

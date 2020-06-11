@@ -15,7 +15,7 @@ class TradeController {
 
     static readAllHistory(req,res,next) {
         let pair = req.params.pair;
-        TradeHistory.find({pair})
+        TradeHistory.find({pair}).sort({updatedAt: 'desc'})
             .then(trades => {
                 res.status(200).json({trades, status: 200})
             })
@@ -98,7 +98,6 @@ class TradeController {
         };
         Account.findOne({user})
             .then(userAccount => {
-                console.log(userAccount)
                 if (userAccount) {
                     accountId = userAccount.id;
                     if (userAccount[objectText]) {
@@ -111,7 +110,7 @@ class TradeController {
                                         .then(() => {
                                             return LimitTrade.find({order_type, currency})
                                                 .then(trades => {
-                                                    Io.emit({trades, coinBalance})
+                                                    Io.emit({trades, coinBalance, })
                                                     res.status(202).json({message: 'Your limit order has been executed'})
                                                 })
                                         })
@@ -307,11 +306,9 @@ class TradeController {
             .then(account => {
                 if (account) {
                     coinBalance = account[objectText]
-                    console.log(coinBalance);
                     if (coinBalance) {
                         LimitTrade.findOne({currency, order_type, user})
                             .then(userTrade => {
-                                console.log(userTrade)
                                 if (userTrade) {
                                     let totalAmounts = Number(amount) + userTrade.amounts
                                     let allPrices = userTrade.prices;
