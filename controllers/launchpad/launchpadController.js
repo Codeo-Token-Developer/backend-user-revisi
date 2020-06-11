@@ -6,7 +6,11 @@ class LaunchpadController {
     static createApplyProject(req,res,next) {
         let {  } = req.body;
 
-        
+        Project.create({})
+            .then(trade => {
+                
+            })
+            .catch(next)
 
     };
 
