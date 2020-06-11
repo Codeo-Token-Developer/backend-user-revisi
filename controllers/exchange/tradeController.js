@@ -108,7 +108,7 @@ class TradeController {
                                 .then(trade => {
                                     return Account.updateOne({ _id:  accountId}, {[objectText]: coinBalance}, {omitUndefined: true})
                                         .then(() => {
-                                            return LimitTrade.find({order_type, currency})
+                                            return LimitTrade.find({order_type, currency}).sort({updatedAt: 'desc'})
                                                 .then(trades => {
                                                     Io.emit({trades, coinBalance, })
                                                     res.status(202).json({message: 'Your limit order has been executed'})
@@ -147,7 +147,7 @@ class TradeController {
                         fixedBalance = userBalance - total;
                         return TradeHistory.create({amount, price, order_type, pair, currency, total, user})
                             .then(trade => {
-                                return TradeHistory.find({})
+                                return TradeHistory.find({}).sort({updatedAt: 'desc'})
                                     .then(trades => {
                                         Io.emit(`${pair}-order`, {trades, pair, fixedBalance})
                                         return Account.updateOne({_id: accountId}, {balance: fixedBalance}, {omitUndefined: true})
