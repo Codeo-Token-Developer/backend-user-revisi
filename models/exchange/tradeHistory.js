@@ -1,23 +1,36 @@
 const mongoose = require('mongoose');
 
 const tradeHistory = new mongoose.Schema({
-    pair: {
-        type: String,
-    },
-    order_type: {
-        type: String,
-    },
-    side: {
-        type: String,
+    amount: {
+        type: Number,
+        required: [true, 'Amount cannot be empty']
     },
     price: {
         type: Number,
+        required: [true, 'Price cannot be empty']
     },
-    filled_all: {
+    order_type: {
+        type: String,
+        required: [true, 'Order type cannot be empty']
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    pair: {
+        type: String,
+        required: [true, 'Pair cannot be empty']
+    },
+    
+    currency: {
         type: String,
     },
-    status: {
-        type: String,
+    total: {
+        type: Number
+    },
+    filled: {
+        type: Number,
+        default: 0
     }
 }, {versionKey: false, timestamps: {createdAt: 'createdAt'}});
 

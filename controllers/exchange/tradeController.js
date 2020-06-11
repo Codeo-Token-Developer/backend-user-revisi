@@ -13,6 +13,25 @@ class TradeController {
             .catch(next)
     };
 
+    static readAllHistory(req,res,next) {
+        let pair = req.params.pair;
+        TradeHistory.find({pair})
+            .then(trades => {
+                res.status(200).json({trades, status: 200})
+            })
+            .catch(next)
+    };
+
+    static readMyHistory(req,res,next) {
+        let pair = req.params.pair;
+        let user = req.decoded.id;
+        TradeHistory.find({user})
+            .then(trades => {
+                res.status(200).json({trades, status: 200})
+            })
+            .catch(next)
+    }
+
     static readMyLimit(req,res,next) {
         let coin = req.params.coin;
         let user = req.decoded.id;
@@ -23,11 +42,182 @@ class TradeController {
             .catch(next)
     };
 
+    static createLimitBuy(req,res,next) {
+        
+        let Io = req.Io;
+        let { amount, price, order_type, currency } = req.body;
+        let user = req.decoded.id;
+        let userBalance;
+        let accountId;
+        Account.findOne({user})
+            .then(userAccount => {
+                console.log(userAccount)
+                if (userAccount) {
+                    let totalPrice = Number(amount) * Number(price);
+                    accountId = userAccount.id;
+                    if (userAccount.balance > totalPrice) { 
+                    userBalance = userAccount.balance - totalPrice;
+                    return LimitTrade.create({amount, price, order_type, currency, user, total: totalPrice})
+                        .then(trade => {
+                            return Account.updateOne({_id: accountId}, {balance: userBalance}, {omitUndefined: true})
+                                .then(() => {
+                                    return LimitTrade.find({order_type, currency}).sort({updatedAt: 'desc'})
+                                        .then(trades => {
+                                            Io.emit(`${order_type}-limit`, {trades, userBalance: userBalance.toFixed(2), currency})
+                                            res.status(202).json({message: "Your limit order has been executed"})
+                                        })
+                                })
+                        })
+                    }
+                }else {
+                    next({message: 'You dont have account, please create first'})
+                }
+            })
+            .catch(next);
+    };
+
+    static createLimitSell(req,res,next) {
+        let Io = req.Io;
+        let { amount, price, order_type, currency } = req.body;
+        let user = req.decoded.id;
+        let coinBalance;
+        let objectText;
+        let accountId;
+        if (currency === 'btc') {
+            objectText = 'BTC_coin'
+        }else if (currency === 'eth') {
+            objectText = 'ETH_coin'
+        }else if (currency === 'trx') {
+            objectText = 'TRX_coin'
+        }else if (currency === 'bnb') {
+            objectText = 'BNB_coin'
+        }else if (currency === 'codeo') {
+            objectText = 'CODEO_coin'
+        }else if (currency === 'ltc') {
+            objectText = "LTC_coin"
+        };
+        Account.findOne({user})
+            .then(userAccount => {
+                console.log(userAccount)
+                if (userAccount) {
+                    accountId = userAccount.id;
+                    if (userAccount[objectText]) {
+                        coinBalance = userAccount[objectText] - Number(amount)
+                        if (coinBalance > amount) {
+                            let totalPrice = Number(amount) * Number(price)
+                            return LimitTrade.create({amount, price, currency, total: totalPrice, order_type, user})
+                                .then(trade => {
+                                    return Account.updateOne({ _id:  accountId}, {[objectText]: coinBalance}, {omitUndefined: true})
+                                        .then(() => {
+                                            return LimitTrade.find({order_type, currency})
+                                                .then(trades => {
+                                                    Io.emit({trades, coinBalance})
+                                                    res.status(202).json({message: 'Your limit order has been executed'})
+                                                })
+                                        })
+                                })
+                        }else {
+                            next({message: `You dont have enough coin`})
+                        }
+                    }else {
+                        next({message: 'You dont have enough coin'})
+                    }
+                }else {
+                    next({message: 'You dont have account, please create first'})
+                }
+            })
+            .catch(next);
+    };
+
+    static createBuyMarketHistory(req,res,next) {
+        let Io = req.Io;
+        let { amount, price, order_type, currency, pair } = req.body;
+        let user = req.decoded.id;
+        let total = Number(price) * Number (amount);
+        let userBalance;
+        let fixedBalance;
+        let accountId;
+        Account.findOne({user})
+            .then(userAccount => {
+                if (userAccount) {
+                    accountId = userAccount;
+                    userBalance = userAccount.balance;
+                    if (userBalance < total) {
+                        next({message: `Your balance not enough`})
+                    }else {
+                        fixedBalance = userBalance - total;
+                        return TradeHistory.create({amount, price, order_type, pair, currency, total, user})
+                            .then(trade => {
+                                return TradeHistory.find({})
+                                    .then(trades => {
+                                        Io.emit(`${pair}-order`, {trades, pair, fixedBalance})
+                                        return Account.updateOne({_id: accountId}, {balance: fixedBalance}, {omitUndefined: true})
+                                            .then(() => {
+                                                res.status(202).json({message: `Your order already executed`})
+                                            })
+                                    })
+                            })
+                    }
+                }else {
+                    next({message: `You dont have account, please create account first`})
+                }
+            })
+    };
+
+    static createSellMarketHistory(req,res,next) {
+        let Io = req.Io;
+        let { amount, price, order_type, currency, pair } = req.body;
+        let user = req.decoded.id;
+        let total = Number(price) * Number (amount);
+        let coinBalance;
+        let accountId;
+        let objectText;
+        if (currency === 'btc') {
+            objectText = 'BTC_coin'
+        }else if (currency === 'eth') {
+            objectText = 'ETH_coin'
+        }else if (currency === 'trx') {
+            objectText = 'TRX_coin'
+        }else if (currency === 'bnb') {
+            objectText = 'BNB_coin'
+        }else if (currency === 'codeo') {
+            objectText = 'CODEO_coin'
+        }else if (currency === 'ltc') {
+            objectText = "LTC_coin"
+        };
+        Account.findOne({user})
+            .then(userAccount => {
+                if (userAccount) {
+                    accountId = userAccount.id;
+                    coinBalance = userAccount[objectText];
+                    console.log(coinBalance);
+                    let fixedBalance = coinBalance - Number(amount)
+                    if ( amount < coinBalance ) {
+                        TradeHistory.create({amount, price, order_type, pair, user, total})
+                            .then(trade => {
+                                return TradeHistory.find({})
+                                    .then(trades => {
+                                        Io.emit(`${pair}-order`, {trades, pair, coinBalance})
+                                        return Account.updateOne({_id: accountId}, {[objectText]: fixedBalance}, {omitUndefined: true})
+                                            .then(() => {
+                                                res.status(202).json({message: `Your order already executed`, status: 202})
+                                            })
+                                    })
+                            })
+                    }else {
+                        next({message: `You dont have enough balance`})
+                    }
+                }else {
+                    next({message: `You dont have account, please create acctoun first`})
+                }
+            })
+            .catch(next)
+    }
+
     static createBuyOrder(req,res,next) {
         let Io = req.Io;
         let user = req.decoded.id;
         let { amount, price, order_type, currency } = req.body;
-        console.log(price)
         let userBalance;
         Account.findOne({user})
             .then(account => {

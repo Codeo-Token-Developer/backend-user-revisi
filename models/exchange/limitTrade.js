@@ -2,15 +2,13 @@ const mongoose = require('mongoose');
 
 const limitTrade = new mongoose.Schema({
 
-    amounts: {
+    amount: {
         type: Number,
         required: [true, 'Amount cannot be empty']
     },
-    prices: {
-        type: [Number]
-    },
-    average_price: {
+    price: {
         type: Number,
+        required: [true, 'Price cannot be empty']
     },
     order_type: {
         type: String,
@@ -25,7 +23,12 @@ const limitTrade = new mongoose.Schema({
     },
     total: {
         type: Number
+    },
+    filled: {
+        type: Number,
+        default: 0
     }
+
 
 }, {versionKey: false, timestamps: {createdAt: 'createdAt'}})
 
