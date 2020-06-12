@@ -137,7 +137,7 @@ class codeo {
           toAddress,
           contract: "0x46b4a7d906F1A943b7744Df23625E63726d79035",
           privateKey: newKey.privateKey,
-          gasPrice: 30e9,
+          gasPrice: 40e9,
           gasLimit: 42370,
           token: Number(value),
         },
