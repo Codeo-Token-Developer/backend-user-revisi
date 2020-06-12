@@ -16,26 +16,8 @@ const projectSchema = new mongoose.Schema({
     other_position: {
         type: String,
     },
-    pitch: {
-        type: String
-    },
-    regulated: {
-        type: String,
-        required: [true, 'Regulated cannot be emtpy']
-    },
-    other_regulated: {
-        type: String,
-    },
-    nda_signed: {
-        type: String,
-        required: [true, 'NDA Signed cannot be empty']
-    },
-    legal_opinion_document: {
-        type: String,
-    },
-
     project_name: {
-        type: String,
+        type: String
     },
     coin_full_name: {
         type: String
@@ -46,170 +28,66 @@ const projectSchema = new mongoose.Schema({
     official_website: {
         type: String
     },
-    permanent_link: {
-        type: String,
-    },
-    nature_project: {
-        type: String,
-    },
-    other_nature_project: {
-        type: String,
-    },
-    main_application: {
-        type: String,
-    },
-    target_industry: {
-        type: String,
-    },
-    project_target: {
-        type: String,
-    },
-    brief_project_history: {
-        type: String,
-    },
-    accrue_native_digital_asset: {
-        type: String,
-    },
-    long_term_vision: {
-        type: String,
-    },
-    quarterly_project_roadmap: {
-        type: String,
-    },
-    current_development: {
-        type: String,
-    },
-    native_digital_necessary: {
-        type: String,
-    },
-    comprehensive_description: {
-        type: String,
-    },
-    limit_number_token_held: {
-        type: String,
-    },
-    existing_platform: {
-        type: String,
-    },
-    differentiate_project: {
-        type: String,
-    },
-    how_many_users: {
+    session_supply: {
         type: String
     },
-    social_communities: {
-        type: String,
-    },
-    developer_communities: {
-        type: String,
-    },
-    level_development: {
-        type: String,
-    },
-    product_demos: {
-        type: String,
-    },
-    users_intended_purpose: {
+    quote_desc: {
         type: String
     },
-    applicable_feature: {
-        type: String,
-    },
-    other_applicable_feature: {
+    pre_sales_price: {
         type: String
     },
-    associated_with_token: {
-        type: String,
-    },
-    smart_contract_underlying: {
-        type: String,
-    },
-    is_open_source: {
-        type: String,
-    },
-    other_is_open_source: {
-        type: String,
-    },
-    open_source_documentation: {
-        type: String,
-    },
-    github: {
+    countdown: {
         type: String
     },
-    team_member: {
-        type: String,
-    },
-    team_member_not_fulltime: {
-        type: String,
-    },
-    team_members_involved: {
-        type: String,
-    },
-    all_projects_currently: {
-        type: String,
-    },
-    project_advistors: {
-        type: String,
-    },
-    identifies_each_member: {
+    timezone: {
         type: String
     },
-    fundraising: {
-        type: String,
-    },
-    chart_detailing: {
-        type: String,
-    },
-    owned_by_members: {
-        type: String,
-    },
-    multiple_private: {
-        type: String,
-    },
-    anticipated_codeo: {
-        type: String,
-    },
-    expected_public: {
-        type: String,
-    },
-    total_supply: {
-        type: String,
-    },
-    conversion_price: {
-        type: String,
-    },
-    countries_excluded: {
-        type: String,
-    },
-    ERC_20: {
-        type: String,
-    },
-    link_relevant_blockchain: {
-        type: String,
-    },
-    publicy: {
+    short_desc: {
         type: String
     },
-    fullname_title: {
-        type: String,
+    ieo_ratio: {
+        type: String
     },
-    anti_phising_code: {
-        type: String,
+    ieo_minimum: {
+        type: String
     },
-    anything_add: {
-        type: String,
+    bonus: {
+        type: String
+    },
+    ieo_start_time: {
+        type: String
+    },
+    ieo_end_time: {
+        type: String
+    },
+    referral_reward: {
+        type: String
+    },
+    technology_fouCoinSymboltion: {
+        type: String
+    },
+    whitepaper: {
+        type: String
+    },
+    telegram: {
+        type: String
+    },
+    kakao: {
+        type: String
+    },
+    twitter: {
+        type: String
+    },
+    ins: {
+        type: String
+    },
+    project_introduction: {
+        type: String
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    },
-    next_step: {
-        type: Number,
-        default: 2
-    },
-    status: {
-        type: String,
-        default: 'not_completed',
     },
     approved_status: {
         type: String,
