@@ -18,8 +18,11 @@ const limitTrade = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    currency: {
+    pair: {
         type: String,
+    },
+    currency: {
+        type: String
     },
     total: {
         type: Number
