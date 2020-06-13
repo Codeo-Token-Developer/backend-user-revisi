@@ -94,17 +94,26 @@ class TradeController {
 
 
     static checkOtherBuyLimit(req,res,next) {
-        let { order_type, pair } = req.body;
+        let { pair, amount, price } = req.body;
         let Io = req.Io;
         let user = req.decoded.id;
         let filterTrade = [];
-        LimitTrade.find({order_type, pair})
+        let buyLimitList = [];
+        LimitTrade.find({order_type: 'sell', pair}).sort({price: 'asc'})
             .then(trades => {
+                trades.forEach(item => {
+                    if (item.id !== user) {
+                        filterTrade.push(item)
+                    }
+                })
+                trades.forEach(item => {
+                    
+                })        
                 
             })
             .catch(next)
         
-    }
+    };
 
     // static createLimitBuy(req,res,next) {
     //     let Io = req.Io;
