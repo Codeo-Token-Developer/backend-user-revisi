@@ -87,7 +87,7 @@ Router.use("/cms", require("./cmsRouter/cmsRouter.js"));
 Router.use("/project", require("./launchpadRouter/projectRouter"));
 
 //Exchange
-Router.use(require("./exchange/tradeRouter"));
+//Router.use(require("./exchange/tradeRouter"));
 
 
 const LimitTrade = require('../models/exchange/limitTrade');
