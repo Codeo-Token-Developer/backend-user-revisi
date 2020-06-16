@@ -511,7 +511,7 @@ async function TransferCodeo(toAddress, value, key) {
             count = v;
             let howMuch = Number(value);
             let change = howMuch * 1e18
-            let amount = web3js.utils.toHex(web3.utils.toWei(howMuch))
+            let amount = web3js.utils.toHex(web3js.utils.toWei(howMuch))
             let rawTransaction = {
                 from: myAddress,
                 gasPrice: web3js.utils.toHex(10 * 1e9),
