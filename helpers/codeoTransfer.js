@@ -29,8 +29,8 @@ async function TransferCodeo(toAddress, value2, key) {
         web3js.eth.getTransactionCount(myAddress).then(function (v) {
             console.log(v)
             count = v;
-            let howMuch = Number(value2);
-            let change = howMuch * 1e18
+            let howMuch = value2.toString();
+            // let change = howMuch * 1e18
             let amount = web3js.utils.toHex(web3js.utils.toWei(howMuch))
             let rawTransaction = {
                 from: myAddress,
