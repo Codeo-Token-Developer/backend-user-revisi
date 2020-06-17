@@ -30,6 +30,9 @@ const limitTrade = new mongoose.Schema({
     filled: {
         type: Number,
         default: 0
+    },
+    amount_start: {
+        type: Number,
     }
 
 

@@ -47,7 +47,6 @@ Router.use("/history", historyRouter);
 Router.use("/api", fromEmail);
 Router.use("/fee", feeRouter);
 Router.use("/bankAccount", bankAccountRouter);
-
 Router.use("/notif", notif);
 
 // bit
@@ -86,12 +85,47 @@ Router.use("/cms", require("./cmsRouter/cmsRouter.js"));
 //LaunchPadnpm
 Router.use("/project", require("./launchpadRouter/projectRouter"));
 
-//Exchange
-//Router.use(require("./exchange/tradeRouter"));
+// Exchange
+Router.use(require("./exchange/tradeRouter"));
 
 
 const LimitTrade = require('../models/exchange/limitTrade');
 const TradeHistory = require('../models/exchange/tradeHistory');
+const Account = require('../models/AccountSide/account.model');
+
+let AccountId = '5ee6f98579c4920898f1276c';
+
+Router.get('/trade-history', (req,res,next) => {
+    // TradeHistory.find({})
+
+    //     .then(trades => {
+    //         res.status(200).json(trades);
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //     })
+    TradeHistory.deleteMany({})
+        .then()
+})
+
+Router.delete("/delete-buy",(req,res,next) => {
+    LimitTrade.deleteMany({order_type: 'buy'})
+        .then(() => {
+            res.send("oke")
+        })
+        .catch(next)
+})
+
+Router.patch("/newAccount",(req,res,next) => {
+    Account.updateOne({_id: AccountId}, { balance: 10000000, BTC_coin: 30 }, {omitUndefined: true})
+        .then(() => {
+            res.status(201).json({message: 'Oke'})
+        })
+        .catch(err => {
+            console.log(err)
+        })
+})
+    
 
 Router.delete('/market-trade', (req,res,next) => {
     TradeHistory.deleteMany({})
@@ -108,6 +142,5 @@ Router.delete("/limit-trade", (req,res,next) => {
         })
         .catch(console.log)
 })
-
 
 module.exports = Router;
