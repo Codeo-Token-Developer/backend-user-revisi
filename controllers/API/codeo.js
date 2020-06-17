@@ -63,30 +63,10 @@ class codeo {
 
   static history(req, res, next) {
     var userId = req.decoded.id;
-    let addressEth = req.params.Address;
     tranhistory.findOne({ user: userId }).then(function (user) {
       if (user) {
-        axios({
-          url: `${apiUrl}bc/eth/mainnet/tokens/address/${addressEth}/transfers?index=0&limit=100`,
-          method: "GET",
-          headers,
-        })
-          .then(({ data }) => {
-            let newData = [];
-            for (let i = 0; i < data.payload.length; i++) {
-              if (data.payload[i].symbol === "CODEO") {
-                newData.push(data.payload[i]);
-              }
-            }
-            return tranhistory.findOneAndUpdate(
-              { user: userId },
-              {
-                History: newData,
-              },
-              { new: true }
-            );
-          })
-          .then(function (payload) {
+        return tranhistory.findOne({ user: userId })
+          .then(async function (payload) {
             res.status(202).json({
               message: "success",
               payload,
@@ -95,20 +75,7 @@ class codeo {
           })
           .catch(next);
       } else {
-        axios({
-          url: `${apiUrl}bc/eth/mainnet/tokens/address/${addressEth}/transfers?index=0&limit=100`,
-          method: "GET",
-          headers,
-        })
-          .then(({ data }) => {
-            let newData = [];
-            for (let i = 0; i < data.payload.length; i++) {
-              if (data.payload[i].symbol === "CODEO") {
-                newData.push(data.payload[i]);
-              }
-            }
-            return tranhistory.create({ user: userId, History: newData });
-          })
+        return tranhistory.create({ user: userId, History: [] })
           .then(function (payload) {
             res.status(202).json({
               message: "success",
