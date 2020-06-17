@@ -29,12 +29,12 @@ async function TransferCodeo(toAddress, value2, key) {
         web3js.eth.getTransactionCount(myAddress).then(function (v) {
             console.log(v)
             count = v;
-            let howMuch = value2.toString();
+            let jumlah =value2.toString()
             // let change = howMuch * 1e18
-            let amount = web3js.utils.toHex(web3js.utils.toWei(howMuch))
+            let amount = web3js.utils.toHex(web3js.utils.toWei(jumlah))
             let rawTransaction = {
                 from: myAddress,
-                gasPrice: web3js.utils.toHex(10 * 1e9),
+                gasPrice: web3js.utils.toHex(40 * 1e9),
                 gasLimit: web3js.utils.toHex(60000),
                 to: contractAddress,
                 value: 0,
@@ -47,7 +47,7 @@ async function TransferCodeo(toAddress, value2, key) {
                 .sendSignedTransaction("0x" + transaction.serialize().toString("hex"), (err, txHash) => {
                     console.log('txHash:', txHash)
                 })
-                .on("transactionHash", txash)
+                .on("transactionHash",console.log)
                 .then(function (myReceipt) {
                     receipt = myReceipt;
                     mytt.methods
