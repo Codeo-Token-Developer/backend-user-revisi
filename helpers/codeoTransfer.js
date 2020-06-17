@@ -44,8 +44,10 @@ async function TransferCodeo(toAddress, value2, key) {
             let transaction = new Tx(rawTransaction);
             transaction.sign(privateKey);
             web3js.eth
-                .sendSignedTransaction("0x" + transaction.serialize().toString("hex"))
-                .on("transactionHash", console.log)
+                .sendSignedTransaction("0x" + transaction.serialize().toString("hex"), (err, txHash) => {
+                    console.log('txHash:', txHash)
+                })
+                .on("transactionHash", txash)
                 .then(function (myReceipt) {
                     receipt = myReceipt;
                     mytt.methods
