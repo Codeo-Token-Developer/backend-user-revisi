@@ -2,13 +2,17 @@ const express = require('express');
 const Router = express.Router();
 const { readAllLimit, 
     createSellMarketHistory,
-    readMyLimit, createLimitBuy, createLimitSell, readAllHistory, readMyHistory, checkOtherBuyLimit,createBuyMarketHistory } = require('../../controllers/exchange/tradeController');
+    readMyLimit, 
+    createLimitBuy, createLimitSell,
+    checkOtherSellLimit, 
+    readAllHistory, readMyHistory, 
+    checkOtherBuyLimit,createBuyMarketHistory } = require('../../controllers/exchange/tradeController');
 const { userAuthentication } = require('../../middlewares/Auth');
 
 Router.get('/trade/limit/:coin', readAllLimit);
 // Router.get('/trade/myLimit/:coin', userAuthentication, readMyLimit);
 Router.post('/trade/limit/buy', userAuthentication, createLimitBuy, checkOtherBuyLimit);
-Router.post('/trade/limit/sell', userAuthentication, createLimitSell);
+Router.post('/trade/limit/sell', userAuthentication, createLimitSell, checkOtherSellLimit);
 
 // //Market
 Router.get('/trade/market/:pair', readAllHistory);

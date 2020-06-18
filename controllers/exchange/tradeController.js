@@ -1,6 +1,7 @@
 const Account = require('../../models/AccountSide/account.model');
 const TradeHistory = require('../../models/exchange/tradeHistory');
 const LimitTrade = require('../../models/exchange/limitTrade');
+const { generateText } = require('../../helpers/getObjectText');
 
 class TradeController {
 
@@ -69,6 +70,7 @@ class TradeController {
 
         Account.findOne({user})
             .then(userAccount => {
+
                 if (userAccount) {
                     let totalPrice = Number(amount) * Number(price);
                     accountId = userAccount.id;
@@ -82,8 +84,7 @@ class TradeController {
                                     .then(() => {
                                         return LimitTrade.find({pair}).sort({updatedAt: 'desc'})
                                             .then(trades => {
-                                                console.log(trades, "trades")
-                                                Io.emit(`btcusd-limit`, {trades, pair, currency});
+                                                Io.emit(`${pair}-limit`, {trades, pair, currency});
                                                 next();
                                             })
                                     })
@@ -100,20 +101,8 @@ class TradeController {
 
     static checkOtherBuyLimit(req,res,next) {
         let { pair, amount, price, currency } = req.body;
-        let objectText;
-        if (currency === 'btc') {
-            objectText = 'BTC_coin'
-        }else if (currency === 'eth') {
-            objectText = 'ETH_coin'
-        }else if (currency === 'trx') {
-            objectText = 'TRX_coin'
-        }else if (currency === 'bnb') {
-            objectText = 'BNB_coin'
-        }else if (currency === 'codeo') {
-            objectText = 'CODEO_coin'
-        }else if (currency === 'ltc') {
-            objectText = "LTC_coin"
-        };
+        let objectText = generateText(currency);
+        
         let Io = req.Io;
         let user = req.decoded.id;
         let filterTrade = [];
@@ -150,19 +139,16 @@ class TradeController {
                             updateAccountUser.push(filterTrade[i].user);
                         };
                     };
-
                     if (sellAmount > limitAmount) {
                         leftAmount = sellAmount - limitAmount;
                         updateAccount[updateAccount.length - 1].amount = leftAmount;
                         updateAccount[updateAccount.length - 1].filled = leftAmount / percent;
                     }
-
                     updateAccount.forEach(item => {
                         if (item.amount === 0) {
                             item.filled = 1;
                         }  
                     });
-
                     let allPromisesUpdateLimit = [];
                     let newAccount = [];
                     updateAccount.forEach(item => {
@@ -172,31 +158,27 @@ class TradeController {
                             allPromisesUpdateLimit.push(LimitTrade.updateOne({_id: item.id}, { amount:  item.amount, filled: item.filled, total: item.amount * item.price }, {omitUndefined: true}))
                         }
                     });
-
                     let allPromisesCreateHistory = [];
-
                     updateAccount.forEach(item => {
                         allPromisesCreateHistory.push(TradeHistory.create({amount: item.amount, price: item.price, order_type: item.order_type, user: item.user, currency: item.currency, total: Number(item.amount) * Number(item.price), pair: item.pair, }))
+                        // newAccount.push(Account.updateOne({user: item.user}, { amount: item.amount, price: item.price, }, {  omitUndefined: true }))
                     });
-
                     if (myAccountLeft <= 0) {
                         allPromisesUpdateLimit.push(LimitTrade.deleteOne({_id: myTrade.id}));
-                        allPromisesCreateHistory.push(TradeHistory.create({amount: myTrade.amount, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, currency: myTrade.currency, total: myTrade.total, pair: myTrade.pair}))
+                        allPromisesCreateHistory.push(TradeHistory.create({amount: myTrade.amount, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, currency: myTrade.currency, total: myTrade.total, pair: myTrade.pair}));
                     }else {
-                        console.log("Masuk else")
                         let percentage = Number(myAccountLeft) / Number(myTrade.amount_start);
                         let filled = 1 - percentage
                         allPromisesCreateHistory.push(TradeHistory.create({amount: myTrade.amount - myAccountLeft, total: (myTrade.amount - myAccountLeft) * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair}))
                         allPromisesUpdateLimit.push(LimitTrade.updateOne({_id: myTrade.id}, { amount: myAccountLeft, total: Number(myAccountLeft) * Number(myTrade.price), filled}));
                     };
-
                     return Promise.all(allPromisesUpdateLimit)
                         .then(value => {
                             return Promise.all(allPromisesCreateHistory)
                                 .then(value => {
                                     return LimitTrade.find({}).sort({price: 'asc'})
                                         .then(trades => {
-                                            console.log("Masuk limit trade");
+                                            
                                             Io.emit(`${pair}-limit-check`, {trades, pair})
                                             res.status(200).json(trades);
                                         })
@@ -209,14 +191,95 @@ class TradeController {
                             res.status(200).json({message: 'Your order has been created'})
                         })
                 };
-                res.end();
-
             })
             .catch(next)
 
-    }
+    };
 
+    static createLimitSell(req,res,next) {
+        let { pair, amount, price, currency, order_type } = req.body;
+        let Io = req.Io;
+        let user = req.decoded.id;
+        let userBalance;
+        let accountId;
+        let leftBalance;
+        let objectText = generateText(currency);
+        
+        Account.findOne({user})
+            .then(userAccount => {
+                if (userAccount) {
+                    let totalPrice = Number(amount) * Number(price);
+                    accountId = userAccount.id;
+                    userBalance = userAccount[objectText];
+                    leftBalance = userBalance - amount;
+                    if (userBalance < amount) {
+                        next({message: 'You dont have enough coin'})
+                    }else {
+                        return LimitTrade.create({amount: Number(amount), price: Number(price), order_type, currency, pair,user, total: totalPrice, amount_start: Number(amount)})
+                            .then(trade => {
+                                req.myLimitTradeId = trade.id;
+                                req.myTrade = trade;
+                                return Account.updateOne({_id: accountId}, {[objectText]: leftBalance},{omitUndefined: true})
+                                    .then(() => {
+                                        return LimitTrade.find({pair: 'btcusd'})
+                                            .then(trades => {
+                                                Io.emit(`${pair}-limit`, {trades, pair, currency})
+                                                next();
+                                            })
+                                    })
+                            })
+                    } 
+                }
+            })
+            .catch(next)
+    };
 
+    static checkOtherSellLimit(req,res,next) {
+
+        let { pair, amount, price, currency } = req.body;
+        let objectText = generateText(currency);
+        let Io = req.Io;
+        let user = req.decoded.id;
+        let filterTrade = [];
+        let myTrade = req.myTrade;
+        let myAccountLeft = req.myTrade.amount;
+
+        LimitTrade.find({order_type: 'buy', pair}).sort({price: 'desc'})
+            .then(trades => {
+                trades.forEach(item => {
+                    if (item.price >= Number (price)) {
+                        filterTrade.push(item)
+                    }
+                })
+                let limitAmount = Number(amount);
+                let buyAmount = 0;
+                let leftAmount;
+                let leftTrade;
+                let updateAccount = [];
+                let updateAccountUser = [];
+                let percent;
+                if (filterTrade.length > 0) {
+                    for (let i = 0; i < filterTrade.length; i++) {
+                        if (buyAmount < limitAmount) {
+                            buyAmount += filterTrade[i].amount
+                            myAccountLeft -= filterTrade[i].amount;
+                            if (sellAmount > limitAmount) {
+                                leftTrade = filterTrade[i];
+                                percent = filterTrade[i].amount;
+
+                            }
+                        }
+                    }
+                }else {
+                    return LimitTrade.find({})
+                        .then(trades => {
+                            Io.emit(`${pair}-limit-check`, {trades, pair})
+                            res.status(200).json({message: 'Your order has been created'})
+                        })
+                }
+            })
+            .catch(next)
+    };
 
     // static checkOtherBuyLimit(req,res,next) {
     //     let { pair, amount, price, currency } = req.body;
@@ -315,18 +378,18 @@ class TradeController {
         
     // };
 
-    static createLimitSell(req,res,next) {
+    // static createLimitSell(req,res,next) {
 
-        let user = req.decoded.id;
-        let {amount, price, order_type, currency, pair, } = req.body;
-        LimitTrade.create({amount, user,price, order_type, pair, currency, total: Number(amount) * Number(price) })
-            .then(trade => {
-                res.status(200).json(trade)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
+    //     let user = req.decoded.id;
+    //     let {amount, price, order_type, currency, pair, } = req.body;
+    //     LimitTrade.create({amount, user,price, order_type, pair, currency, total: Number(amount) * Number(price) })
+    //         .then(trade => {
+    //             res.status(200).json(trade)
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         })
+    // }
 
     // static createLimitBuy(req,res,next) {
     //     let Io = req.Io;
@@ -413,40 +476,40 @@ class TradeController {
     //         .catch(next);
     // };
 
-    // static createBuyMarketHistory(req,res,next) {
-    //     let Io = req.Io;
-    //     let { amount, price, order_type, currency, pair } = req.body;
-    //     let user = req.decoded.id;
-    //     let total = Number(price) * Number (amount);
-    //     let userBalance;
-    //     let fixedBalance;
-    //     let accountId;
-    //     Account.findOne({user})
-    //         .then(userAccount => {
-    //             if (userAccount) {
-    //                 accountId = userAccount;
-    //                 userBalance = userAccount.balance;
-    //                 if (userBalance < total) {
-    //                     next({message: `Your balance not enough`})
-    //                 }else {
-    //                     fixedBalance = userBalance - total;
-    //                     return TradeHistory.create({amount, price, order_type, pair, currency, total, user})
-    //                         .then(trade => {
-    //                             return TradeHistory.find({}).sort({updatedAt: 'desc'})
-    //                                 .then(trades => {
-    //                                     Io.emit(`${pair}-order`, {trades, pair, fixedBalance})
-    //                                     return Account.updateOne({_id: accountId}, {balance: fixedBalance}, {omitUndefined: true})
-    //                                         .then(() => {
-    //                                             res.status(202).json({message: `Your order already executed`})
-    //                                         })
-    //                                 })
-    //                         })
-    //                 }
-    //             }else {
-    //                 next({message: `You dont have account, please create account first`})
-    //             }
-    //         })
-    // };
+    static createBuyMarketHistory(req,res,next) {
+        let Io = req.Io;
+        let { amount, price, order_type, currency, pair } = req.body;
+        let user = req.decoded.id;
+        let total = Number(price) * Number (amount);
+        let userBalance;
+        let fixedBalance;
+        let accountId;
+        Account.findOne({user})
+            .then(userAccount => {
+                if (userAccount) {
+                    accountId = userAccount;
+                    userBalance = userAccount.balance;
+                    if (userBalance < total) {
+                        next({message: `Your balance not enough`})
+                    }else {
+                        fixedBalance = userBalance - total;
+                        return TradeHistory.create({amount, price, order_type, pair, currency, total, user})
+                            .then(trade => {
+                                return TradeHistory.find({}).sort({updatedAt: 'desc'})
+                                    .then(trades => {
+                                        Io.emit(`${pair}-order`, {trades, pair, fixedBalance})
+                                        return Account.updateOne({_id: accountId}, {balance: fixedBalance}, {omitUndefined: true})
+                                            .then(() => {
+                                                res.status(202).json({message: `Your order already executed`})
+                                            })
+                                    })
+                            })
+                    }
+                }else {
+                    next({message: `You dont have account, please create account first`})
+                }
+            })
+    };
 
     static createSellMarketHistory(req,res,next) {
         let Io = req.Io;
