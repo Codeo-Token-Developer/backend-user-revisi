@@ -159,26 +159,29 @@ class TradeController {
                         }
                     });
                     let allPromisesCreateHistory = [];
+                    let accountWillUpdate = [];
                     updateAccount.forEach(item => {
                         allPromisesCreateHistory.push(TradeHistory.create({amount: item.amount, price: item.price, order_type: item.order_type, user: item.user, currency: item.currency, total: Number(item.amount) * Number(item.price), pair: item.pair, }))
                         // newAccount.push(Account.updateOne({user: item.user}, { amount: item.amount, price: item.price, }, {  omitUndefined: true }))
                     });
+                    console.log(myAccountLeft);
                     if (myAccountLeft <= 0) {
+                        
                         allPromisesUpdateLimit.push(LimitTrade.deleteOne({_id: myTrade.id}));
                         allPromisesCreateHistory.push(TradeHistory.create({amount: myTrade.amount, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, currency: myTrade.currency, total: myTrade.total, pair: myTrade.pair}));
                     }else {
                         let percentage = Number(myAccountLeft) / Number(myTrade.amount_start);
                         let filled = 1 - percentage
+                        allPromisesUpdateLimit.push(LimitTrade.updateOne({_id: myTrade.id}, {amount: myAccountLeft, total: myAccountLeft * myTrade.price, }))
                         allPromisesCreateHistory.push(TradeHistory.create({amount: myTrade.amount - myAccountLeft, total: (myTrade.amount - myAccountLeft) * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair}))
-                        allPromisesUpdateLimit.push(LimitTrade.updateOne({_id: myTrade.id}, { amount: myAccountLeft, total: Number(myAccountLeft) * Number(myTrade.price), filled}));
                     };
+                    
                     return Promise.all(allPromisesUpdateLimit)
                         .then(value => {
                             return Promise.all(allPromisesCreateHistory)
                                 .then(value => {
                                     return LimitTrade.find({}).sort({price: 'asc'})
                                         .then(trades => {
-                                            
                                             Io.emit(`${pair}-limit-check`, {trades, pair})
                                             res.status(200).json(trades);
                                         })
@@ -247,29 +250,86 @@ class TradeController {
         LimitTrade.find({order_type: 'buy', pair}).sort({price: 'desc'})
             .then(trades => {
                 trades.forEach(item => {
-                    if (item.price >= Number (price)) {
+                    if (item.price <= Number (price)) {
                         filterTrade.push(item)
                     }
                 })
                 let limitAmount = Number(amount);
-                let buyAmount = 0;
+                let sellAmount = 0;
                 let leftAmount;
                 let leftTrade;
                 let updateAccount = [];
                 let updateAccountUser = [];
                 let percent;
+                console.log(amount, "Amount")
+                console.log(filterTrade, "Filter Trade ======")
                 if (filterTrade.length > 0) {
                     for (let i = 0; i < filterTrade.length; i++) {
-                        if (buyAmount < limitAmount) {
-                            buyAmount += filterTrade[i].amount
+                        
+                        if (sellAmount < limitAmount) {
+                            sellAmount += filterTrade[i].amount
                             myAccountLeft -= filterTrade[i].amount;
                             if (sellAmount > limitAmount) {
                                 leftTrade = filterTrade[i];
                                 percent = filterTrade[i].amount;
-
+                                updateAccount.push(filterTrade[i]);
+                            }else {
+                                filterTrade[i].amount = 0;
                             }
+                            updateAccountUser.push(filterTrade[i].user);
+                        };
+                    };
+                    console.log(sellAmount, limitAmount)
+                    if(sellAmount > limitAmount) {
+                        leftAmount = sellAmount - limitAmount;
+                        updateAccount[updateAccount.length - 1].amount = leftAmount;
+                        updateAccount[updateAccount.length - 1].filled = leftAmount / percent;
+                    };
+                    updateAccount.forEach(item => {
+                        if (item === 0) {
+                            item.filled = 1;
                         }
-                    }
+                    });
+                    let allPromisesUpdateLimit = [];
+                    
+                    updateAccount.forEach(item => {
+                        if (item.amount === 0) {
+                            allPromisesUpdateLimit.push(LimitTrade.deleteOne({_id: item.id}))
+                        }else {
+                            allPromisesUpdateLimit.push(LimitTrade.updateOne({_id: item.id}, {amount: item.amount, filled: item.filled, total: item.amount * item.price }, {omitUndefined: true}))
+                        }
+                    });
+                    let allPromisesCreateHistory = [];
+                    let accountWillUpdate = [];
+                    updateAccount.forEach(item => {
+                        allPromisesCreateHistory.push(TradeHistory.create({amount: item.amount, price: item.price, order_type: item.order_type, user: item.user, currency: item.currency, total: Number(item.amount) * Number(item.price), pair: item.pair}))
+                    })
+                    console.log(myAccountLeft);
+                    if (myAccountLeft <= 0) {
+                        allPromisesUpdateLimit.push(LimitTrade.deleteOne({_id: myTrade.id}));
+                        allPromisesCreateHistory.push(TradeHistory.create({amount: myTrade.amount - myAccountLeft, total: (myTrade.amount - myAccountLeft ) * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair }))
+                    }else {
+                        let percentage = Number(myAccountLeft) / Number(myTrade.amount_start);
+                        let filled = 1 - percentage;
+                        allPromisesUpdateLimit.push(LimitTrade.updateOne({_id: myTrade.id}, {amount: myAccountLeft, total: myAccountLeft * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair}, {omitUndefined: true}))
+                        allPromisesCreateHistory.push(TradeHistory.create({amount: myTrade.amount - myAccountLeft, total: (myTrade.amount - myAccountLeft) * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair}))
+                    };
+
+                    return Promise.all(allPromisesUpdateLimit)
+                        .then(value => {
+                            return Promise.all(allPromisesCreateHistory)
+                                .then(value => {
+                                    return LimitTrade.find({}).sort({price: 'asc'})
+                                        .then(trades => {
+                                            Io.emit(`${pair}-limit-check`, {trades, pair})
+                                            res.status(200).json({message: 'Sell already order'})
+                                        })
+                                })
+                        })
+
+
+
+                    res.end();
                 }else {
                     return LimitTrade.find({})
                         .then(trades => {

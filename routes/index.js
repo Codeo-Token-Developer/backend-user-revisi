@@ -117,7 +117,7 @@ Router.delete("/delete-buy",(req,res,next) => {
 })
 
 Router.patch("/newAccount",(req,res,next) => {
-    Account.updateOne({_id: AccountId}, { balance: 10000000, BTC_coin: 30 }, {omitUndefined: true})
+    Account.updateOne({_id: AccountId}, { balance: 10000000, BTC_coin: 100 }, {omitUndefined: true})
         .then(() => {
             res.status(201).json({message: 'Oke'})
         })
