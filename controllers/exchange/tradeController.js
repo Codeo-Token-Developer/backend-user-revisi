@@ -132,13 +132,15 @@ class TradeController {
                                 leftTrade = filterTrade[i];
                                 percent = filterTrade[i].amount;
                                 updateAccount.push(filterTrade[i])
+                                updateAccountUser.push({id: filterTrade[i].id, amount: percent})
                             }else {
                                 filterTrade[i].amount = 0;
                                 updateAccount.push(filterTrade[i])
+                                updateAccountUser.push({id: filterTrade[i].id, amount: 0});
                             }
-                            updateAccountUser.push(filterTrade[i].user);
                         };
                     };
+                    console.log(updateAccountUser, "Accoun update")
                     if (sellAmount > limitAmount) {
                         leftAmount = sellAmount - limitAmount;
                         updateAccount[updateAccount.length - 1].amount = leftAmount;
@@ -199,10 +201,18 @@ class TradeController {
 
     };
 
+
+    static updateAccountBuy(req,res,next) {
+
+    }
+
+
     static createLimitSell(req,res,next) {
+
         let { pair, amount, price, currency, order_type } = req.body;
         let Io = req.Io;
         let user = req.decoded.id;
+        console.log(user)
         let userBalance;
         let accountId;
         let leftBalance;
@@ -210,6 +220,7 @@ class TradeController {
         
         Account.findOne({user})
             .then(userAccount => {
+                
                 if (userAccount) {
                     let totalPrice = Number(amount) * Number(price);
                     accountId = userAccount.id;
@@ -238,7 +249,7 @@ class TradeController {
     };
 
     static checkOtherSellLimit(req,res,next) {
-
+        console.log(req.body, "Check")
         let { pair, amount, price, currency } = req.body;
         let objectText = generateText(currency);
         let Io = req.Io;
@@ -261,8 +272,6 @@ class TradeController {
                 let updateAccount = [];
                 let updateAccountUser = [];
                 let percent;
-                console.log(amount, "Amount")
-                console.log(filterTrade, "Filter Trade ======")
                 if (filterTrade.length > 0) {
                     for (let i = 0; i < filterTrade.length; i++) {
                         
@@ -275,11 +284,15 @@ class TradeController {
                                 updateAccount.push(filterTrade[i]);
                             }else {
                                 filterTrade[i].amount = 0;
+                                updateAccount.push(filterTrade[i]);
                             }
                             updateAccountUser.push(filterTrade[i].user);
                         };
                     };
-                    console.log(sellAmount, limitAmount)
+                    
+
+                    console.log(updateAccount)
+
                     if(sellAmount > limitAmount) {
                         leftAmount = sellAmount - limitAmount;
                         updateAccount[updateAccount.length - 1].amount = leftAmount;
@@ -288,10 +301,9 @@ class TradeController {
                     updateAccount.forEach(item => {
                         if (item === 0) {
                             item.filled = 1;
-                        }
+                        };
                     });
                     let allPromisesUpdateLimit = [];
-                    
                     updateAccount.forEach(item => {
                         if (item.amount === 0) {
                             allPromisesUpdateLimit.push(LimitTrade.deleteOne({_id: item.id}))
@@ -304,14 +316,13 @@ class TradeController {
                     updateAccount.forEach(item => {
                         allPromisesCreateHistory.push(TradeHistory.create({amount: item.amount, price: item.price, order_type: item.order_type, user: item.user, currency: item.currency, total: Number(item.amount) * Number(item.price), pair: item.pair}))
                     })
-                    console.log(myAccountLeft);
                     if (myAccountLeft <= 0) {
                         allPromisesUpdateLimit.push(LimitTrade.deleteOne({_id: myTrade.id}));
                         allPromisesCreateHistory.push(TradeHistory.create({amount: myTrade.amount - myAccountLeft, total: (myTrade.amount - myAccountLeft ) * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair }))
                     }else {
                         let percentage = Number(myAccountLeft) / Number(myTrade.amount_start);
                         let filled = 1 - percentage;
-                        allPromisesUpdateLimit.push(LimitTrade.updateOne({_id: myTrade.id}, {amount: myAccountLeft, total: myAccountLeft * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair}, {omitUndefined: true}))
+                        allPromisesUpdateLimit.push(LimitTrade.updateOne({_id: myTrade.id}, {amount: myAccountLeft, total: myAccountLeft * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair, filled: filled}, {omitUndefined: true}))
                         allPromisesCreateHistory.push(TradeHistory.create({amount: myTrade.amount - myAccountLeft, total: (myTrade.amount - myAccountLeft) * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair}))
                     };
 
@@ -326,9 +337,6 @@ class TradeController {
                                         })
                                 })
                         })
-
-
-
                     res.end();
                 }else {
                     return LimitTrade.find({})
@@ -340,6 +348,24 @@ class TradeController {
             })
             .catch(next)
     };
+
+    // static otherSellLimit(req,res,next) {
+
+    //     const { username, full_name, password } = req.body;
+    //     const user = req.decoded.id;
+
+    //     LimitTrade.find({})
+    //         .then(function (value) {
+    //             return LimitTrade.deleteOne({_id: user}, { filled: true })
+    //                 .then(() => {
+
+    //                 })
+    //         })
+    //         .catch(err => {
+    //             console.log("this is error")
+    //         })
+
+    // }
 
     // static checkOtherBuyLimit(req,res,next) {
     //     let { pair, amount, price, currency } = req.body;

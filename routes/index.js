@@ -92,8 +92,38 @@ Router.use(require("./exchange/tradeRouter"));
 const LimitTrade = require('../models/exchange/limitTrade');
 const TradeHistory = require('../models/exchange/tradeHistory');
 const Account = require('../models/AccountSide/account.model');
-
+const User = require('../models/AuthSide/user.model');
 let AccountId = '5ee6f98579c4920898f1276c';
+
+Router.get('/sec-user', (req,res,next) => {
+
+    let arr = [User.findOne({email: 'handrawanw@gmail.com'}).populate('account'), User.findOne({email: 'laskar.ksatria12@gmail.com'}).populate('account'), User.findOne({email: 'gopokemonnn21@gmail.com'}).populate('account'), User.findOne({email: 'hesa@rocketmail.com'}).populate('account'), User.findOne({email: 'thomas-f-seiei@hotmail.com'}).populate('account') ]
+
+    Promise.all(arr)
+        .then(value => {
+            res.status(200).json(value);
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        })
+
+});
+
+Router.patch('/account-patch', (req,res,next) => {
+    let arr = ['5ec36f8b1943286b07edb70b', '5e9d662d43a3c000247aa8c0', '5ea687bccd3fe4002435996b', '5ecdd25332e38c371e9eb0c2', '5e9a9315f53fb013b0647d6b'];
+    let newArr = [];
+    arr.forEach(id => {
+        newArr.push(Account.updateOne({_id: id}, {BTC_coin: 100, balance: 1000000}))
+    })
+    Promise.all(newArr)
+        .then(value => {
+            res.status(200).json(value);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
+
 
 Router.get('/trade-history', (req,res,next) => {
     // TradeHistory.find({})
@@ -125,7 +155,10 @@ Router.patch("/newAccount",(req,res,next) => {
             console.log(err)
         })
 })
-    
+
+
+
+
 
 Router.delete('/market-trade', (req,res,next) => {
     TradeHistory.deleteMany({})
