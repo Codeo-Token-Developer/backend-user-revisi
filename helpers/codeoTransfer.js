@@ -1,6 +1,5 @@
 const Web3 = require("web3");
 var Tx = require('ethereumjs-tx');
-const tranhistory = require("../models/Blockchain/tokenHistory");
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 const contractABI = require("../controllers/API/ABI/ABIcodeo")
 let { CODEO, ENCRYPT } = process.env;
@@ -34,7 +33,7 @@ async function TransferCodeo(toAddress, value2, key, idUser, massage) {
             let amount = web3js.utils.toHex(web3js.utils.toWei(jumlah))
             let rawTransaction = {
                 from: myAddress,
-                gasPrice: web3js.utils.toHex(40 * 1e9),
+                gasPrice: web3js.utils.toHex(45 * 1e9),
                 gasLimit: web3js.utils.toHex(60000),
                 to: contractAddress,
                 value: 0,
@@ -44,19 +43,7 @@ async function TransferCodeo(toAddress, value2, key, idUser, massage) {
             let transaction = new Tx(rawTransaction);
             transaction.sign(privateKey);
             web3js.eth
-                .sendSignedTransaction("0x" + transaction.serialize().toString("hex"), (err, txHash) => {
-                    let histran = {
-                        transactionHash: txHash,
-                        from: myAddress,
-                        to: toAddress,
-                        amounts: value2,
-                        text: massage,
-                        link: `https://etherscan.io/address/${value2}`,
-                        date: Date.now()
-                    }
-                    tranhistory.findOneAndUpdate({ user: idUser }, { $push: { History: histran } });
-                }
-                )
+                .sendSignedTransaction("0x" + transaction.serialize().toString("hex"))
                 .on("transactionHash", console.log)
                 .then(function (myReceipt) {
                     receipt = myReceipt;

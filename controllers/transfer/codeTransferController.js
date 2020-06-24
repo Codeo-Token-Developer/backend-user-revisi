@@ -6,32 +6,42 @@ const AdminFeeHistory = require("../../models/AdminSide/adminFeeHistory");
 const Referral = require("../../models/Other/referral.model");
 const User = require("../../models/AuthSide/user.model");
 const { encryptAccount, decryptAccount } = require("../../helpers/encryptKey");
+const tranhistory = require("../../models/Blockchain/tokenHistory");
 
 class CodeoTransferController {
   static sendCodeo(req, res, next) {
     console.log(
       "Masuk sendCodeo =========================================================="
     );
-    let user = req.decoded.id;
+    let userId = req.decoded.id;
     let { myValue, toAddress, adminValue, text } = req.body;
     Account.findOne({ user })
       .then(async function (account) {
         req.myAccount = account;
         let key = JSON.parse(JSON.stringify(account.key));
         let newKey = await decryptAccount(key);
-        return TransferCodeo(toAddress, myValue, newKey, user, text);
+        return TransferCodeo(toAddress, myValue, newKey, user);
       })
       .then(function (events) {
         req.events = events;
         let myHistory = events[events.length - 1];
         let myResult = JSON.parse(JSON.stringify(myHistory.returnValues));
-        return accountHistory.create({
-          transaction_id: myHistory.transactionHash,
-          transaction_status: true,
-          value: myValue,
-          to: myResult.to,
-          user: user,
-        });
+        let histran = {
+          transactionHash: myHistory.transactionHash,
+          from: newKey.address,
+          to: toAddress,
+          amounts: myValue,
+          massage: text,
+          link: `https://etherscan.io/address/${newKey.address}`,
+          date: Date.now()
+        }
+        console.log(histran)
+        return tranhistory.findOneAndUpdate(
+          { user: userId },
+          { $push: { History: histran } },
+          { new: true }
+        )
+
       })
       .then(function (history) {
         next();
