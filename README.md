@@ -402,24 +402,6 @@ Success Output example:
 }
 ```
 
-**Cancel a KYC**
-
-```
-path: kyc/:id_number
-method: 'DELETE'
-headers: {
-	jwttoken : localStorage.getItem('codeoToken')
-}
-```
-
-Success Output Example:
-
-```
-{
-    "status": "KYC has been deleted and canceled!"
-}
-```
-
 ## **<u>CMS</u>**
 
 **READ**
