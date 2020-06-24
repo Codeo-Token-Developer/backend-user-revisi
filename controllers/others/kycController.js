@@ -80,21 +80,6 @@ class kycController {
       })
       .catch(next);
   }
-  //For testing purpose only
-  static deleteKYC(req, res, next) {
-    let kycid = req.decoded.id;
-    let idNum = req.params.idNum;
-
-    KYC.findOne({ kycid })
-      .then((kyc) => {
-        KYC.deleteOne({ id_number: idNum }).then((result) => {
-          res
-            .status(200)
-            .json({ status: "KYC has been deleted and canceled!" });
-        });
-      })
-      .catch(next);
-  }
 }
 
 module.exports = kycController;

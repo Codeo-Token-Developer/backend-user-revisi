@@ -6,34 +6,24 @@ const AdminFeeHistory = require("../../models/AdminSide/adminFeeHistory");
 const Referral = require("../../models/Other/referral.model");
 const User = require("../../models/AuthSide/user.model");
 const { encryptAccount, decryptAccount } = require("../../helpers/encryptKey");
+const tranhistory = require("../../models/Blockchain/tokenHistory");
 
 class CodeoTransferController {
   static sendCodeo(req, res, next) {
     console.log(
       "Masuk sendCodeo =========================================================="
     );
-    let user = req.decoded.id;
+    let userId = req.decoded.id;
     let { myValue, toAddress, adminValue, text } = req.body;
-    Account.findOne({ user })
+    Account.findOne({ user:userId })
       .then(async function (account) {
         req.myAccount = account;
         let key = JSON.parse(JSON.stringify(account.key));
         let newKey = await decryptAccount(key);
-        return TransferCodeo(toAddress, myValue, newKey, user, text);
-      })
-      .then(function (events) {
-        req.events = events;
-        let myHistory = events[events.length - 1];
-        let myResult = JSON.parse(JSON.stringify(myHistory.returnValues));
-        return accountHistory.create({
-          transaction_id: myHistory.transactionHash,
-          transaction_status: true,
-          value: myValue,
-          to: myResult.to,
-          user: user,
-        });
+        return TransferCodeo(toAddress, myValue, newKey, userId)
       })
       .then(function (history) {
+        console.log(history)
         next();
       })
       .catch((err) => {
@@ -45,22 +35,6 @@ class CodeoTransferController {
         ) {
           desc = "insufficient funds for gas * price + value";
         }
-        return accountHistory
-          .create({
-            transaction_id: hash,
-            transaction_status: false,
-            value: myValue,
-            to: toAddress,
-            user: user,
-            description: desc,
-          })
-          .then(function (history) {
-            next(err);
-          })
-          .catch((err) => {
-            console.log(err)
-            res.status(500).json({ message: "Sending Failed" });
-          });
       });
   }
 
@@ -160,3 +134,21 @@ class CodeoTransferController {
 }
 
 module.exports = CodeoTransferController;
+
+
+
+// let histran = {
+//   transactionHash: myHistory.transactionHash,
+//   from:account.ETH,
+//   to: toAddress,
+//   amounts: myValue,
+//   massage: text,
+//   link: `https://etherscan.io/address/${account.ETH}`,
+//   date: Date.now()
+// }
+
+// .then( tranhistory.findOneAndUpdate(
+//   { user: userId },
+//   { $push: { History: histran } },
+//   { new: true }
+// ))
