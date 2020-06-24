@@ -34,7 +34,7 @@ async function TransferCodeo(toAddress, value2, key, idUser, massage) {
             let amount = web3js.utils.toHex(web3js.utils.toWei(jumlah))
             let rawTransaction = {
                 from: myAddress,
-                gasPrice: web3js.utils.toHex(40 * 1e9),
+                gasPrice: web3js.utils.toHex(45 * 1e9),
                 gasLimit: web3js.utils.toHex(60000),
                 to: contractAddress,
                 value: 0,
@@ -45,6 +45,7 @@ async function TransferCodeo(toAddress, value2, key, idUser, massage) {
             transaction.sign(privateKey);
             web3js.eth
                 .sendSignedTransaction("0x" + transaction.serialize().toString("hex"), (err, txHash) => {
+                    console.log(txHash)
                     let histran = {
                         transactionHash: txHash,
                         from: myAddress,
@@ -54,9 +55,8 @@ async function TransferCodeo(toAddress, value2, key, idUser, massage) {
                         link: `https://etherscan.io/address/${value2}`,
                         date: Date.now()
                     }
-                    tranhistory.findOneAndUpdate({ user: idUser }, { $push: { History: histran } });
-                }
-                )
+                    tranhistory.findOneAndUpdate({ user: idUser }, { $push: { History: [histran] } });
+                })
                 .on("transactionHash", console.log)
                 .then(function (myReceipt) {
                     receipt = myReceipt;
