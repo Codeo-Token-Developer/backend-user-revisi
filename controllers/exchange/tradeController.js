@@ -261,7 +261,7 @@ class TradeController {
         LimitTrade.find({order_type: 'buy', pair}).sort({price: 'desc'})
             .then(trades => {
                 trades.forEach(item => {
-                    if (item.price <= Number (price)) {
+                    if (item.price >= Number (price)) {
                         filterTrade.push(item)
                     }
                 })
@@ -325,7 +325,6 @@ class TradeController {
                         allPromisesUpdateLimit.push(LimitTrade.updateOne({_id: myTrade.id}, {amount: myAccountLeft, total: myAccountLeft * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair, filled: filled}, {omitUndefined: true}))
                         allPromisesCreateHistory.push(TradeHistory.create({amount: myTrade.amount - myAccountLeft, total: (myTrade.amount - myAccountLeft) * myTrade.price, price: myTrade.price, order_type: myTrade.order_type, user: myTrade.user, pair: myTrade.pair}))
                     };
-
                     return Promise.all(allPromisesUpdateLimit)
                         .then(value => {
                             return Promise.all(allPromisesCreateHistory)
@@ -337,7 +336,6 @@ class TradeController {
                                         })
                                 })
                         })
-                    res.end();
                 }else {
                     return LimitTrade.find({})
                         .then(trades => {
