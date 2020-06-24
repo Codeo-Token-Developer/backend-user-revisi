@@ -46,7 +46,7 @@ Success output example:
 
 ```
 {
-  "message": "Welcome <user name>, hope you have a nice 				day",
+  "message": "Welcome <user name>, hope you have a nice day",
   "token": <user token>,
   "user": {
     "avatar": <user avatar>,
@@ -334,15 +334,17 @@ headers: {
 	jwttoken : localStorage.getItem('codeoToken')
 },
 data/body: {
-	id_number,
-	document_type,
-	country_issued,
-	document_image,
-	home_address,
-	city,
-	zip_code,
-	phone_number1,
-	phone_number2
+    id_number,
+    country_issued,
+    document_imageFrontSide,
+    document_imageBackSide,
+    document_imageSelfieSide,
+    home_address,
+    city,
+    zip_code,
+    phone_number1,
+    phone_number2,
+    user,
 }
 
 ```
@@ -351,8 +353,8 @@ Success Output example:
 
 ```
 {
-  "message": "Waiting for approval from our admin",
-  "status": 202
+    "message": "Waiting for admin approval",
+    "status": 202
 }
 ```
 
@@ -361,6 +363,42 @@ Error Output example:
 ```
 {
 	"message": "ID Number cannot be empty"
+}
+```
+
+**My KYC status**
+
+```
+path: 'kyc/mykyc',
+method: 'GET',
+headers: {
+	jwttoken : localStorage.getItem('codeoToken')
+},
+```
+
+Success Output example:
+
+```
+{
+    "kyc": {
+        "zip_code": "2010310",
+        "approved_status": false,
+        "review": false,
+        "lock_status": true,
+        "_id": "5ef301c8c79f5b3148a015e5",
+        "id_number": "515122",
+        "country_issued": "Indonesia",
+        "document_imageFrontSide": "Front",
+        "document_imageBackSide": "Back",
+        "document_imageSelfieSide": "Selfie",
+        "home_address": "Jl. Erlangga I ",
+        "city": "Jakarta Selatan",
+        "phone_number1": "945556123",
+        "phone_number2": "8798561",
+        "user": "5ea68712cd3fe40024359967",
+        "__v": 0
+    },
+    "status": 200
 }
 ```
 

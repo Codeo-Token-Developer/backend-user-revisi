@@ -99,6 +99,7 @@ class UserController {
       .then(function(user) {
         if (user) {
           if (user.verification) {
+            console.log(user)
             if (user && checkPass(password, user.password)) {
               token = generateLoginToken({
                 id: user.id,

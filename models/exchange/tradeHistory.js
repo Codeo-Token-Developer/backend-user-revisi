@@ -21,17 +21,12 @@ const tradeHistory = new mongoose.Schema({
         type: String,
         required: [true, 'Pair cannot be empty']
     },
-    
     currency: {
         type: String,
     },
     total: {
         type: Number
     },
-    filled: {
-        type: Number,
-        default: 0
-    }
 }, {versionKey: false, timestamps: {createdAt: 'createdAt'}});
 
 const trade = mongoose.model('TradeHistory', tradeHistory);
