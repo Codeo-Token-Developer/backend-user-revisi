@@ -13,35 +13,26 @@ class CodeoTransferController {
     console.log(
       "Masuk sendCodeo =========================================================="
     );
-    let userId = req.decoded.id;
+    let user = req.decoded.id;
     let { myValue, toAddress, adminValue, text } = req.body;
     Account.findOne({ user })
       .then(async function (account) {
         req.myAccount = account;
         let key = JSON.parse(JSON.stringify(account.key));
         let newKey = await decryptAccount(key);
-        return TransferCodeo(toAddress, myValue, newKey, user);
+        return TransferCodeo(toAddress, myValue, newKey);
       })
       .then(function (events) {
         req.events = events;
         let myHistory = events[events.length - 1];
         let myResult = JSON.parse(JSON.stringify(myHistory.returnValues));
-        let histran = {
-          transactionHash: myHistory.transactionHash,
-          from: newKey.address,
-          to: toAddress,
-          amounts: myValue,
-          massage: text,
-          link: `https://etherscan.io/address/${newKey.address}`,
-          date: Date.now()
-        }
-        console.log(histran)
-        return tranhistory.findOneAndUpdate(
-          { user: userId },
-          { $push: { History: histran } },
-          { new: true }
-        )
-
+        return accountHistory.create({
+          transaction_id: myHistory.transactionHash,
+          transaction_status: true,
+          value: myValue,
+          to: myResult.to,
+          user: user,
+        });
       })
       .then(function (history) {
         next();
