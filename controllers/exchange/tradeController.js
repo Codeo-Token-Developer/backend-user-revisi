@@ -67,6 +67,7 @@ class TradeController {
         let user = req.decoded.id;
         let userBalance;
         let accountId;
+        console.log("masuk")
 
         Account.findOne({user})
             .then(userAccount => {
@@ -84,6 +85,8 @@ class TradeController {
                                     .then(() => {
                                         return LimitTrade.find({pair}).sort({updatedAt: 'desc'})
                                             .then(trades => {
+        console.log("masuk")
+
                                                 Io.emit(`${pair}-limit`, {trades, pair, currency});
                                                 next();
                                             })
@@ -102,7 +105,6 @@ class TradeController {
     static checkOtherBuyLimit(req,res,next) {
         let { pair, amount, price, currency } = req.body;
         let objectText = generateText(currency);
-        
         let Io = req.Io;
         let user = req.decoded.id;
         let filterTrade = [];
@@ -184,12 +186,13 @@ class TradeController {
                                 .then(value => {
                                     return LimitTrade.find({}).sort({price: 'asc'})
                                         .then(trades => {
-                                            Io.emit(`${pair}-limit-check`, {trades, pair})
+                                            Io.emit(`${pair}-limit-check`, {trades, pair});
                                             res.status(200).json(trades);
                                         })
                                 })
                         })
                 }else {
+                    
                     return LimitTrade.find({})
                         .then(trades => {
                             Io.emit(`${pair}-limit-check`, {trades, pair})
@@ -204,7 +207,7 @@ class TradeController {
 
     static updateAccountBuy(req,res,next) {
 
-    }
+    };
 
 
     static createLimitSell(req,res,next) {
@@ -346,6 +349,13 @@ class TradeController {
             })
             .catch(next)
     };
+
+
+    static createMarketTrade(req,res,next) {
+        let { amount, price, order_type, currency } = req.body;
+
+
+    }
 
     // static otherSellLimit(req,res,next) {
 
