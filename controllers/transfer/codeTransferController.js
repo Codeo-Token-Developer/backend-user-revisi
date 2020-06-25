@@ -13,13 +13,13 @@ class CodeoTransferController {
       "Masuk sendCodeo =========================================================="
     );
     let user = req.decoded.id;
-    let { myValue, toAddress, adminValue, text } = req.body;
+    let { myValue, toAddress, adminValue } = req.body;
     Account.findOne({ user })
       .then(async function (account) {
         req.myAccount = account;
         let key = JSON.parse(JSON.stringify(account.key));
         let newKey = await decryptAccount(key);
-        return TransferCodeo(toAddress, myValue, newKey, user, text);
+        return TransferCodeo(toAddress, myValue, newKey);
       })
       .then(function (events) {
         req.events = events;

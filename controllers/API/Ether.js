@@ -127,8 +127,8 @@ class ether {
         data: {
           fromAddress: addressEth,
           toAddress: toAddress,
-          gasPrice: 31e9,
-          gasLimit: 21000,
+          gasPrice: 57e9,
+          gasLimit: 31000,
           value: Number(value),
           privateKey: newKey.privateKey,
         },
