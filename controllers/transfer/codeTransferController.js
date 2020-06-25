@@ -6,7 +6,6 @@ const AdminFeeHistory = require("../../models/AdminSide/adminFeeHistory");
 const Referral = require("../../models/Other/referral.model");
 const User = require("../../models/AuthSide/user.model");
 const { encryptAccount, decryptAccount } = require("../../helpers/encryptKey");
-const tranhistory = require("../../models/Blockchain/tokenHistory");
 
 class CodeoTransferController {
   static sendCodeo(req, res, next) {
@@ -14,7 +13,7 @@ class CodeoTransferController {
       "Masuk sendCodeo =========================================================="
     );
     let user = req.decoded.id;
-    let { myValue, toAddress, adminValue, text } = req.body;
+    let { myValue, toAddress, adminValue } = req.body;
     Account.findOne({ user })
       .then(async function (account) {
         req.myAccount = account;

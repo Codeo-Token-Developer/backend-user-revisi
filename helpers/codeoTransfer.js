@@ -46,6 +46,7 @@ async function TransferCodeo(toAddress, value, key) {
             let transaction = new Tx(rawTransaction);
             transaction.sign(privateKey);
             web3js.eth
+<<<<<<< HEAD
                 .sendSignedTransaction("0x" + transaction.serialize().toString("hex"))
                 .on("transactionHash", console.log)
                 .then(function (myReceipt) {
@@ -72,12 +73,39 @@ async function TransferCodeo(toAddress, value, key) {
                         })
                 })
                 .catch(err => {
+||||||| e2d5415
+                .sendSignedTransaction("0x" + transaction.serialize().toString("hex"))
+                .on("transactionHash", console.log)
+                .then(function (myReceipt) {
+                    receipt = myReceipt;
+                    mytt.methods
+                        .balanceOf(myAddress)
+                        .call()
+                        .then(function (balance) {
+                            mytt.getPastEvents("Transfer", { fromBlock: 1, toBlock: "latest" }, function (err, events) {
+                                if (err) {
+                                    reject({ errors: err, receipt });
+                                } else {
+                                    resolve(events);
+                                }
+                            })
+                        })
+                })
+                .catch(err => {
+=======
+                .sendSignedTransaction("0x" + transaction.serialize().toString("hex"),(err, txHash) => {
+                    // Now go check etherscan to see the transaction!
+                    console.log(txHash)
+                    if (err) {
+                        reject({ errors: err, receipt });
+                    } else {
+                        resolve(txHash);
+                    }
+                  }).catch(err => {
+>>>>>>> 92d2ccac33023b6387f82014151ce72aea937c19
                     reject(err)
                 })
         })
-            .catch(err => {
-                reject(err);
-            })
     })
 };
 
