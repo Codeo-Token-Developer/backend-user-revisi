@@ -80,6 +80,16 @@ class kycController {
       })
       .catch(next);
   }
+
+  static deleteKYC(req, res, next) {
+    let id_number = req.params.idnum;
+
+    KYC.deleteOne({ id_number: id_number })
+      .then(() => {
+        res.status(200).json({ message: "KYC has been cancelled" });
+      })
+      .catch(next);
+  }
 }
 
 module.exports = kycController;
