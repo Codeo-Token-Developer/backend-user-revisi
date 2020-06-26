@@ -22,6 +22,8 @@ class kycController {
 
   static create(req, res, next) {
     let user = req.decoded.id;
+    let username = req.decoded.username;
+    console.log(username);
     let Io = req.Io;
     let {
       id_number,
@@ -65,7 +67,7 @@ class kycController {
             )
             .then(
               notifAd
-                .create({ text: `${user} send a KYC request`, user })
+                .create({ text: `${username} send a KYC request`, username })
                 .then((Adnotifs) => {
                   Io.emit("admin-notif", Adnotifs);
                   next();
