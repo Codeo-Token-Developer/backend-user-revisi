@@ -16,7 +16,7 @@ const generateText = (currency) => {
             return 'CODEO_coin'
         case 'trx':
             return 'TRX_coin'
-
+        
     }
 };
 

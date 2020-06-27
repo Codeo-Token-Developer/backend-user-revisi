@@ -11,7 +11,6 @@ const {
   generateLoginToken
 } = require("../../helpers/jwttoken");
 const { checkPass, hashPass } = require("../../helpers/hashing");
-
 class UserController {
   static readAll(req, res, next) {
     User.find({}).populate('account')
@@ -99,7 +98,6 @@ class UserController {
       .then(function(user) {
         if (user) {
           if (user.verification) {
-            console.log(user)
             if (user && checkPass(password, user.password)) {
               token = generateLoginToken({
                 id: user.id,
