@@ -70,58 +70,50 @@ class CodeoTransferController {
   }
 
   static async sendAdminCodeo(req, res, next) {
-    console.log(
-      "Masuk sendAdminCodeo =========================================================="
-    );
+    console.log('Masuk sendAdminCodeo ==========================================================')
     let { adminValue } = req.body;
     let myAccount = req.myAccount;
-    let newKey = JSON.parse(JSON.stringify(myAccount.key));
+    let newKey = JSON.parse(JSON.stringify(myAccount.key))
     let key = await decryptAccount(newKey);
     let adminETH;
-    Account.findOne({ role: "admin" })
+    Account.findOne({ role: 'admin' })
       .then(async function (account) {
         let toAddress = account.ETH;
         adminETH = account.ETH;
-        console.log(
-          adminETH,
-          "ADMIN ETH -========================================================="
-        );
-        return TransferCodeo(toAddress, adminValue, key);
+        console.log(adminETH, 'ADMIN ETH -=========================================================')
+        return TransferCodeo(toAddress, adminValue, key)
       })
       .then(function (data) {
-        let events = data[data.length - 1];
+        let events = data[data.length - 1]
         return AdminFeeHistory.create({
           transaction_id: events.transactionHash,
           transaction_status: true,
           value: adminValue,
           from: req.decoded.id,
-          admin_address: adminETH,
-        });
+          admin_address: adminETH
+        })
       })
       .then(function (trans) {
-        console.log(
-          trans,
-          "TRANS ADMIN ========================================="
-        );
+        console.log(trans, 'TRANS ADMIN =========================================')
         next();
       })
-      .catch((err) => {
-        let hash = "none";
+      .catch(err => {
+        let hash = 'none';
         AdminFeeHistory.create({
           transaction_id: hash,
           transaction_status: false,
           value: adminValue,
           from: req.decoded.id,
-          admin_address: adminETH,
+          admin_address: adminETH
         })
           .then(function (trans) {
             res.status(500).end();
           })
-          .catch((err) => {
+          .catch(err => {
             res.status(500).end();
-          });
-      });
-  }
+          })
+      })
+  };
 
   static referralStorage(req, res, next) {
     let refUser = req.refUser;
