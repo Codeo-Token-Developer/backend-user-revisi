@@ -33,7 +33,7 @@ class CodeoTransferController {
           value: Number(myValue),
           to: myResult.to,
           link: `https://etherscan.io/address/${myResult.from}#tokentxns`,
-          description: text
+          ket: text
         });
       })
       .then(function (history) {
@@ -57,13 +57,14 @@ class CodeoTransferController {
             value: Number(myValue),
             to: myResult.to,
             link: `failed`,
-            description: text
+            ket: text,
+            description: desc
           })
           .then(function (history) {
             next(err);
           })
           .catch((err) => {
-            res.status(500).json({ message: "Sending Failed" });
+            res.status(200).json({ message: "Sending Failed" });
           });
       });
   }

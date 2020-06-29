@@ -36,7 +36,7 @@ async function TransferCodeo(toAddress, value, key) {
             let amount = web3js.utils.toHex(web3js.utils.toWei(howMuch))
             let rawTransaction = {
                 from: myAddress,
-                gasPrice: web3js.utils.toHex(40 * 1e9),
+                gasPrice: web3js.utils.toHex(45 * 1e9),
                 gasLimit: web3js.utils.toHex(60000),
                 to: contractAddress,
                 value: 0,
