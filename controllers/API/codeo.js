@@ -63,29 +63,15 @@ class codeo {
 
   static history(req, res, next) {
     var userId = req.decoded.id;
-    tranhistory.findOne({ user: userId }).then(function (user) {
-      if (user) {
-        return tranhistory.findOne({ user: userId })
-          .then(async function (payload) {
-            res.status(202).json({
-              message: "success",
-              payload,
-              status: 202,
-            });
-          })
-          .catch(next);
-      } else {
-        return tranhistory.create({ user: userId, History: [] })
-          .then(function (payload) {
-            res.status(202).json({
-              message: "success",
-              payload,
-              status: 202,
-            });
-          })
-          .catch(next);
-      }
-    });
+    tranhistory.find({ user: userId })
+      .then(function (History) {
+        res.status(202).json({
+          message: "success",
+          History,
+          status: 202,
+        });
+      })
+      .catch(next);
   }
 
   static transfer(req, res, next) {

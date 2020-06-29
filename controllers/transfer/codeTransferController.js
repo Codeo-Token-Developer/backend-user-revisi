@@ -1,7 +1,7 @@
 const Account = require("../../models/AccountSide/account.model");
 const TransferCodeo = require("../../helpers/codeoTransfer");
 const TransactionHistory = require("../../models/Other/transactionHistory.model");
-const accountHistory = require("../../models/AccountSide/accountHistory.model");
+const tranhistory = require("../../models/Blockchain/tokenHistory");
 const AdminFeeHistory = require("../../models/AdminSide/adminFeeHistory");
 const Referral = require("../../models/Other/referral.model");
 const User = require("../../models/AuthSide/user.model");
@@ -13,7 +13,7 @@ class CodeoTransferController {
       "Masuk sendCodeo =========================================================="
     );
     let user = req.decoded.id;
-    let { myValue, toAddress, adminValue } = req.body;
+    let { myValue, toAddress, adminValue, text } = req.body;
     Account.findOne({ user })
       .then(async function (account) {
         req.myAccount = account;
@@ -25,12 +25,15 @@ class CodeoTransferController {
         req.events = events;
         let myHistory = events[events.length - 1];
         let myResult = JSON.parse(JSON.stringify(myHistory.returnValues));
-        return accountHistory.create({
+        return tranhistory.create({
+          user: user,
           transaction_id: myHistory.transactionHash,
           transaction_status: true,
-          value: myValue,
+          from: myResult.from,
+          value: Number(myValue),
           to: myResult.to,
-          user: user,
+          link: `https://etherscan.io/address/${myResult.from}#tokentxns`,
+          description: text
         });
       })
       .then(function (history) {
@@ -45,14 +48,16 @@ class CodeoTransferController {
         ) {
           desc = "insufficient funds for gas * price + value";
         }
-        return accountHistory
+        return tranhistory
           .create({
+            user: user,
             transaction_id: hash,
             transaction_status: false,
-            value: myValue,
-            to: toAddress,
-            user: user,
-            description: desc,
+            from: "-",
+            value: Number(myValue),
+            to: myResult.to,
+            link: `failed`,
+            description: text
           })
           .then(function (history) {
             next(err);
