@@ -1,7 +1,7 @@
 const Account = require("../../models/AccountSide/account.model");
 const TransferCodeo = require("../../helpers/codeoTransfer");
 const TransactionHistory = require("../../models/Other/transactionHistory.model");
-const tranhistory = require("../../models/Blockchain/tokenHistory");
+const accountHistory = require('../../models/AccountSide/accountHistory.model');
 const AdminFeeHistory = require("../../models/AdminSide/adminFeeHistory");
 const Referral = require("../../models/Other/referral.model");
 const User = require("../../models/AuthSide/user.model");
@@ -9,65 +9,59 @@ const { encryptAccount, decryptAccount } = require("../../helpers/encryptKey");
 
 class CodeoTransferController {
   static sendCodeo(req, res, next) {
-    console.log(
-      "Masuk sendCodeo =========================================================="
-    );
+    console.log('Masuk sendCodeo ==========================================================')
     let user = req.decoded.id;
     let { myValue, toAddress, adminValue, text } = req.body;
     Account.findOne({ user })
       .then(async function (account) {
-        req.myAccount = account;
-        let key = JSON.parse(JSON.stringify(account.key));
+        req.myAccount = account
+        let key = JSON.parse(JSON.stringify(account.key))
         let newKey = await decryptAccount(key);
-        return TransferCodeo(toAddress, myValue, newKey);
+        return TransferCodeo(toAddress, myValue, newKey)
       })
       .then(function (events) {
         req.events = events;
         let myHistory = events[events.length - 1];
         let myResult = JSON.parse(JSON.stringify(myHistory.returnValues));
-        return tranhistory.create({
-          user: user,
+        return accountHistory.create({
           transaction_id: myHistory.transactionHash,
           transaction_status: true,
-          from: myResult.from,
-          value: Number(myValue),
+          value: myValue,
           to: myResult.to,
+          user: user,
           link: `https://etherscan.io/address/${myResult.from}#tokentxns`,
           ket: text
-        });
+        })
       })
       .then(function (history) {
         next();
       })
-      .catch((err) => {
-        let hash = "none";
+      .catch(err => {
+
+        let hash = "none"
         let desc;
-        if (
-          err.message ===
-          "Returned error: insufficient funds for gas * price + value"
-        ) {
-          desc = "insufficient funds for gas * price + value";
+        if (err.message === 'Returned error: insufficient funds for gas * price + value') {
+          desc = 'insufficient funds for gas * price + value'
         }
-        return tranhistory
-          .create({
-            user: user,
-            transaction_id: hash,
-            transaction_status: false,
-            from: "-",
-            value: Number(myValue),
-            to: myResult.to,
-            link: `failed`,
-            ket: text,
-            description: desc
-          })
+        return accountHistory.create({
+          transaction_id: hash,
+          transaction_status: false,
+          value: myValue,
+          to: toAddress,
+          user: user,
+          description: desc,
+          link: `failed`,
+          ket: text
+        })
           .then(function (history) {
-            next(err);
+            next(err)
           })
-          .catch((err) => {
-            res.status(200).json({ message: "Sending Failed" });
+          .catch(err => {
+            res.status(500).json({ message: 'Sending Failed' });
           });
-      });
-  }
+      })
+
+  };
 
   static async sendAdminCodeo(req, res, next) {
     console.log('Masuk sendAdminCodeo ==========================================================')
