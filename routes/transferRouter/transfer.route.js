@@ -6,6 +6,6 @@ const checkRef = require('../../middlewares/referralCheck');
 
 const Auth = require('../../middlewares/Auth').userAuthentication;
 
-Router.post('/', Auth,checkRef,sendCodeo, sendAdminCodeo, referralStorage)
+Router.post('/', Auth, checkRef, sendCodeo, referralStorage)
 
 module.exports = Router;
