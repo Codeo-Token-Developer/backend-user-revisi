@@ -15,4 +15,4 @@ const signUp = () => {
 
 };
 
-module.exports = dbConnect;
+module.exports = dbConnect

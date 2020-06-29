@@ -58,15 +58,7 @@ async function TransferCodeo(toAddress, value, key) {
                                 if (err) {
                                     reject({ errors: err, receipt });
                                 } else {
-                                    resolve(events).then(client.findOne({ ETH: toAddress }).then(function (acc) {
-                                        return Referral.findOneAndUpdate(
-                                            { user: acc.user },
-                                            {
-                                                $inc: {
-                                                    ref_amount: minus
-                                                }
-                                            }, { new: true })
-                                    }))
+                                    resolve(events);
                                 }
                             })
                         })

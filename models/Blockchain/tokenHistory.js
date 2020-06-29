@@ -24,6 +24,9 @@ var Schema = new mongoose.Schema(
     link: {
       type: String
     },
+    ket: {
+      type: String
+    },
     description: {
       type: String
     },
