@@ -1,15 +1,12 @@
 const Web3 = require("web3");
 var Tx = require('ethereumjs-tx');
-const Referral = require("../models/Other/referral.model");
 const contractABI = require("../controllers/API/ABI/ABIcodeo")
-const client = require("../models/AccountSide/account.model")
 
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 let { CODEO, ENCRYPT } = process.env;
 
 async function TransferCodeo(toAddress, value, key) {
 
-    let minus = 0 - Number(value)
     return new Promise((resolve, reject) => {
 
         let receipt;
