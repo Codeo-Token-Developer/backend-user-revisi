@@ -6,8 +6,29 @@ var Schema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    History: {
-      type: Array,
+    transaction_id: {
+      type: String,
+    },
+    transaction_status: {
+      type: Boolean,
+    },
+    from: {
+      type: String,
+    },
+    value: {
+      type: Number
+    },
+    to: {
+      type: String
+    },
+    link: {
+      type: String
+    },
+    ket: {
+      type: String
+    },
+    description: {
+      type: String
     },
   },
   { timestamps: { createdAt: "createdAt" } }

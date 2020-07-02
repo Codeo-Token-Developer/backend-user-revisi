@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const accountHistorySchema = new mongoose.Schema ({
+const accountHistorySchema = new mongoose.Schema({
 
     transaction_id: {
         type: String,
@@ -20,9 +20,14 @@ const accountHistorySchema = new mongoose.Schema ({
     },
     description: {
         type: String
-    }
-
-},{ timestamps: { createdAt: 'created_at' } });
+    },
+    link: {
+        type: String
+    },
+    ket: {
+        type: String
+    },
+}, { timestamps: { createdAt: 'created_at' } });
 
 const accountHistory = mongoose.model('AccountHistory', accountHistorySchema);
 

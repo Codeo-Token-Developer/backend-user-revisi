@@ -1,15 +1,12 @@
 const Web3 = require("web3");
 var Tx = require('ethereumjs-tx');
-const Referral = require("../models/Other/referral.model");
 const contractABI = require("../controllers/API/ABI/ABIcodeo")
-const client = require("../models/AccountSide/account.model")
 
 var web3js = new Web3(new Web3.providers.HttpProvider(process.env.INFURA));
 let { CODEO, ENCRYPT } = process.env;
 
 async function TransferCodeo(toAddress, value, key) {
 
-    let minus = 0 - Number(value)
     return new Promise((resolve, reject) => {
 
         let receipt;
@@ -36,7 +33,7 @@ async function TransferCodeo(toAddress, value, key) {
             let amount = web3js.utils.toHex(web3js.utils.toWei(howMuch))
             let rawTransaction = {
                 from: myAddress,
-                gasPrice: web3js.utils.toHex(40 * 1e9),
+                gasPrice: web3js.utils.toHex(45 * 1e9),
                 gasLimit: web3js.utils.toHex(60000),
                 to: contractAddress,
                 value: 0,
@@ -58,15 +55,7 @@ async function TransferCodeo(toAddress, value, key) {
                                 if (err) {
                                     reject({ errors: err, receipt });
                                 } else {
-                                    resolve(events).then(client.findOne({ ETH: toAddress }).then(function (acc) {
-                                        return Referral.findOneAndUpdate(
-                                            { user: acc.user },
-                                            {
-                                                $inc: {
-                                                    ref_amount: minus
-                                                }
-                                            }, { new: true })
-                                    }))
+                                    resolve(events);
                                 }
                             })
                         })
