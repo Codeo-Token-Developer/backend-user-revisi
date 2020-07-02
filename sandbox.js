@@ -1,32 +1,22 @@
+const User = require('./models/AuthSide/user.model')
 
-// for (let i = 0; i < arr.length; i++) {
-//     if (arr[i] === 3) {
-//         break;
-//     }else {
-//         console.log(arr[i])
-//     }
-// }
-const arr = [1,2,3,4,5,6];
-
-function getNumber(num) {
-    return new Promise((res,rej) => {
-        if (num) {
-            console.log(num)
-            res(String(num) + " hallo")
-        }else {
-            rej("this is error")
-        } 
-    })
+function checkVer(id) {
+    User.findOne({_id: id, verification: true})
+        .then(user => {
+            if (user) {
+                
+            }else {
+                return User.deleteOne({_id: id})
+                    .then(() => {
+                        //fungsi email
+                    })
+            }
+        })
 };
 
-let newPromise = [];
 
-arr.forEach(item => {
-    newPromise.push(getNumber(item))
-});
+//ABIS create
 
-Promise.all(newPromise)
-    .then(value => {
-        console.log(value)
-    })
+//id = '12345'
 
+setInterval(checkVer(id), 100000000)

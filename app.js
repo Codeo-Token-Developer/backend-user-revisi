@@ -39,6 +39,14 @@ app.use((req, res, next) => {
 });
 
 app.use(mainRoute);
+app.get('*', (req,res,next) => {
+
+  res.status(500).json({message: "Sala"})
+})
+app.post('*', (req,res,next) => {
+  res.send("Are you kidding me")
+
+})
 app.use(errHandler);
 
 Io.on("connection", (socket) => {
