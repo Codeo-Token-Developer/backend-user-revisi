@@ -19,17 +19,16 @@ class CodeoTransferController {
         let newKey = await decryptAccount(key);
         return TransferCodeo(toAddress, myValue, newKey)
       })
-      .then(function (events) {
-        req.events = events;
-        let myHistory = events[events.length - 1];
-        let myResult = JSON.parse(JSON.stringify(myHistory.returnValues));
+      .then(function (trx) {
+        console.log("ini", trx)
         return accountHistory.create({
-          transaction_id: myHistory.transactionHash,
+          from: fundAccount,
+          transaction_id: trx,
           transaction_status: true,
           value: myValue,
-          to: myResult.to,
+          to: toAddress,
           user: user,
-          link: `https://etherscan.io/address/${myResult.from}#tokentxns`,
+          link: `https://etherscan.io/address/${fundAccount}`,
           ket: text
         })
       })
@@ -37,20 +36,20 @@ class CodeoTransferController {
         next();
       })
       .catch(err => {
-
         let hash = "none"
         let desc;
         if (err.message === 'Returned error: insufficient funds for gas * price + value') {
           desc = 'insufficient funds for gas * price + value'
         }
         return accountHistory.create({
+          from: fundAccount,
           transaction_id: hash,
           transaction_status: false,
           value: myValue,
           to: toAddress,
           user: user,
           description: desc,
-          link: `failed`,
+          link: `https://etherscan.io/address/${fundAccount}`,
           ket: text
         })
           .then(function (history) {
@@ -77,13 +76,12 @@ class CodeoTransferController {
         console.log(adminETH, 'ADMIN ETH -=========================================================')
         return TransferCodeo(toAddress, adminValue, key)
       })
-      .then(function (data) {
-        let events = data[data.length - 1]
+      .then(function (trxid) {
         return AdminFeeHistory.create({
-          transaction_id: events.transactionHash,
+          transaction_id: trxid,
           transaction_status: true,
           value: adminValue,
-          from: req.decoded.id,
+          from: req.decoded.username,
           admin_address: adminETH
         })
       })
@@ -101,53 +99,49 @@ class CodeoTransferController {
           admin_address: adminETH
         })
           .then(function (trans) {
-            res.status(500).end();
+            res.status(200).end();
           })
           .catch(err => {
-            res.status(500).end();
+            res.status(200).end();
           })
       })
   };
 
   static referralStorage(req, res, next) {
+
     let refUser = req.refUser;
 
     if (refUser) {
       User.findOne({ username: refUser.user })
         .then(function (user) {
-          return Referral.create({
-            user: user.id,
-            ref_amount: refUser.refValue,
-          });
+          return Referral.create({ user: user.id, ref_amount: refUser.refValue })
         })
         .then(function (ref) {
           next();
         })
-        .catch(next);
+        .catch(next)
     } else {
       next();
     }
-  }
+  };
 
   static storeHistoryTransaction(req, res, next) {
     let events = req.events;
     TransactionHistory.find({})
       .then(function (trans) {
         if (trans.length == 0) {
-          return TransactionHistory.create({ transactions: events });
+          return TransactionHistory.create({ transactions: events })
         } else {
           let id = trans[0].id;
-          return TransactionHistory.updateOne(
-            { _id: id },
-            { transactions: events }
-          );
+          return TransactionHistory.updateOne({ _id: id }, { transactions: events })
         }
       })
       .then(function (trasactionhistory) {
         res.end();
       })
-      .catch(next);
-  }
+      .catch(next)
+  };
+
 }
 
 module.exports = CodeoTransferController;

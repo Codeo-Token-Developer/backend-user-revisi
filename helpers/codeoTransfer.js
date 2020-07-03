@@ -13,10 +13,6 @@ async function TransferCodeo(toAddress, value, key) {
 
         console.log('Masuk Transfer')
 
-        //let PRIVATE_KEY = web3js.eth.accounts.decrypt(
-        //  key,
-        //   ENCRYPT
-        //);
         let myAddress = key.address;
         let PriKey = key.privateKey.slice(2);
         let privateKey = Buffer.from(PriKey, "hex");
@@ -28,8 +24,6 @@ async function TransferCodeo(toAddress, value, key) {
             console.log(v)
             count = v;
             let howMuch = value.toString();
-            // let change = howMuch * 1000000;
-            // let amoung = (change * 1000000000000).toString();
             let amount = web3js.utils.toHex(web3js.utils.toWei(howMuch))
             let rawTransaction = {
                 from: myAddress,
@@ -43,31 +37,20 @@ async function TransferCodeo(toAddress, value, key) {
             let transaction = new Tx(rawTransaction);
             transaction.sign(privateKey);
             web3js.eth
-                .sendSignedTransaction("0x" + transaction.serialize().toString("hex"))
-                .on("transactionHash", console.log)
-                .then(function (myReceipt) {
-                    receipt = myReceipt;
-                    mytt.methods
-                        .balanceOf(myAddress)
-                        .call()
-                        .then(function (balance) {
-                            mytt.getPastEvents("Transfer", { fromBlock: 1, toBlock: "latest" }, function (err, events) {
-                                if (err) {
-                                    reject({ errors: err, receipt });
-                                } else {
-                                    resolve(events);
-                                }
-                            })
-                        })
-                })
-                .catch(err => {
-                    reject(err)
+                .sendSignedTransaction("0x" + transaction.serialize().toString("hex"), (err, txHash) => {
+                    console.log('txHash:', txHash)
+                    // Now go check etherscan to see the transaction!
+                    if (err) {
+                        reject({ errors: err.message });
+                    } else {
+                        resolve(txHash);
+                    }
                 })
         })
             .catch(err => {
-                reject(err);
+                reject(err)
             })
     })
-};
+}
 
 module.exports = TransferCodeo;

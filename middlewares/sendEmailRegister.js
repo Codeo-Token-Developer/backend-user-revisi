@@ -15,7 +15,7 @@ function sendEmail(req,res,next) {
         If you did not request this, please ignore this email.\n`
     };
 
-    sgMail.send(mailOptions, (error, result) => {
+    transporter.sendMail(mailOptions, function(error, info){
         if (error) {
             res.status(500).json({message: error.message, status})
         }else {
