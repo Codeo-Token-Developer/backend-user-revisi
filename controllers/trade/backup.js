@@ -143,6 +143,8 @@ class TradeController {
                         };
                     };
                     console.log(updateAccountUser, "Accoun update")
+
+                    
                     if (sellAmount > limitAmount) {
                         leftAmount = sellAmount - limitAmount;
                         updateAccount[updateAccount.length - 1].amount = leftAmount;
