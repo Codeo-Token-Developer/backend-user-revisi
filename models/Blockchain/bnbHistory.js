@@ -1,16 +1,34 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-var Schema = new mongoose.Schema(
-  {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    History: {
-      type: Array,
-    },
+const accountHistorySchema = new mongoose.Schema({
+
+  transaction_id: {
+    type: String,
   },
-  { timestamps: { createdAt: "createdAt" } }
-);
+  transaction_status: {
+    type: Boolean
+  },
+  value: {
+    type: Number
+  },
+  to: {
+    type: String,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  description: {
+    type: String
+  },
+  link: {
+    type: String
+  },
+  ket: {
+    type: String
+  },
+}, { timestamps: { createdAt: 'created_at' } });
 
-module.exports = mongoose.model("bnbhistory", Schema);
+const accountHistory = mongoose.model('AccountHistory', accountHistorySchema);
+
+module.exports = accountHistory;

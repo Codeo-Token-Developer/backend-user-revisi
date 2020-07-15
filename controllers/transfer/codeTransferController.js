@@ -34,6 +34,7 @@ class CodeoTransferController {
             to: toAddress,
             user: user,
             link: `https://etherscan.io/address/${fundAccount}`,
+            description: "success",
             ket: text,
           })
           .then(function (history) {

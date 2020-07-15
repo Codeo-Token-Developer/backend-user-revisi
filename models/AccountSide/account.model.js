@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 
-const accountSchema = new mongoose.Schema ({
+const accountSchema = new mongoose.Schema({
     ETH: {
         type: String,
-        max: 64
     },
     key: {
         type: Map,
@@ -44,8 +43,8 @@ const accountSchema = new mongoose.Schema ({
         type: Number,
         default: 0
     }
-    
-},{ versionKey: false, timestamps: {createdAt: 'created_at'} });
+
+}, { versionKey: false, timestamps: { createdAt: 'created_at' } });
 
 
 const account = mongoose.model('Account', accountSchema);

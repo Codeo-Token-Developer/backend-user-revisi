@@ -65,7 +65,7 @@ Router.use("/cdo", cdo);
 Router.use("/bnb", bnb);
 
 //trx
-Router.use("/trx", trx);
+Router.use("/``trx``", trx);
 
 //CirculatingSupply
 Router.use("/circulatingSupply", CirculatingSupply)

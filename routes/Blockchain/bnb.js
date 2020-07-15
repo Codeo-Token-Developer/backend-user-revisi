@@ -1,11 +1,13 @@
-const express = require("express");
+const express = require('express');
 const Router = express.Router();
+const { sendBNB, sendAdminBNB, referralStorage } = require('../../controllers/transfer/bnbTransferController');
+const checkRef = require('../../middlewares/referralCheck');
+const { info, history } = require("../../controllers/API/tron");
 const { userAuthentication } = require("../../middlewares/Auth");
-const { info, transfer, history } = require("../../controllers/API/bnb");
 
 Router.get("/infoAccount/:Address", userAuthentication, info);
-Router.post("/transfer/:Address", userAuthentication, transfer);
-Router.get("/historyAccount/:Address", userAuthentication, history);
+Router.post("/transfer/", userAuthentication, checkRef, sendBNB, sendAdminBNB, referralStorage);
+Router.get("/historyAccount/", userAuthentication, history);
 
 // Router.get('/myLogHistory')
 

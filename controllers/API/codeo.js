@@ -17,48 +17,24 @@ const { encryptAccount, decryptAccount } = require("../../helpers/encryptKey");
 class codeo {
   static info(req, res, next) {
     var userId = req.decoded.id;
-    let addressEth = req.params.Address;
-    eth.findOne({ user: userId }).then(function (user) {
-      if (user) {
-        contract.methods.balanceOf(addressEth).call((err, result) => {
-          let sisa = result / 1e18;
-          return eth
-            .findOneAndUpdate(
-              { user: userId },
-              {
-                balance: sisa,
-              },
-              { new: true }
-            )
-            .then(function (payload) {
-              res.status(202).json({
-                message: "success",
-                payload,
-                status: 202,
-              });
-            })
-            .catch(next);
-        });
-      } else {
-        contract.methods.balanceOf(addressEth).call((err, result) => {
-          let sisa = result / 1e18;
-          return eth
-            .create({
-              user: userId,
-              balance: sisa,
-              symbol: "CODEO",
-            })
-            .then(function (payload) {
-              res.status(202).json({
-                message: "success",
-                payload,
-                status: 202,
-              });
-            })
-            .catch(next);
-        });
-      }
-    });
+    Account.findOne({ user: userId }).then(function (user) {
+      contract.methods.balanceOf(user.ETH).call((err, result) => {
+        console.log(result);
+        let sisa = result / 1e18;
+        return Account
+          .findOneAndUpdate(
+            { user: userId }, { balance: sisa, }, { new: true }
+          )
+          .then(function (payload) {
+            res.status(202).json({
+              message: "success",
+              payload,
+              status: 202,
+            });
+          })
+          .catch(next);
+      });
+    })
   }
 
   static history(req, res, next) {

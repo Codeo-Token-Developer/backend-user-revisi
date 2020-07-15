@@ -12,38 +12,14 @@ const { encryptAccount, decryptAccount } = require("../../helpers/encryptKey");
 class ether {
   static info(req, res, next) {
     var userId = req.decoded.id;
-    let addressEth = req.params.Address;
-    eth.findOne({ user: userId }).then(function (user) {
-      if (user) {
-        web3js.eth.getBalance(addressEth, (err, wei) => {
-          return eth.findOneAndUpdate(
-            { user: userId },
-            {
-              balance: web3js.utils.fromWei(wei, 'ether'),
-            },
-            { new: true }
+    Account.findOne({ user: userId }).then(function (user) {
+      web3js.eth.getBalance(user.ETH, (err, wei) => {
+        console.log(wei);
+        let sisa = web3js.utils.fromWei(wei)
+        return Account
+          .findOneAndUpdate(
+            { user: userId }, { ETH_coin: sisa, }, { new: true }
           )
-            .then(function (payload) {
-              res.status(202).json({
-                message: "success",
-                payload,
-                status: 202,
-              });
-            })
-            .catch(next);
-        })
-      } else {
-        axios({
-          url: `${apiUrl}bc/eth/mainnet/address/${addressEth}/balance`,
-          method: "GET",
-          headers,
-        })
-          .then(({ data }) => {
-            return eth.create({
-              user: userId,
-              balance: data.payload.balance
-            });
-          })
           .then(function (payload) {
             res.status(202).json({
               message: "success",
@@ -52,64 +28,21 @@ class ether {
             });
           })
           .catch(next);
-      }
-    });
+      });
+    })
   }
 
   static history(req, res, next) {
     var userId = req.decoded.id;
-    let addressEth = req.params.Address;
-    ethhistory.findOne({ user: userId }).then(function (user) {
-      if (user) {
-        axios({
-          url: `${apiUrl}bc/eth/mainnet/address/${addressEth}/transactions?index=0&limit=100`,
-          method: "GET",
-          headers,
-        })
-          .then(({ data }) => {
-            for (let i = 0; i < data.payload.length; i++) {
-              let baru = Number(data.payload[i].value) / 1e18;
-              data.payload[i].value = baru;
-            }
-            return ethhistory.findOneAndUpdate(
-              { user: userId },
-              {
-                History: data.payload,
-              },
-              { new: true }
-            );
-          })
-          .then(function (payload) {
-            res.status(202).json({
-              message: "success",
-              payload,
-              status: 202,
-            });
-          })
-          .catch(next);
-      } else {
-        axios({
-          url: `${apiUrl}bc/eth/mainnet/address/${addressEth}/transactions?index=0&limit=100`,
-          method: "GET",
-          headers,
-        })
-          .then(({ data }) => {
-            for (let i = 0; i < data.payload.length; i++) {
-              let baru = Number(data.payload[i].value) / 1e18;
-              data.payload[i].value = baru;
-            }
-            return ethhistory.create({ user: userId, History: data.payload });
-          })
-          .then(function (payload) {
-            res.status(202).json({
-              message: "success",
-              payload,
-              status: 202,
-            });
-          })
-          .catch(next);
-      }
-    });
+    ethhistory.find({ user: userId })
+      .then(function (History) {
+        res.status(202).json({
+          message: "success",
+          History,
+          status: 202,
+        });
+      })
+      .catch(next);
   }
 
   static transfer(req, res, next) {
