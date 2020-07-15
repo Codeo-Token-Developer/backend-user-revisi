@@ -1,16 +1,32 @@
 const mongoose = require("mongoose");
 
-var Schema = new mongoose.Schema(
-  {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    History: {
-      type: Array,
-    },
-  },
-  { timestamps: { createdAt: "createdAt" } }
-);
+const trxHistorySchema = new mongoose.Schema({
 
-module.exports = mongoose.model("trxhistory", Schema);
+  transaction_id: {
+    type: String,
+  },
+  transaction_status: {
+    type: Boolean
+  },
+  value: {
+    type: Number
+  },
+  to: {
+    type: String,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  description: {
+    type: String
+  },
+  link: {
+    type: String
+  },
+  ket: {
+    type: String
+  },
+}, { timestamps: { createdAt: 'created_at' } });
+
+module.exports = mongoose.model("trxhistory", trxHistorySchema);

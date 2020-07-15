@@ -29,6 +29,6 @@ const ethHistorySchema = new mongoose.Schema({
   },
 }, { timestamps: { createdAt: 'created_at' } });
 
-const ethHistory = mongoose.model('AccountHistory', ethHistorySchema);
+const ethHistory = mongoose.model('ethHistory', ethHistorySchema);
 
 module.exports = ethHistory;
