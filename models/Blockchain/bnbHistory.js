@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const accountHistorySchema = new mongoose.Schema({
+const accHistorySchema = new mongoose.Schema({
 
   transaction_id: {
     type: String,
@@ -29,6 +29,6 @@ const accountHistorySchema = new mongoose.Schema({
   },
 }, { timestamps: { createdAt: 'created_at' } });
 
-const accountHistory = mongoose.model('AccountHistory', accountHistorySchema);
+const accHistory = mongoose.model('bnbHistory', accHistorySchema);
 
-module.exports = accountHistory;
+module.exports = accHistory;
