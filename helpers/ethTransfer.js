@@ -15,14 +15,14 @@ async function TransferETH(toAddress, value, key) {
         let PriKey = key.privateKey.slice(2);
         let privateKey = Buffer.from(PriKey, "hex");
         let valuefix = String(value);
-        web3.eth.getTransactionCount(myAddress, (err, txCount) => {
+        web3js.eth.getTransactionCount(myAddress, (err, txCount) => {
             // Build the transaction
             const txObject = {
-                nonce: web3.utils.toHex(txCount),
+                nonce: web3js.utils.toHex(txCount),
                 to: toAddress,
-                value: web3.utils.toHex(web3.utils.toWei(valuefix, 'ether')),
-                gasLimit: web3.utils.toHex(31000),
-                gasPrice: web3.utils.toHex(web3.utils.toWei('50', 'gwei'))
+                value: web3js.utils.toHex(web3js.utils.toWei(valuefix, 'ether')),
+                gasLimit: web3js.utils.toHex(31000),
+                gasPrice: web3js.utils.toHex(web3js.utils.toWei('50', 'gwei'))
             }
 
             // Sign the transaction
@@ -30,7 +30,7 @@ async function TransferETH(toAddress, value, key) {
             tx.sign(privateKey)
             const serializedTx = tx.serialize()
             const raw = '0x' + serializedTx.toString('hex')
-            web3.eth.sendSignedTransaction(raw, (err, txHash) => {
+            web3js.eth.sendSignedTransaction(raw, (err, txHash) => {
                 console.log('txHash:', txHash)
                 // Now go check etherscan to see the transaction!
                 if (err) {
