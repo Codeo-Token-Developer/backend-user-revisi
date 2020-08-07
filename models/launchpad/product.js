@@ -67,6 +67,6 @@ const productSchema = new mongoose.Schema({
   }
 })
 
-const product = mongoose.model('ProductPad', productSchema)
+const product = mongoose.model('LaunchpadAdmin', productSchema)
 
 module.exports = product
