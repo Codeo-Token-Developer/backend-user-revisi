@@ -37,9 +37,6 @@ const projectSchema = new mongoose.Schema({
     pre_sales_price: {
         type: String
     },
-    countdown: {
-        type: String
-    },
     timezone: {
         type: String
     },
@@ -79,7 +76,7 @@ const projectSchema = new mongoose.Schema({
     twitter: {
         type: String
     },
-    ins: {
+    instagram: {
         type: String
     },
     project_introduction: {
