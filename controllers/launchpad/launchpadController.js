@@ -3,14 +3,6 @@ const LaunchpadProduct = require('../../models/launchpad/product');
 
 class LaunchpadController {
 
-    static showAll(req, res, next) {
-        LaunchpadProduct.find({})
-        .then(data => {
-            return res.status(200).json(data)
-        })
-        .catch(next)
-    }
-
     static createApplyProject(req, res, next) {
         let {
             full_name,
@@ -67,7 +59,7 @@ class LaunchpadController {
                 telegram,
                 kakao,
                 twitter,
-                ins,
+                instagram,
                 project_introduction,
             })
             .then(trade => {

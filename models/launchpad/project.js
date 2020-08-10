@@ -92,6 +92,6 @@ const projectSchema = new mongoose.Schema({
     }
 }, {versionKey: false, timestamps: {createdAt: 'createdAt'}})
 
-const project = mongoose.model('LaunchpadUser', projectSchema);
+const project = mongoose.model('LaunchpadUser', projectSchema)
 
 module.exports = project;

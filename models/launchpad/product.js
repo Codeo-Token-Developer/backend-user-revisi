@@ -9,6 +9,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Full name Required.']
   },
+  current_supply: {
+    type: Number,
+    default: 0
+  },
   session_supply: {
     type: Number,
     required: [true, 'Supply needed.']
