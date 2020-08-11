@@ -83,7 +83,7 @@ Router.use(require("./topup/topupRouter"));
 Router.use("/cms", require("./cmsRouter/cmsRouter.js"));
 
 //LaunchPad
-Router.use("/project", require("./launchpadRouter/projectRouter"));
+Router.use("/launchpad", require("./launchpadRouter/projectRouter"));
 
 // Exchange
 Router.use(require("./exchange/tradeRouter"));
