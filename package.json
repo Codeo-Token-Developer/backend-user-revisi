@@ -23,7 +23,9 @@
     "mongoose": "^5.9.6",
     "node-cron": "^2.0.3",
     "nodemon": "^2.0.2",
+    "qrcode": "^1.4.4",
     "socket.io": "^2.3.0",
+    "speakeasy": "^2.0.0",
     "web3": "^1.2.6",
     "web3-eth-accounts": "^1.2.6"
   }

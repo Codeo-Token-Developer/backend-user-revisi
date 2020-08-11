@@ -88,7 +88,8 @@ Router.use("/project", require("./launchpadRouter/projectRouter"));
 // Exchange
 Router.use(require("./exchange/tradeRouter"));
 
-
+// 2fa bang thomas
+Router.use(require("./twoAuthRouter/twoAuth"));
 
 
 const LimitTrade = require('../models/exchange/limitTrade');
