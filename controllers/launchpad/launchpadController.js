@@ -1,4 +1,4 @@
-const Project = require('../../models/launchpad/project');
+const ProjectRequest = require('../../models/launchpad/ProjectRequest');
 
 class LaunchpadController {
 
@@ -32,7 +32,7 @@ class LaunchpadController {
             project_introduction,
         } = req.body;
 
-        Project.create({
+        ProjectRequest.create({
                 full_name,
                 email,
                 position,

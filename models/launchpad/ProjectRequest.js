@@ -88,10 +88,10 @@ const projectSchema = new mongoose.Schema({
     },
     approved_status: {
         type: String,
-        default: false
+        default: 'Pending'
     }
 }, {versionKey: false, timestamps: {createdAt: 'createdAt'}})
 
-const project = mongoose.model('LaunchpadUser', projectSchema)
+const ProjectRequest = mongoose.model('LaunchpadUser', projectSchema)
 
-module.exports = project;
+module.exports = ProjectRequest;
