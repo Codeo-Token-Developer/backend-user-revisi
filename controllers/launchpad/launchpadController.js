@@ -62,10 +62,10 @@ class LaunchpadController {
                 user: req.decoded.id
             })
             .then(trade => {
-                res.status(202).json({
+                res.status(201).json({
                     trade,
-                    message: "Success create project, wait for admin approval.",
-                    status: 202
+                    message: "Project Created, Please wait for Admin Approval.",
+                    status: 201
                 })
             })
             .catch(next)
