@@ -1,5 +1,4 @@
 const Project = require('../../models/launchpad/project');
-const LaunchpadProduct = require('../../models/launchpad/product');
 
 class LaunchpadController {
 
@@ -60,6 +59,7 @@ class LaunchpadController {
                 twitter,
                 instagram,
                 project_introduction,
+                user: req.decoded.id
             })
             .then(trade => {
                 res.status(202).json({
