@@ -3,6 +3,7 @@ const ProjectRequest = require('../../models/launchpad/ProjectRequest');
 class LaunchpadController {
 
     static createApplyProject(req, res, next) {
+        console.log('massoookkk')
         let {
             full_name,
             email,
@@ -62,6 +63,7 @@ class LaunchpadController {
                 user: req.decoded.id
             })
             .then(trade => {
+                console.log(trade)
                 res.status(201).json({
                     trade,
                     message: "Project Created, Please wait for Admin Approval.",
