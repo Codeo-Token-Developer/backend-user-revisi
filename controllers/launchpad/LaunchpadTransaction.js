@@ -1,4 +1,4 @@
-const LaunchpadProduct = require('../../models/launchpad/product')
+const LaunchpadProduct = require('../../models/launchpad/SupplyProject')
 const User = require('../../models/AuthSide/user.model')
 const Account = require('../../models/AccountSide/account.model')
 const getCurrency = require('../../helpers/codeo_currency')
