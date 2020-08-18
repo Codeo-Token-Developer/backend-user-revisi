@@ -5,6 +5,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Name Required.']
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   full_name: {
     type: String,
     required: [true, 'Full name Required.']
