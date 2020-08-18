@@ -17,6 +17,9 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Supply needed.']
   },
+  coin_symbol: {
+    type: String
+  },
   ieo_ratio: {
     type: Number,
     required: [true, 'Ratio needed.']
