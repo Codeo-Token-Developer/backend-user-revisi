@@ -1,5 +1,4 @@
-const Project = require('../../models/launchpad/project');
-const LaunchpadProduct = require('../../models/launchpad/product');
+const ProjectRequest = require('../../models/launchpad/ProjectRequest');
 
 class LaunchpadController {
 
@@ -11,7 +10,8 @@ class LaunchpadController {
             other_position,
             project_name,
             coin_full_name,
-            coin_symbol,
+            coinSymbolUrl,
+            whitepaperUrl,
             official_website,
             session_supply,
             quote_desc,
@@ -25,7 +25,6 @@ class LaunchpadController {
             ieo_end_time,
             referral_reward,
             technology_fouCoinSymboltion,
-            whitepaper,
             telegram,
             kakao,
             twitter,
@@ -33,19 +32,18 @@ class LaunchpadController {
             project_introduction,
         } = req.body;
 
-        Project.create({
+        ProjectRequest.create({
                 full_name,
                 email,
                 position,
                 other_position,
                 project_name,
                 coin_full_name,
-                coin_symbol,
+                coin_symbol: coinSymbolUrl,
                 official_website,
                 session_supply,
                 quote_desc,
                 pre_sales_price,
-                countdown,
                 timezone,
                 short_desc,
                 ieo_ratio,
@@ -55,18 +53,19 @@ class LaunchpadController {
                 ieo_end_time,
                 referral_reward,
                 technology_fouCoinSymboltion,
-                whitepaper,
+                whitepaper: whitepaperUrl,
                 telegram,
                 kakao,
                 twitter,
                 instagram,
                 project_introduction,
+                user: req.decoded.id
             })
             .then(trade => {
-                res.status(202).json({
+                res.status(201).json({
                     trade,
-                    message: "Success create project, wait for admin approval.",
-                    status: 202
+                    message: "Project Created, Please wait for Admin Approval.",
+                    status: 201
                 })
             })
             .catch(next)

@@ -82,14 +82,13 @@ Router.use(require("./topup/topupRouter"));
 //cms
 Router.use("/cms", require("./cmsRouter/cmsRouter.js"));
 
+//twoAuth
+Router.use(require("./twoAuthRouter/twoAuth"));
+
 //LaunchPad
-Router.use("/project", require("./launchpadRouter/projectRouter"));
+Router.use("/launchpad", require("./launchpadRouter/projectRouter"));
 
 // Exchange
 Router.use(require("./exchange/tradeRouter"));
-
-// 2fa bang thomas
-Router.use(require("./twoAuthRouter/twoAuth"));
-
 
 module.exports = Router;

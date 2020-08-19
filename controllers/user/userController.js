@@ -115,7 +115,7 @@ class UserController {
           next({message: `Invalid email / password`})
         }
       })
-      .then(function() {
+      .then(function(logUser) {
         res.status(201).json({
           message: `Welcome ${logUser.full_name}, hope you enjoy our services`,
           token,

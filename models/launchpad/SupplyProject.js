@@ -68,6 +68,10 @@ const productSchema = new mongoose.Schema({
   end_date: {
     type: Date,
     required: [true, 'End date needed.']
+  },
+  status: {
+    type: Boolean,
+    default: true
   }
 })
 
