@@ -76,6 +76,13 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  ,
+  quote_desc: {
+        type: String
+  },
+  project_introduction: {
+        type: String
+  },
   start_date: {
     type: Date,
     required: [true, 'Start date needed.']
