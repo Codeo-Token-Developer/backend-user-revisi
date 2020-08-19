@@ -5,6 +5,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Name Required.']
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   full_name: {
     type: String,
     required: [true, 'Full name Required.']
@@ -16,6 +20,9 @@ const productSchema = new mongoose.Schema({
   session_supply: {
     type: Number,
     required: [true, 'Supply needed.']
+  },
+  coin_symbol: {
+    type: String
   },
   ieo_ratio: {
     type: Number,
@@ -60,6 +67,20 @@ const productSchema = new mongoose.Schema({
   instagram: {
     type: String,
     default: '--'
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  status: {
+    type: Boolean,
+    default: true
+  },
+  quote_desc: {
+        type: String
+  },
+  project_introduction: {
+        type: String
   },
   start_date: {
     type: Date,

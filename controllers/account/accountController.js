@@ -16,7 +16,7 @@ class AccountController {
     };
 
     static async create(req, res, next) {
-
+        console.log('create acc')
         let userId = req.decoded.id;
 
         let newAccount = {

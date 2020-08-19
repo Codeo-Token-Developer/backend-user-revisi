@@ -1,12 +1,13 @@
-const LaunchpadProduct = require('../../models/launchpad/ProjectRequest')
+const LaunchpadProduct = require('../../models/launchpad/SupplyProject')
 const User = require('../../models/AuthSide/user.model')
 const Account = require('../../models/AccountSide/account.model')
 const getCurrency = require('../../helpers/codeo_currency')
 const UserSupply = require('../../models/launchpad/UserSupply')
-
+const getCodeoBalance = require('../../helpers/getBalance/getBalance')
 class LaunchpadTransaction {
   
   static findAll (req, res, next) {
+    console.log('masuk find all project')
     LaunchpadProduct.find({})
     .then(data => {
       return res.status(200).json(data)
@@ -23,28 +24,26 @@ class LaunchpadTransaction {
   }
 
   static async buySupply(req, res, next) {
-    const project = await LaunchpadProduct.findOne({ _id: req.params.id })
-    const account = await Account.findOne({ user: req.decoded.id }) 
-    const value = req.body.value
-    const codeo = await getCurrency()
-    if (project) {
-      if (account.CODEO_coin >= value * codeo.usd) {
-        const newsupply = await UserSupply.create({ user: req.decoded.id, project: project.id, supply: value })
-        const added = await LaunchpadProduct.updateOne({ _id: req.params.id }, { current_supply: project.current_supply + newsupply.supply })
-        if (added) {
-          Account.updateOne({ user: req.decoded.id }, { CODEO_coin: account.CODEO_coin - (value * codeo.usd) })
-          .then(() => {
-            res.status(201).json({ message: 'Supply Purchased.' })
-          })
-          .catch(next)
+    try {
+      const value = +req.body.value
+      console.log('buy supply')
+      const acc = await Account.findOne({ user: req.decoded.id })
+      getCodeoBalance(acc.ETH).then( async balance => {
+        console.log(balance)
+        if (balance >= value) {
+          const purchase = await LaunchpadProduct.findOneAndUpdate({ _id: req.params.id }, { $inc: { current_supply: value } }, { omitUndefined: true, new: true })
+          const total = value * purchase.ieo_ratio
+          console.log(total, '<<<<<totalllllll')
+          await Account.updateOne({ user: req.decoded.id }, { $inc: { CODEO_coin: -total } }, { omitUndefined: true })
+          return res.status(201).json({ message: 'Purchased.' })
         } else {
-          res.status(500).json({ message: 'An Error Occured.' })
+          res.status(400).json({ message: 'Insufficient Balance.' })
         }
-      } else {
-        res.status(400).json({ message: 'Insufficient Balance.' })
-      }
+      })
+      .catch(err => next(err))
+    } catch (err) {
+      next(err)
     }
-    else res.status(404).json({ message: 'Not Found.' })
   } 
 
 }

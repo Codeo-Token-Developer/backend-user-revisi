@@ -25,17 +25,9 @@
 const gerbong = ( penumpang, slot_kursi ) => {
     let kursi = []
     let temp = []
-
     for (let i in penumpang) {
-        if (i < slot_kursi) {
-            temp.push(penumpang[i])
-        }
-        // else {
-        //     temp.push(penumpang[i])
-        // }
+        temp[i] = penumpang[i]
     }
     return temp
 }
-
-console.log(gerbong(['a','b','c'],2))
-
+console.log(gerbong(['a','b','c','d'],2))
