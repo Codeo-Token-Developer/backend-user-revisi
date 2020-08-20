@@ -76,7 +76,6 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-  ,
   quote_desc: {
         type: String
   },

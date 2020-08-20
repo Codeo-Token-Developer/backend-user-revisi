@@ -92,7 +92,19 @@ const userSchema = new mongoose.Schema ({
     account: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Account'
-    }
+    },
+    active2fa: {
+        type: Boolean,
+        default: false,
+    },
+    auths: {
+        type: Boolean,
+        default: false,
+    },
+    _2faKey: {
+        type: String,
+        default: "-",
+    },
 }, {versionKey: false, timestamps: { createdAt: 'created_at' }})
 
 

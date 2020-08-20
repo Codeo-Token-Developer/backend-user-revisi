@@ -35,8 +35,8 @@ Router.post("/forgotPassword", forgotPassword, sendEmailForgotPassword);
 //changePassword
 Router.post("/changePassword", Auth, changePassword, sendEmailChangePassword);
 Router.patch("/logout", Auth, logout);
-Router.patch("/2faout", Auth, QrLogout);
-Router.patch("/2fa", Auth, QrUpdate);
+// Router.patch("/2faout", Auth, QrLogout);
+// Router.patch("/2fa", Auth, QrUpdate);
 
 //CMS
 Router.get('/newsAll', Auth, cmsRead);

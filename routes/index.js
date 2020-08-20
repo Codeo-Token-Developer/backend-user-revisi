@@ -82,6 +82,9 @@ Router.use(require("./topup/topupRouter"));
 //cms
 Router.use("/cms", require("./cmsRouter/cmsRouter.js"));
 
+//twoAuth
+Router.use(require("./twoAuthRouter/twoAuth"));
+
 //LaunchPad
 Router.use("/launchpad", require("./launchpadRouter/projectRouter"));
 
